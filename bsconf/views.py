@@ -7,39 +7,61 @@ import json
 def makeSql(data, template):
     tplFile = os.path.join(settings.BASE_DIR, 'bsconf', 'data', 'template', template)
     inFile = os.path.join(settings.BASE_DIR, 'bsconf', 'data', 'template', data)
-    with open(tplFile,encoding='utf-8') as fp:
-        dSql = json.load(fp,encoding='utf-8')
-    with open(inFile,encoding='utf-8') as fData:
+    # , encoding = 'utf-8'
+    with open(tplFile) as fp:
+        dSql = json.load(fp)
+    with open(inFile) as fData:  #,encoding='utf-8'
         dIn = json.load(fData)
-    dFields = {}
-    ss = parseJson('root', dIn, dFields, dSql)
+
+    aSql = []
+    for req in dIn:
+        reqData = dIn[req]
+        for tplGrp in reqData:
+            if tplGrp not in dSql:
+                print('%s no sql' % tplGrp)
+                break
+            dTplSql = dSql[tplGrp]
+            tplGrpData = reqData[tplGrp]
+            for i in range(len(tplGrpData)):
+                tpl = tplGrpData[i]
+                dFields = {}
+                ss = parseTpl(tpl, dFields, dTplSql)
+
+
     return dSql,dIn
 
 def getSql(table, dFields, dSql):
     if table not in dSql:
         return None
-    sql = dSql[table]
+    dTab = dSql[table]
+    sql = dTab['SQL']
     for f in dFields:
         pat = '^<%s^>' % f
         sql = sql.replace(pat, str(dFields[f]))
     return sql
 
-def parseJson(name, content, fields, dSql):
-    children = []
-    for key in content:
-        val = content[key]
+def parseTpl(content, dFields, dSql):
+    for tName in content:
+        table = content[tName]
+        parseTab(tName,table,dFields, dSql)
+
+
+def parseTab(name, content, dFields, dSql):
+    aSubTable = []
+    for field in content:
+        val = content[field]
         if type(val) is list:
             for it in val:
-                children.append({key: it})
+                aSubTable.append({field: it})
         elif type(val) is dict:
-            children.append({key: val})
+            aSubTable.append({field: val})
         else:
-            fields[key] = val
-    sql = getSql(name,fields, dSql)
+            dFields[field] = val
+    sql = getSql(name,dFields, dSql)
     if sql:
         print(sql)
-    for ch in children:
-        for key in ch:
-            parseJson(key, ch[key], fields, dSql)
-
+    for sub in aSubTable:
+        for tName in sub:
+            tab = sub[tName]
+            parseTab(tName, tab, dFields, dSql)
 

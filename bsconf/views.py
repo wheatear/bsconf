@@ -3,6 +3,8 @@ from boss import settings
 import os,logging
 import json
 import copy
+from bsconf.models import *
+from django.db.models import Max
 
 # Create your views here.
 
@@ -115,12 +117,11 @@ class BsSql(object):
 
     def makeSql(self):
         # sql = self.dTabSql['SQL']
-        sql = copy.deepcopy(self.dTabSql['SQL'])
-        dFields = None
-        if 'FIELDS' in self.dTabSql:
-            dFields = self.dTabSql['FIELDS']
-        if not dFields:
-            return sql
+        # sql = copy.deepcopy(self.dTabSql['SQL'])
+        if 'FIELDS' not in self.dTabSql:
+            self.dTabSql['FIELDS'] = None
+            return self.dTabSql
+        dFields = self.dTabSql['FIELDS']
         for field in dFields:
             val = None
             if field == 'PROMO_ID':
@@ -139,8 +140,17 @@ class SpecialField(object):
         pass
 
 class PromoId(SpecialField):
-    def __init__(self):
-        pass
+    def getVal(self):
+        # idT1 = PromoIdExist.objects.using('').filter(id__startswith='203').first().id
+        idT1 = RawSql(promoSql).fetchVal()
+        idT2 = RawSql(promoSql,'test2').fetchVal()
+        idT3 = RawSql(promoSqlProd,'prod').fetchVal()
+        idT4 = BsItemId.objects.filter(item_name=self.name).aggregate(Max('item_id')).item_id
+        lastVal = max(idT1, idT2, idT3, idT4)
+        nextVal = lastVal + 1
+        itemId = BsItemId.create(self.name, nextVal)
+        itemId.save()
+        return nextVal
 
 
 class ContId(SpecialField):

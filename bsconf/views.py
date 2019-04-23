@@ -74,10 +74,10 @@ class BsBlock(object):
 
     def parse(self):
         for tName in self.blockData:
-            table = self.blockData[tName]
-            if table not in self.dTplSql:
-                print('%s no sql tamplate' % table)
+            if tName not in self.dTplSql:
+                print('%s no sql tamplate' % tName)
                 break
+            table = self.blockData[tName]
             self.parseTab(tName, table) #, self.dFields, self.dTplSql
 
     def parseTab(self, tName, table):
@@ -104,6 +104,8 @@ class BsBlock(object):
             return None
         dTabSql = self.dTplSql[table]
         # sql = dTabSql['SQL']
+        bsSql = BsSql(dTabSql, self.dFields)
+        bsSql.makeSql()
         sql = copy.deepcopy(dTabSql['SQL'])
         for f in self.dFields:
             pat = '^<%s^>' % f
@@ -112,8 +114,9 @@ class BsBlock(object):
 
 
 class BsSql(object):
-    def __init__(self, dTabSql):
+    def __init__(self, dTabSql, dTabData):
         self.dTabSql = dTabSql
+        self.dTabData = dTabData
 
     def makeSql(self):
         # sql = self.dTabSql['SQL']
@@ -123,21 +126,38 @@ class BsSql(object):
             return self.dTabSql
         dFields = self.dTabSql['FIELDS']
         for field in dFields:
+            if field in self.dTabData:
+                continue
             val = None
             if field == 'PROMO_ID':
-                speField = PromoId(field, dFields[field])
-                val = speField.getVal()
-            pat = '^<%s^>' % field
-            sql = sql.replace(pat, str(self.dFields[f]))
+                speField = PromoId(field)
+                # val = speField.getVal()
+            elif field == 'COND_ID':
+                speField = ContId(field, self.dTabData['PROMO_ID'])
+                # val = speField.getVal()
+            elif field == 'NEW_SMS_TEMPLET_ID':
+                speField = SmsId(field)
+            val = speField.getNext()
+            self.dTabData[field] = val
 
 
 class SpecialField(object):
-    def __init__(self, name, type):
+    def __init__(self, name):
         self.name = name
-        self.type = type
+        # self.type = type
+        self.curVal = None
 
     def getVal(self):
         pass
+
+    def getNext(self):
+        self.getVal()
+        if not self.curVal:
+            return None
+        nextVal = self.curVal + 1
+        itemId = BsItemId.create(self.name, nextVal)
+        itemId.save()
+        return nextVal
 
 class PromoId(SpecialField):
     def getVal(self):
@@ -146,22 +166,32 @@ class PromoId(SpecialField):
         idT2 = RawSql(promoSql,'test2').fetchVal()
         idT3 = RawSql(promoSqlProd,'prod').fetchVal()
         idT4 = BsItemId.objects.filter(item_name=self.name).aggregate(Max('item_id')).item_id
-        lastVal = max(idT1, idT2, idT3, idT4)
-        nextVal = lastVal + 1
-        itemId = BsItemId.create(self.name, nextVal)
-        itemId.save()
-        return nextVal
-
+        self.curVal = max(idT1, idT2, idT3, idT4)
 
 class ContId(SpecialField):
-    def __init__(self):
-        pass
+    def __init__(self, name, promoId):
+        super().__init__(name)
+        self.promoId = promoId
+
+    def getVal(self):
+        idT4 = BsItemId.objects.filter(item_name=self.name, item_id__startswith=self.promoId).aggregate(Max('item_id')).item_id
+        self.curVal = idT4
 
 
 class SmsId(SpecialField):
-    def __init__(self):
-        pass
-
+    def getVal(self):
+        idSeq = RawSql(smsSeqSql).fetchVal()
+        idT1 = RawSql(promoSql).fetchVal()
+        idT2 = RawSql(promoSql, 'test2').fetchVal()
+        idT3 = RawSql(promoSqlProd, 'prod').fetchVal()
+        idT4 = BsItemId.objects.filter(item_name=self.name).aggregate(Max('item_id')).item_id
+        curVal = max(idT1, idT2, idT3, idT4)
+        nextVal = curVal + 1
+        if nextVal > idSeq:
+            step = nextVal - idSeq
+            seqJump = SequenceJump('base.bs_DEF_SMS_TEMPLATE$SEQ', step)
+            seqJump.jump()
+        self.curVal = idSeq - 1
 
 def getSql(table, dFields, dSql):
     if table not in dSql:

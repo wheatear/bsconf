@@ -18,6 +18,11 @@ class RawSql(object):
         else:
             return None
 
+    def execute(self):
+        with self.conn.cursor() as cur:
+            cur.execute(self.sSql)
+
+
 promoSql = "select max(promo_id) from base.BS_BOOK_SCHEME_PROMO where promo_id like '203%'"
 promoSqlProd = "select max(promo_id) from base.BS_BOOK_SCHEME_PROMO@scdb_to_srvzw1 where promo_id like '203%'"
 
@@ -26,7 +31,28 @@ condSql = "select max(COND_ID) from base.BS_BOOK_SCHEME_COND where PROMO_ID = ''
 smsSql = "select max(NEW_SMS_TEMPLET_ID) from base.BS_BOOK_SCHEME_SMS_FORM"
 smsSqlProd = "select max(NEW_SMS_TEMPLET_ID) from base.BS_BOOK_SCHEME_SMS_FORM@scdb_to_srvzw1"
 
-smsId = RawSql("select '40' || lpad(4300, 8, '0') || lpad(base.bs_DEF_SMS_TEMPLATE$SEQ.nextval,6, '0') from dual")
+smsSeqSql = "select '40' || lpad(4300, 8, '0') || lpad(base.bs_DEF_SMS_TEMPLATE$SEQ.nextval,6, '0') from dual"
+# smsId = RawSql("select '40' || lpad(4300, 8, '0') || lpad(base.bs_DEF_SMS_TEMPLATE$SEQ.nextval,6, '0') from dual")
+
+class SequenceJump(object):
+    stepMany = "ALTER SEQUENCE %s INCREMENT BY %d"
+    nextVal = "SELECT %s.NEXTVAL FROM DUAL"
+    stepOne = "ALTER SEQUENCE %s INCREMENT BY 1"
+    def __init__(self, sequence, step):
+        self.sequence = sequence
+        self.step = step
+        self.stepMany = SequenceJump.stepMany % (self.sequence, self.step)
+        self.nextVal = SequenceJump.nextVal % self.sequence
+        self.stepOne = SequenceJump.stepOne % self.sequence
+
+    def jump(self):
+        seq = RawSql(self.stepMany)
+        seq.execute()
+        seq = RawSql(self.nextVal)
+        seq.execute()
+        seq = RawSql(self.stepOne)
+        seq.execute()
+
 
 class PromoIdExist(models.Model):
     id = models.BigIntegerField(primary_key=True,db_column='promo_id')

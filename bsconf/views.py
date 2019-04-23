@@ -7,7 +7,7 @@ import copy
 # Create your views here.
 
 class BsConfiger(object):
-    tplSqlFile = "tpl"
+    tplSqlFile = "tplsql_promo.json"
     dTplSql = {}
     def __init__(self, inFile):
         self.inFile = inFile
@@ -22,7 +22,7 @@ class BsConfiger(object):
             BsConfiger.dTplSql = json.load(fp)
 
     def loadData(self):
-        file = os.path.join(settings.TPL_DIR, self.inFile)
+        file = os.path.join(settings.IN_DIR, self.inFile)
         with open(file) as fData:  # ,encoding='utf-8'
             self.dInData = json.load(fData)
 
@@ -73,6 +73,9 @@ class BsBlock(object):
     def parse(self):
         for tName in self.blockData:
             table = self.blockData[tName]
+            if table not in self.dTplSql:
+                print('%s no sql tamplate' % table)
+                break
             self.parseTab(tName, table) #, self.dFields, self.dTplSql
 
     def parseTab(self, tName, table):
@@ -98,12 +101,56 @@ class BsBlock(object):
         if table not in self.dTplSql:
             return None
         dTabSql = self.dTplSql[table]
-        sql = dTabSql['SQL']
+        # sql = dTabSql['SQL']
         sql = copy.deepcopy(dTabSql['SQL'])
         for f in self.dFields:
             pat = '^<%s^>' % f
             sql = sql.replace(pat, str(self.dFields[f]))
         return sql
+
+
+class BsSql(object):
+    def __init__(self, dTabSql):
+        self.dTabSql = dTabSql
+
+    def makeSql(self):
+        # sql = self.dTabSql['SQL']
+        sql = copy.deepcopy(self.dTabSql['SQL'])
+        dFields = None
+        if 'FIELDS' in self.dTabSql:
+            dFields = self.dTabSql['FIELDS']
+        if not dFields:
+            return sql
+        for field in dFields:
+            val = None
+            if field == 'PROMO_ID':
+                speField = PromoId(field, dFields[field])
+                val = speField.getVal()
+            pat = '^<%s^>' % field
+            sql = sql.replace(pat, str(self.dFields[f]))
+
+
+class SpecialField(object):
+    def __init__(self, name, type):
+        self.name = name
+        self.type = type
+
+    def getVal(self):
+        pass
+
+class PromoId(SpecialField):
+    def __init__(self):
+        pass
+
+
+class ContId(SpecialField):
+    def __init__(self):
+        pass
+
+
+class SmsId(SpecialField):
+    def __init__(self):
+        pass
 
 
 def getSql(table, dFields, dSql):

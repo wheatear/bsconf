@@ -21,7 +21,7 @@
 		"BI": {
 			"SQL": "insert into base.bs_book_scheme_SAP_type (SAP_ID, SAP_TYPE, SAP_TYPE_NAME, REMARK1, REMARK2, REMARK3, REMARK4) values ('^<SAP_ID^>', ^<SAP_TYPE^>, '^<SAP_TYPE_NAME^>', '^<REMARK1^>', '^<REMARK2^>', null, null);"
 		},
-		"SMS": {
+		"SMS_FORM": {
 			"SQL": "insert into base.BS_BOOK_SCHEME_SMS_FORM (PROMO_ID, COND_ID, APPLY_TYPE, SMS_TEMPLET_ID, NEW_SMS_TEMPLET_ID) values ('^<PROMO_ID^>', '^<COND_ID^>', '^<APPLY_TYPE^>', '^<COND_ID^>', '^<NEW_SMS_TEMPLET_ID^>');",
 			"FIELDS": {
 				"NEW_SMS_TEMPLET_ID": "SMS_ID_SEQ"
@@ -53,7 +53,7 @@
 		"BI": {
 			"SQL": "insert into base.bs_book_scheme_SAP_type (SAP_ID, SAP_TYPE, SAP_TYPE_NAME, REMARK1, REMARK2, REMARK3, REMARK4) values ('^<SAP_ID^>', ^<SAP_TYPE^>, '^<SAP_TYPE_NAME^>', '^<REMARK1^>', '^<REMARK2^>', null, null);"
 		},
-		"SMS": {
+		"SMS_FORM": {
 			"SQL": "insert into base.BS_BOOK_SCHEME_SMS_FORM (PROMO_ID, COND_ID, APPLY_TYPE, SMS_TEMPLET_ID, NEW_SMS_TEMPLET_ID) values ('^<PROMO_ID^>', '^<COND_ID^>', '^<APPLY_TYPE^>', '^<COND_ID^>', '^<NEW_SMS_TEMPLET_ID^>');",
 			"FIELDS": {
 				"NEW_SMS_TEMPLET_ID": "SMS_ID_SEQ"

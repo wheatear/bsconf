@@ -13,10 +13,22 @@ class BsConfiger(object):
     dTplSql = {}
     def __init__(self, inFile):
         self.inFile = inFile
+        print('in data file %s' % inFile)
         # self.outFile = 'DB配置-%s-王新田.sql' % inFile
-        self.outFile = '%s.sql' % os.path.splitext(os.path.basename(inFile))[1]
+        self.outFile = '%s.sql' % os.path.splitext(os.path.basename(inFile))[0]
         self.dInData = {}
         self.fOut = None
+
+    def start(self):
+        print('load sql template')
+        self.loadTplSql()
+        print('load data')
+        self.loadData()
+        self.openOutFile()
+        print('parse in file')
+        self.parseDoc()
+        # self.writeSql()
+        self.closeOut()
 
     def loadTplSql(self):
         file = os.path.join(settings.TPL_DIR, self.tplSqlFile)
@@ -29,9 +41,11 @@ class BsConfiger(object):
             self.dInData = json.load(fData)
 
     def openOutFile(self):
+        print('open out file %s' % self.outFile)
         if self.fOut:
             return self.fOut
         file = os.path.join(settings.OUT_DIR, self.outFile)
+        print(file)
         try:
             self.fOut = open(file, 'w')
         except IOError as e:
@@ -41,23 +55,29 @@ class BsConfiger(object):
         aSql = []
         self.openOutFile()
         for req in self.dInData:
+            print('parse request %s' % req)
+            self.fOut.write('-- %s%s' % (req, os.linesep))
             reqData = self.dInData[req]
             for blockGrp in reqData:
+                print('parse block group %s ...' % blockGrp)
                 if blockGrp not in self.dTplSql:
                     print('%s no sql' % blockGrp)
                     break
                 dBlockSql = self.dTplSql[blockGrp]
                 blockGrpData = reqData[blockGrp]
                 for i in range(len(blockGrpData)):
+                    print('%s %d' % (blockGrp, i))
                     blockData = blockGrpData[i]
                     # dFields = {}
                     block = BsBlock(blockGrp, blockData, dBlockSql)
-                    aSql = block.parse()
+                    block.parse()
+                    self.writeBlockSql(block, i+1)
                     # ss = self.parseBlock(tpl, dFields, dTplSql)
+                print('block group %s of %d completed' % (blockGrp, i))
         self.closeOut()
 
-    def writeSql(self, block):
-        self.fOut.write('-- %s%s' % (block.blockName, os.linesep))
+    def writeBlockSql(self, block, num):
+        self.fOut.write('-- %s %d%s' % (block.blockName, num, os.linesep))
         for sql in block.aSql:
             self.fOut.write('%s%s' % (sql, os.linesep))
 
@@ -91,19 +111,23 @@ class BsBlock(object):
                 aSubTable.append({field: val})
             else:
                 self.dFields[field] = val
+        print('get table %s' % tName)
         sql = self.getSql(tName)
+        print(sql)
+        # self.aSql.append(sql)
         if sql:
             self.aSql.append(sql)
         for sub in aSubTable:
             for tName in sub:
                 tab = sub[tName]
-                parseTab(tName, tab)
+                self.parseTab(tName, tab)
 
     def getSql(self, table):#, self.dFields, self.dTplSql
         if table not in self.dTplSql:
             return None
         dTabSql = self.dTplSql[table]
         # sql = dTabSql['SQL']
+        # dTabFields = copy.deepcopy(self.dFields)
         bsSql = BsSql(dTabSql, self.dFields)
         bsSql.makeSql()
         sql = copy.deepcopy(dTabSql['SQL'])
@@ -122,22 +146,25 @@ class BsSql(object):
         # sql = self.dTabSql['SQL']
         # sql = copy.deepcopy(self.dTabSql['SQL'])
         if 'FIELDS' not in self.dTabSql:
-            self.dTabSql['FIELDS'] = None
+            # self.dTabSql['FIELDS'] = None
+            print('dTabSql no FIELDS')
             return self.dTabSql
         dFields = self.dTabSql['FIELDS']
         for field in dFields:
-            if field in self.dTabData:
-                continue
+            # if field in self.dTabData:
+            #     continue
             val = None
             if field == 'PROMO_ID':
                 speField = PromoId(field)
                 # val = speField.getVal()
             elif field == 'COND_ID':
-                speField = ContId(field, self.dTabData['PROMO_ID'])
+                print('get cond_id of promo_id %s' % self.dTabData['PROMO_ID'])
+                speField = CondId(field, self.dTabData['PROMO_ID'])
                 # val = speField.getVal()
             elif field == 'NEW_SMS_TEMPLET_ID':
                 speField = SmsId(field)
             val = speField.getNext()
+            print('get %s %d' % (field, val))
             self.dTabData[field] = val
 
 
@@ -164,27 +191,35 @@ class PromoId(SpecialField):
         # idT1 = PromoIdExist.objects.using('').filter(id__startswith='203').first().id
         idT1 = RawSql(promoSql).fetchVal()
         idT2 = RawSql(promoSql,'test2').fetchVal()
-        idT3 = RawSql(promoSqlProd,'prod').fetchVal()
-        idT4 = BsItemId.objects.filter(item_name=self.name).aggregate(Max('item_id')).item_id
+        # idT3 = RawSql(promoSqlProd,'prod').fetchVal()
+        idT3 = 0
+        idT4 = BsItemId.objects.filter(item_name=self.name).aggregate(Max('item_id'))['item_id__max']
+        if not idT4:
+            idT4 = 0
         self.curVal = max(idT1, idT2, idT3, idT4)
 
-class ContId(SpecialField):
+class CondId(SpecialField):
     def __init__(self, name, promoId):
         super().__init__(name)
         self.promoId = promoId
 
     def getVal(self):
-        idT4 = BsItemId.objects.filter(item_name=self.name, item_id__startswith=self.promoId).aggregate(Max('item_id')).item_id
+        idT4 = BsItemId.objects.filter(item_name=self.name, item_id__startswith=self.promoId).aggregate(Max('item_id'))['item_id__max']
+        if not idT4:
+            idT4 = int('%s00' % self.promoId)
         self.curVal = idT4
 
 
 class SmsId(SpecialField):
     def getVal(self):
-        idSeq = RawSql(smsSeqSql).fetchVal()
+        idSeq = int(RawSql(smsSeqSql).fetchVal())
         idT1 = RawSql(promoSql).fetchVal()
         idT2 = RawSql(promoSql, 'test2').fetchVal()
-        idT3 = RawSql(promoSqlProd, 'prod').fetchVal()
-        idT4 = BsItemId.objects.filter(item_name=self.name).aggregate(Max('item_id')).item_id
+        # idT3 = RawSql(promoSqlProd, 'prod').fetchVal()
+        idT3 = 0
+        idT4 = BsItemId.objects.filter(item_name=self.name).aggregate(Max('item_id'))['item_id__max']
+        if not idT4:
+            idT4 = 0
         curVal = max(idT1, idT2, idT3, idT4)
         nextVal = curVal + 1
         if nextVal > idSeq:

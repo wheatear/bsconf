@@ -71,8 +71,8 @@ class PromoNextId(object):
 
 
 class BsItemId(models.Model):
-    item_name = models.CharField(max_length=126)
-    item_id = models.BigIntegerField
+    item_name = models.CharField(max_length=126,db_column='item_name')
+    item_id = models.BigIntegerField(primary_key=True,db_column='item_id')
 
     class Meta:
         managed = False

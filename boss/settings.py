@@ -96,15 +96,15 @@ DATABASES = {
     },
     'test2': {
         'ENGINE': 'django.db.backends.oracle',
-        'NAME': 'ng2tst02',
+        'NAME': 'ngtst02',
         'USER': 'zg',
         'PASSWORD': 'ngboss4,123',
-        'HOST': '10.7.5.133',
+        'HOST': '10.7.5.164',
         'PORT': '1521',
     },
     'prod': {
         'ENGINE': 'django.db.backends.oracle',
-        'NAME': 'scdz',
+        'NAME': 'scdb',
         'USER': 'ad',
         'PASSWORD': 'ad',
         'HOST': '10.4.84.17',

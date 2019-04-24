@@ -22,7 +22,7 @@ class RawSql(object):
         with self.conn.cursor() as cur:
             cur.execute(self.sSql)
 
-
+#PROMO
 promoSql = "select max(promo_id) from base.BS_BOOK_SCHEME_PROMO where promo_id like '203%'"
 promoSqlProd = "select max(promo_id) from base.BS_BOOK_SCHEME_PROMO@scdb_to_srvzw1 where promo_id like '203%'"
 
@@ -33,6 +33,11 @@ smsSqlProd = "select max(NEW_SMS_TEMPLET_ID) from base.BS_BOOK_SCHEME_SMS_FORM@s
 
 smsSeqSql = "select '40' || lpad(4300, 8, '0') || lpad(base.bs_DEF_SMS_TEMPLATE$SEQ.nextval,6, '0') from dual"
 # smsId = RawSql("select '40' || lpad(4300, 8, '0') || lpad(base.bs_DEF_SMS_TEMPLATE$SEQ.nextval,6, '0') from dual")
+
+#RECEIPT
+RECEIPT_TYPE = "select max(receipt_type) from  base.bs_busi_receipt_type t where t.receipt_type  >1000 AND  t.receipt_type<2000 "
+RECEIPT_ITEM = "select max(receipt_item) from base.bs_busi_receipt_item t where t.receipt_item >1400 AND t.receipt_item<2000c"
+MIS_GROUP_NO = "select max(MIS_GROUP_NO) from base.bs_def_bill_item_mis where MIS_GROUP_NO like '03011___'"
 
 class SequenceJump(object):
     stepMany = "ALTER SEQUENCE %s INCREMENT BY %d"

@@ -1,5 +1,5 @@
 {
-	"PROMO_UNIFIED": {
+  "PROMO_UNIFIED": {
 		"PROMO": {
 			"SQL": "insert into base.BS_BOOK_SCHEME_PROMO (PROMO_ID, PROMO_NAME, BUSI_TYPE_CODE, REGION_CODE, PROMO_TYPE, COUNTY_CODE, ORG_ID, PROMO_GROUP) values ('^<PROMO_ID^>', '^<PROMO_NAME^>', '^<BUSI_TYPE_CODE^>', '0', '1', '0', '0', '0');",
 			"FIELDS": {
@@ -62,5 +62,43 @@
 		"SMS_RULE": {
 			"SQL": "insert into base.bs_sms_rule (RULE_ID, RULE_CODE, RULE_EXP, RULE_ORDER, BUSINESS_ID, AC_SMS_TEMPLATE_ID, SMS_TEMPLATE_ID, STATE, CREATE_DATE) values (base.bs_sms_rule$seq.nextval, '^<NEW_SMS_TEMPLET_ID^>', '', '1', '^<BUSI_TYPE_CODE^>', '^<NEW_SMS_TEMPLET_ID^>', '^<SMS_TEMPLATE_ID^>', 'U', sysdate);"
 		}
-	}
+	},
+    "RECEIPT": {
+        "RECEIPT_TYPE": {
+            "SQL": "insert into base.bs_busi_receipt_type (receipt_type, receipt_type_name, receipt_class, receipt_class_name, receipt_flag, tax_format, sts) values ('1017', '畅享卡-19年（含50元话费卡）', '8', '业务发票', '1', '1', '1');",
+            "FIELDS": {
+				"RECEIPT_TYPE": "RECEIPT_TYPE_TABLE"
+            }
+        },
+        "RECEIPT_ITEM": {
+            "SQL": "insert into base.bs_busi_receipt_item (receipt_type, receipt_item, receipt_item_name, unit, item_seq, sts, tax_rate, valid_date, expire_date) values ('1017', '1408', '畅享卡-19年sim卡费', '张', '0', '1', '1300', to_date('01-01-1900', 'dd-mm-yyyy'), to_date('31-12-2015', 'dd-mm-yyyy'));",
+            "FIELDS": {
+				"RECEIPT_ITEM": "RECEIPT_ITEM_TABLE"
+            }
+        },
+        "ITEM_MAP": {
+            "SQL": "insert into base.bs_busi_item_map (busi_item_code, busi_item_type, fee_item_id, fee_item_name, sts, receipt_type, receipt_item) values ('CRM提供', '3', 'CRM提供', '畅享卡-19年sim卡费', '1', '1017', '1408');"
+        },
+        "HALL_BS_DEF_BILL_ITEM_MIS": {
+            "SQL": "insert into base.bs_def_bill_item_mis (MIS_GROUP_NO, MIS_GROUP_NAME, STS) values ('030117', '畅享卡-19年sim卡费', '1');",
+            "FIELDS": {
+				"MIS_GROUP_NO": "RECEIPT_ITEM_TABLE"
+            }
+        },
+        "BS_BILL_ITEM_GRP": {
+            "SQL": "insert into base.bs_bill_item_grp (MIS_GROUP_NO, BILL_ITEM_ID, STS) values ('010115', '1408', '1');"
+        },
+        "MIS_BS_DEF_BILL_ITEM_MIS": {
+            "SQL": "insert into base.bs_def_bill_item_mis (MIS_GROUP_NO, MIS_GROUP_NAME, STS) values ('030117', '畅享卡-19年sim卡费', '1');"
+        },
+        "BS_BILL_ITEM_MIS_GRP": {
+            "SQL": "insert into base.bs_bill_item_mis_grp (MIS_GROUP_NO, BUSI_TYPE, BILL_ITEM_ID, STA_TYPE, TAX_RATE1, TAX_RATE1_PERCENT, TAX_RATE2, TAX_RATE2_PERCENT, TAX_RATE3, TAX_RATE3_PERCENT, TAX_RATE) values ('10A01', '1017', '1408', null, null, null, null, null, null, null, null);"
+        },
+        "ACC_DEF_BILL_ITEM_AUDIT": {
+            "SQL": "insert into inter.acc_def_bill_item_audit (AUDIT_GROUP_NO, AUDIT_GROUP_NAME, STS) values ('A377', '智能组网装维调试费预存', '1');"
+        },
+        "ACC_BILL_ITEM_AUDIT_GRP": {
+            "SQL": "insert into inter.acc_bill_item_audit_grp (AUDIT_GROUP_NO, BUSI_TYPE, BILL_ITEM_ID, STA_TYPE) values ('A01', '1017', '1408', null);"
+        }
+    }
 }

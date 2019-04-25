@@ -41,21 +41,23 @@ class BsConfiger(object):
             self.dInData = json.load(fData)
 
     def openOutFile(self):
-        print('open out file %s' % self.outFile)
         if self.fOut:
             return self.fOut
+        print('open out file %s' % self.outFile)
         file = os.path.join(settings.OUT_DIR, self.outFile)
         print(file)
         try:
             self.fOut = open(file, 'w')
         except IOError as e:
-            print("can't open file %s." % file)
+            print("can't open file %s. %s" % (file, e))
 
     def parseDoc(self):
         aSql = []
-        self.openOutFile()
+
         for req in self.dInData:
             print('parse request %s' % req)
+            self.outFile = '%s.sql' % os.path.splitext(os.path.basename(req))[0]
+            self.openOutFile()
             self.fOut.write('-- %s%s' % (req, os.linesep))
             reqData = self.dInData[req]
             for blockGrp in reqData:
@@ -74,7 +76,8 @@ class BsConfiger(object):
                     self.writeBlockSql(block, i+1)
                     # ss = self.parseBlock(tpl, dFields, dTplSql)
                 print('block group %s of %d completed' % (blockGrp, i))
-        self.closeOut()
+            self.fOut.write('%scommit;%s' % (os.linesep, os.linesep))
+            self.closeOut()
 
     def writeBlockSql(self, block, num):
         self.fOut.write('-- %s %d%s' % (block.blockName, num, os.linesep))
@@ -94,6 +97,7 @@ class BsBlock(object):
 
     def parse(self):
         for tName in self.blockData:
+            print('process table %s' % tName)
             if tName not in self.dTplSql:
                 print('%s no sql tamplate' % tName)
                 break
@@ -101,6 +105,7 @@ class BsBlock(object):
             self.parseTab(tName, table) #, self.dFields, self.dTplSql
 
     def parseTab(self, tName, table):
+        print('parse table data of %s' % tName)
         aSubTable = []
         for field in table:
             val = table[field]
@@ -111,16 +116,18 @@ class BsBlock(object):
                 aSubTable.append({field: val})
             else:
                 self.dFields[field] = val
-        print('get table %s' % tName)
+        print('get sql of table %s' % tName)
         sql = self.getSql(tName)
         print(sql)
         # self.aSql.append(sql)
         if sql:
             self.aSql.append(sql)
         for sub in aSubTable:
-            for tName in sub:
-                tab = sub[tName]
-                self.parseTab(tName, tab)
+            for subName in sub:
+                print('process subtab %s : %s' % (tName, subName))
+                tab = sub[subName]
+                self.parseTab(subName, tab)
+        print('table %s complate' % tName)
 
     def getSql(self, table):#, self.dFields, self.dTplSql
         if table not in self.dTplSql:
@@ -149,13 +156,14 @@ class BsSql(object):
             # self.dTabSql['FIELDS'] = None
             print('dTabSql no FIELDS')
             return self.dTabSql
-        dFields = self.dTabSql['FIELDS']
-        for field in dFields:
+        dTplFields = self.dTabSql['FIELDS']
+        for field in dTplFields:
             # if field in self.dTabData:
             #     continue
             print('get field: %s' % field)
             val = None
             if field == 'MIS_GROUP_NO_PAT':
+                print('get MIS_GROUP_NO by %s' % self.dTabData[field])
                 speField = MisGroupNo(field, self.dTabData[field])
                 # val = speField.getVal()
             elif field == 'COND_ID':
@@ -165,12 +173,12 @@ class BsSql(object):
             elif field == 'NEW_SMS_TEMPLET_ID':
                 speField = SmsId(field)
             else:
-                print('common special field: %s' % field)
+                # print('common special field: %s' % field)
                 speField = SpecialField(field)
             val = speField.getNext()
 
             if field == 'MIS_GROUP_NO_PAT':
-                print('get %s %d' % ('MIS_GROUP_NO', int(val)))
+                print('get %s %08d' % ('MIS_GROUP_NO', int(val)))
                 self.dTabData[field] = val
             else:
                 print('get %s %d' % (field, val))

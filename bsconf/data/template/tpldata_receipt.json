@@ -12,28 +12,29 @@
                 "TAX_RATE": "0",
                 "VALID_DATE": "01-06-2014",
                 "EXPIRE_DATE": "31-12-2015",
-                "ITEM_MAP": [
-                  {
-                    "BUSI_ITEM_CODE": "CRMÃ·π©",
-                    "FEE_ITEM_NAME": "CT-BOSSΩ…∑—‘§¥Ê"
-                  }
-                ],
+                "ITEM_MAP": {
+                    "BUSI_ITEM_CODE": "69214"
+                  },
                 "HALL_BS_DEF_BILL_ITEM_MIS": [
                   {
-                    "MIS_GROUP_PAT": "03011___",
+                    "MIS_GROUP_NO_PAT": "03011___",
                     "BS_BILL_ITEM_GRP": {}
                   },
                   {
-                    "MIS_GROUP_PAT": "01011___",
+                    "MIS_GROUP_NO_PAT": "01011___",
                     "BS_BILL_ITEM_GRP": {}
                   },
                   {
-                    "MIS_GROUP_PAT": "A400",
+                    "MIS_GROUP_NO_PAT": "02011___",
+                    "BS_BILL_ITEM_GRP": {}
+                  },
+                  {
+                    "MIS_GROUP_NO_PAT": "09011___",
                     "BS_BILL_ITEM_GRP": {}
                   }
                 ],
                 "MIS_BS_DEF_BILL_ITEM_MIS": {
-                  "MIS_GROUP_NO": "03011___",
+                  "MIS_GROUP_NO": "10A400",
                   "BS_BILL_ITEM_MIS_GRP": {}
                 },
                 "ACC_DEF_BILL_ITEM_AUDIT": {

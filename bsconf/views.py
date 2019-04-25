@@ -153,9 +153,10 @@ class BsSql(object):
         for field in dFields:
             # if field in self.dTabData:
             #     continue
+            print('get field: %s' % field)
             val = None
-            if field == 'PROMO_ID':
-                speField = PromoId(field)
+            if field == 'MIS_GROUP_NO_PAT':
+                speField = MisGroupNo(field, self.dTabData[field])
                 # val = speField.getVal()
             elif field == 'COND_ID':
                 print('get cond_id of promo_id %s' % self.dTabData['PROMO_ID'])
@@ -163,48 +164,72 @@ class BsSql(object):
                 # val = speField.getVal()
             elif field == 'NEW_SMS_TEMPLET_ID':
                 speField = SmsId(field)
+            else:
+                print('common special field: %s' % field)
+                speField = SpecialField(field)
             val = speField.getNext()
-            print('get %s %d' % (field, val))
-            self.dTabData[field] = val
+
+            if field == 'MIS_GROUP_NO_PAT':
+                print('get %s %d' % ('MIS_GROUP_NO', int(val)))
+                self.dTabData[field] = val
+            else:
+                print('get %s %d' % (field, val))
+                self.dTabData[field] = val
 
 
 class SpecialField(object):
-    def __init__(self, name):
-        self.name = name
+    def __init__(self, fieldName):
+        self.fieldName = fieldName
+        self.itemName = fieldName
         # self.type = type
+        self.sqlDev = None
+        self.sqlPrd = None
         self.curVal = None
+        if fieldName in dFieldSql:
+            self.sqlDev = dFieldSql[fieldName][0]
+            self.sqlPrd = dFieldSql[fieldName][1]
+        print('%s : %s' % (self.fieldName, self.sqlDev))
 
     def getVal(self):
-        pass
+        # idT1 = PromoIdExist.objects.using('').filter(id__startswith='203').first().id
+        idT1 = int(RawSql(self.sqlDev).fetchVal())
+        idT2 = int(RawSql(self.sqlDev, 'test2').fetchVal())
+        # idT3 = RawSql(self.sqlPrd,'prod').fetchVal()
+        idT3 = 0
+        print('item name: %s' % self.itemName)
+        idT4 = BsItemId.objects.filter(item_name=self.itemName).aggregate(Max('item_id'))['item_id__max']
+        if not idT4:
+            idT4 = 0
+        self.curVal = max(idT1, idT2, idT3, idT4)
 
     def getNext(self):
         self.getVal()
         if not self.curVal:
             return None
         nextVal = self.curVal + 1
-        itemId = BsItemId.create(self.name, nextVal)
+        itemId = BsItemId.create(self.itemName, nextVal)
         itemId.save()
         return nextVal
 
-class PromoId(SpecialField):
-    def getVal(self):
-        # idT1 = PromoIdExist.objects.using('').filter(id__startswith='203').first().id
-        idT1 = RawSql(promoSql).fetchVal()
-        idT2 = RawSql(promoSql,'test2').fetchVal()
-        # idT3 = RawSql(promoSqlProd,'prod').fetchVal()
-        idT3 = 0
-        idT4 = BsItemId.objects.filter(item_name=self.name).aggregate(Max('item_id'))['item_id__max']
-        if not idT4:
-            idT4 = 0
-        self.curVal = max(idT1, idT2, idT3, idT4)
+# class PromoId(SpecialField):
+#     def getVal(self):
+#         # idT1 = PromoIdExist.objects.using('').filter(id__startswith='203').first().id
+#         idT1 = RawSql(promoSql).fetchVal()
+#         idT2 = RawSql(promoSql,'test2').fetchVal()
+#         # idT3 = RawSql(promoSqlProd,'prod').fetchVal()
+#         idT3 = 0
+#         idT4 = BsItemId.objects.filter(item_name=self.name).aggregate(Max('item_id'))['item_id__max']
+#         if not idT4:
+#             idT4 = 0
+#         self.curVal = max(idT1, idT2, idT3, idT4)
 
 class CondId(SpecialField):
-    def __init__(self, name, promoId):
-        super().__init__(name)
+    def __init__(self, fieldName, promoId):
+        super().__init__(fieldName)
         self.promoId = promoId
 
     def getVal(self):
-        idT4 = BsItemId.objects.filter(item_name=self.name, item_id__startswith=self.promoId).aggregate(Max('item_id'))['item_id__max']
+        idT4 = BsItemId.objects.filter(item_name=self.fieldName, item_id__startswith=self.promoId).aggregate(Max('item_id'))['item_id__max']
         if not idT4:
             idT4 = int('%s00' % self.promoId)
         self.curVal = idT4
@@ -212,21 +237,50 @@ class CondId(SpecialField):
 
 class SmsId(SpecialField):
     def getVal(self):
+        super().getVal()
+        nextVal = self.curVal + 1
         idSeq = int(RawSql(smsSeqSql).fetchVal())
-        idT1 = RawSql(promoSql).fetchVal()
-        idT2 = RawSql(promoSql, 'test2').fetchVal()
-        # idT3 = RawSql(promoSqlProd, 'prod').fetchVal()
-        idT3 = 0
-        idT4 = BsItemId.objects.filter(item_name=self.name).aggregate(Max('item_id'))['item_id__max']
-        if not idT4:
-            idT4 = 0
-        curVal = max(idT1, idT2, idT3, idT4)
-        nextVal = curVal + 1
         if nextVal > idSeq:
             step = nextVal - idSeq
             seqJump = SequenceJump('base.bs_DEF_SMS_TEMPLATE$SEQ', step)
             seqJump.jump()
-        self.curVal = idSeq - 1
+        else:
+            self.curVal = idSeq - 1
+
+
+class MisGroupNo(SpecialField):
+    def __init__(self, fieldName, misGroupNoPat):
+        super().__init__(fieldName)
+        self.itemName = '%s%s' % (fieldName, misGroupNoPat[:2])
+        self.misGroupNoPat = misGroupNoPat
+        if self.sqlDev:
+            self.sqlDev = self.sqlDev % self.misGroupNoPat
+        if self.sqlPrd:
+            self.sqlPrd = self.sqlPrd % self.misGroupNoPat
+        print('%s : %s' % (self.fieldName, self.sqlDev))
+
+    def getVal(self):
+        super().getVal()
+        if self.curVal == 0:
+            self.curVal = int('%s011000' % self.misGroupNoPat[:2])
+
+    def getNext(self):
+        self.getVal()
+        if not self.curVal:
+            return None
+        nextVal = self.curVal + 1
+
+        itemId = BsItemId.create(self.itemName, nextVal)
+        itemId.save()
+        rtVal = '%08d' % nextVal
+        return rtVal
+
+
+class ReceiptType(SpecialField):
+    def getVal(self):
+        pass
+
+
 
 def getSql(table, dFields, dSql):
     if table not in dSql:

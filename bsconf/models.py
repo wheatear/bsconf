@@ -62,6 +62,9 @@ RECEIPT_TYPE = "select max(receipt_type) from  base.bs_busi_receipt_type t where
 RECEIPT_ITEM = "select max(receipt_item) from base.bs_busi_receipt_item t where t.receipt_item >1400 AND t.receipt_item<2000c"
 MIS_GROUP_NO = "select max(MIS_GROUP_NO) from base.bs_def_bill_item_mis where MIS_GROUP_NO like '%s'"
 
+dTabCheck = {}
+dTabCheck['MIS_BS_DEF_BILL_ITEM_MIS'] = "select 1 from base.bs_def_bill_item_mis where MIS_GROUP_NO='^<MIS_GROUP_NO^>'"
+dTabCheck['ACC_DEF_BILL_ITEM_AUDIT'] = "select 1 from inter.acc_def_bill_item_audit where AUDIT_GROUP_NO='^<AUDIT_GROUP_NO^>'"
 
 
 class SequenceJump(object):

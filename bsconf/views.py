@@ -132,6 +132,9 @@ class BsBlock(object):
     def getSql(self, table):#, self.dFields, self.dTplSql
         if table not in self.dTplSql:
             return None
+        if table in dTabCheck:
+            if RawSql(dTabCheck[table]).fetchVal():
+                return None
         dTabSql = self.dTplSql[table]
         # sql = dTabSql['SQL']
         # dTabFields = copy.deepcopy(self.dFields)

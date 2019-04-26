@@ -24,11 +24,11 @@ class BsConfiger(object):
         self.loadTplSql()
         print('load data')
         self.loadData()
-        self.openOutFile()
+        # self.openOutFile()
         print('parse in file')
         self.parseDoc()
         # self.writeSql()
-        self.closeOut()
+        # self.closeOut()
 
     def loadTplSql(self):
         file = os.path.join(settings.TPL_DIR, self.tplSqlFile)

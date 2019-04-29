@@ -250,7 +250,9 @@ class SmsId(SpecialField):
     def getVal(self):
         super().getVal()
         nextVal = self.curVal + 1
+        print('smsid nextVal:%d' % nextVal)
         idSeq = int(RawSql(smsSeqSql).fetchVal())
+        print('smsid seq: %d' % idSeq)
         if nextVal > idSeq:
             step = nextVal - idSeq
             seqJump = SequenceJump('base.bs_DEF_SMS_TEMPLATE$SEQ', step)

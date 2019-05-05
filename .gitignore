@@ -130,6 +130,7 @@ Python.gitignore
 *.pinyin
 log/
 .idea/
+out/
 
 MP_verify_EddIaEBDpA3ond3X.txt
 <<<<<<< HEAD

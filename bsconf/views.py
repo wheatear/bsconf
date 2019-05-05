@@ -132,6 +132,8 @@ class BsBlock(object):
     def getSql(self, table):#, self.dFields, self.dTplSql
         if table not in self.dTplSql:
             return None
+        if self.dTplSql[table] == "None":
+            return None
         if table in dTabCheck:
             if RawSql(dTabCheck[table]).fetchVal():
                 return None
@@ -249,16 +251,16 @@ class CondId(SpecialField):
 class SmsId(SpecialField):
     def getVal(self):
         super().getVal()
-        nextVal = self.curVal + 1
-        print('smsid nextVal:%d' % nextVal)
-        idSeq = int(RawSql(smsSeqSql).fetchVal())
-        print('smsid seq: %d' % idSeq)
-        if nextVal > idSeq:
-            step = nextVal - idSeq
-            seqJump = SequenceJump('base.bs_DEF_SMS_TEMPLATE$SEQ', step)
-            seqJump.jump()
-        else:
-            self.curVal = idSeq - 1
+        # nextVal = self.curVal + 1
+        # print('smsid nextVal:%d' % nextVal)
+        # idSeq = int(RawSql(smsSeqSql).fetchVal())
+        # print('smsid seq: %d' % idSeq)
+        # if nextVal > idSeq:
+        #     step = nextVal - idSeq
+        #     seqJump = SequenceJump('base.bs_DEF_SMS_TEMPLATE$SEQ', step)
+        #     seqJump.jump()
+        # else:
+        #     self.curVal = idSeq - 1
 
 
 class MisGroupNo(SpecialField):

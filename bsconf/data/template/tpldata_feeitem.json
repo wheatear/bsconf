@@ -1,0 +1,96 @@
+{
+  "BOSS-FSC-2019-04-334-zhuyuanzheng_物联网CT-BOSS前台缴费费项配置需求": {
+      "FEE_ITEM": [
+        {
+          "FEE_ITEM": {
+            "FEE_ITEM_ID": "CT-BOSS缴费数据",
+            "ITEM_NAME": "5",
+            "ACCP_ITEM_TAX_RATE": {
+                  "TAX_RATE": "10A400"
+            },
+            "ACC_DEF_FEE_ITEM_EX": {
+              "MARKET_TYPE_ID": "010",
+              "MARKET_TYPE_NAME": "个人"
+            },
+            "BS_ACCT_ITEM_TYPE": {
+              "BILL_PRIORITY": "143"
+            },
+            "BS_FEE_ITEM_BILL_ITEM_1": {
+              "FEE_ITEM_ID": "143"
+            },
+            "BS_FEE_ITEM_BILL_ITEM_999": {
+              "FEE_ITEM_ID": "143"
+            },
+            "BS_FEE_ITEM_BILL_ITEM_998": {
+              "FEE_ITEM_ID": "143"
+            },
+            "BS_FEE_ITEM_BILL_ITEM_888": {
+              "FEE_ITEM_ID": "143"
+            },
+            "BS_FEE_ITEM_BILL_ITEM_21": {},
+            "BS_FEE_ITEM_BILL_ITEM_997": {}
+          }
+        },
+        {
+          "FEE_ITEM": {
+            "FEE_ITEM_ID": "CT-BOSS缴费数据",
+            "ITEM_NAME": "5",
+            "ACCP_ITEM_TAX_RATE": {
+                  "TAX_RATE": "10A400"
+            },
+            "ACC_DEF_FEE_ITEM_EX": {
+              "MARKET_TYPE_ID": "010",
+              "MARKET_TYPE_NAME": "个人"
+            },
+            "BS_ACCT_ITEM_TYPE": {
+              "BILL_PRIORITY": "143"
+            },
+            "BS_FEE_ITEM_BILL_ITEM_1": {
+              "FEE_ITEM_ID": "143"
+            },
+            "BS_FEE_ITEM_BILL_ITEM_999": {
+              "FEE_ITEM_ID": "143"
+            },
+            "BS_FEE_ITEM_BILL_ITEM_998": {
+              "FEE_ITEM_ID": "143"
+            },
+            "BS_FEE_ITEM_BILL_ITEM_888": {
+              "FEE_ITEM_ID": "143"
+            },
+            "BS_FEE_ITEM_BILL_ITEM_21": {},
+            "BS_FEE_ITEM_BILL_ITEM_997": {}
+          }
+        },
+        {
+          "FEE_ITEM": {
+            "FEE_ITEM_ID": "CT-BOSS缴费数据",
+            "ITEM_NAME": "5",
+            "ACCP_ITEM_TAX_RATE": {
+                  "TAX_RATE": "10A400"
+            },
+            "ACC_DEF_FEE_ITEM_EX": {
+              "MARKET_TYPE_ID": "010",
+              "MARKET_TYPE_NAME": "个人"
+            },
+            "BS_ACCT_ITEM_TYPE": {
+              "BILL_PRIORITY": "143"
+            },
+            "BS_FEE_ITEM_BILL_ITEM_1": {
+              "FEE_ITEM_ID": "143"
+            },
+            "BS_FEE_ITEM_BILL_ITEM_999": {
+              "FEE_ITEM_ID": "143"
+            },
+            "BS_FEE_ITEM_BILL_ITEM_998": {
+              "FEE_ITEM_ID": "143"
+            },
+            "BS_FEE_ITEM_BILL_ITEM_888": {
+              "FEE_ITEM_ID": "143"
+            },
+            "BS_FEE_ITEM_BILL_ITEM_21": {},
+            "BS_FEE_ITEM_BILL_ITEM_997": {}
+          }
+        }
+      ]
+   }
+}

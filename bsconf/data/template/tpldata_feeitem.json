@@ -1,94 +1,45 @@
 {
-  "BOSS-FSC-2019-04-334-zhuyuanzheng_Áâ©ËÅîÁΩëCT-BOSSÂâçÂè∞Áº¥Ë¥πË¥πÈ°πÈÖçÁΩÆÈúÄÊ±Ç": {
+  "DB≈‰÷√-BOSS-KS-2019-05-173-wangting1-AMøÏÀŸ≈‰÷√-øÏœÏ–Ë«Û-»–“øß∑»¥˙Ω»Øø™∑¢–Ë«Û-Õı–¬ÃÔ": {
       "FEE_ITEM": [
         {
           "FEE_ITEM": {
-            "FEE_ITEM_ID": "CT-BOSSÁº¥Ë¥πÊï∞ÊçÆ",
-            "ITEM_NAME": "5",
+            "FEE_ITEM_ID": "88002504",
+            "ITEM_NAME": "AM»–“21‘™¥˙Ω»Ø",
             "ACCP_ITEM_TAX_RATE": {
-                  "TAX_RATE": "10A400"
+                  "TAX_RATE": "600"
             },
             "ACC_DEF_FEE_ITEM_EX": {
               "MARKET_TYPE_ID": "010",
-              "MARKET_TYPE_NAME": "‰∏™‰∫∫"
+              "MARKET_TYPE_NAME": "∏ˆ»À"
             },
             "BS_ACCT_ITEM_TYPE": {
               "BILL_PRIORITY": "143"
             },
             "BS_FEE_ITEM_BILL_ITEM_1": {
-              "FEE_ITEM_ID": "143"
+              "BILL_ITEM_ID": "238"
             },
             "BS_FEE_ITEM_BILL_ITEM_999": {
-              "FEE_ITEM_ID": "143"
+              "BILL_ITEM_ID": "238"
             },
             "BS_FEE_ITEM_BILL_ITEM_998": {
-              "FEE_ITEM_ID": "143"
+              "BILL_ITEM_ID": "319"
             },
             "BS_FEE_ITEM_BILL_ITEM_888": {
-              "FEE_ITEM_ID": "143"
+              "BILL_ITEM_ID": "66666666"
             },
             "BS_FEE_ITEM_BILL_ITEM_21": {},
-            "BS_FEE_ITEM_BILL_ITEM_997": {}
-          }
-        },
-        {
-          "FEE_ITEM": {
-            "FEE_ITEM_ID": "CT-BOSSÁº¥Ë¥πÊï∞ÊçÆ",
-            "ITEM_NAME": "5",
-            "ACCP_ITEM_TAX_RATE": {
-                  "TAX_RATE": "10A400"
-            },
-            "ACC_DEF_FEE_ITEM_EX": {
-              "MARKET_TYPE_ID": "010",
-              "MARKET_TYPE_NAME": "‰∏™‰∫∫"
-            },
-            "BS_ACCT_ITEM_TYPE": {
-              "BILL_PRIORITY": "143"
-            },
-            "BS_FEE_ITEM_BILL_ITEM_1": {
-              "FEE_ITEM_ID": "143"
-            },
-            "BS_FEE_ITEM_BILL_ITEM_999": {
-              "FEE_ITEM_ID": "143"
-            },
-            "BS_FEE_ITEM_BILL_ITEM_998": {
-              "FEE_ITEM_ID": "143"
-            },
-            "BS_FEE_ITEM_BILL_ITEM_888": {
-              "FEE_ITEM_ID": "143"
-            },
-            "BS_FEE_ITEM_BILL_ITEM_21": {},
-            "BS_FEE_ITEM_BILL_ITEM_997": {}
-          }
-        },
-        {
-          "FEE_ITEM": {
-            "FEE_ITEM_ID": "CT-BOSSÁº¥Ë¥πÊï∞ÊçÆ",
-            "ITEM_NAME": "5",
-            "ACCP_ITEM_TAX_RATE": {
-                  "TAX_RATE": "10A400"
-            },
-            "ACC_DEF_FEE_ITEM_EX": {
-              "MARKET_TYPE_ID": "010",
-              "MARKET_TYPE_NAME": "‰∏™‰∫∫"
-            },
-            "BS_ACCT_ITEM_TYPE": {
-              "BILL_PRIORITY": "143"
-            },
-            "BS_FEE_ITEM_BILL_ITEM_1": {
-              "FEE_ITEM_ID": "143"
-            },
-            "BS_FEE_ITEM_BILL_ITEM_999": {
-              "FEE_ITEM_ID": "143"
-            },
-            "BS_FEE_ITEM_BILL_ITEM_998": {
-              "FEE_ITEM_ID": "143"
-            },
-            "BS_FEE_ITEM_BILL_ITEM_888": {
-              "FEE_ITEM_ID": "143"
-            },
-            "BS_FEE_ITEM_BILL_ITEM_21": {},
-            "BS_FEE_ITEM_BILL_ITEM_997": {}
+            "BS_FEE_ITEM_BILL_ITEM_997": {},
+            "BS_ACCT_ITEM_TYPE_BALANCE_TYPE": [
+              {
+              "BALANCE_TYPE_ID": "82950"
+              },
+              {
+              "BALANCE_TYPE_ID": "82951"
+              },
+              {
+              "BALANCE_TYPE_ID": "98006"
+              }
+            ]
           }
         }
       ]

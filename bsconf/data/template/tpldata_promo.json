@@ -1,8 +1,9 @@
 {
-   "BOSS-KS-2019-04-337-xx_zhaojin-承诺128元畅享放心用套餐存费送费2019": {
+   "DB配置-BOSS-KS-2019-04-337-xx_zhaojin-承诺128元畅享放心用套餐存费送费2019-王新田": {
       "PROMO_UNIFIED": [
         {
           "PROMO": {
+            "SAP_ID": "SAP1151",
             "PROMO_NAME": "128元畅享放心用套餐首充优惠首月-赠送",
             "BUSI_TYPE_CODE": "4300",
             "COND": [
@@ -14,13 +15,11 @@
                     "BOOK_ITEM_ID": "82951",
                     "BOOK_TYPE": "1",
                     "ALLOT_ATTR": "00000000120000000010",
-                    "CANCEL_BOOK_ITEM_ID": "0"
+                    "CANCEL_BOOK_ITEM_ID": "80501"
                   }
                 ],
                 "SAP_MAP": {
-                  "SAP_ID": "SAP1151",
-                  "SAP_FEE_TYPE": "1",
-                  "SAP_NAME": "128元畅享放心用套餐首充优惠首月-赠送"
+                  "SAP_FEE_TYPE": "1"
                 },
                 "SMS": [
                   {
@@ -44,9 +43,7 @@
             ],
             "BI": [
               {
-                "SAP_ID": "SAP1151",
                 "SAP_TYPE": 1,
-                "SAP_TYPE_NAME": "128元畅享放心用套餐首充优惠首月-赠送",
                 "REMARK1": "BOSS-KS-2019-04-217-xx_zhaojin",
                 "REMARK2": "申小帆"
               }
@@ -57,6 +54,7 @@
       "PROMO_COMMON": [
         {
           "PROMO": {
+            "SAP_ID": "SAP1151",
             "PROMO_NAME": "128元畅享放心用套餐首充优惠首月-赠送",
             "BUSI_TYPE_CODE": "4300",
             "COND": [
@@ -74,15 +72,13 @@
                     "ALLOT_TYPE": "1",
                     "ALLOT_SCALE": "5000",
                     "ALLOT_ATTR": "00000000120000000010",
-                    "CANCEL_BOOK_ITEM_ID": "0"
+                    "CANCEL_BOOK_ITEM_ID": "80501"
                   }
                 ],
                 "SAP_MAP": {
-                  "SAP_ID": "SAP1151",
                   "SAP_FEE_TYPE": "1",
                   "SAP_FEE_VALUE": "5000",
-                  "SAP_FEE_MONTH": "1",
-                  "SAP_NAME": "128元畅享放心用套餐首充优惠首月-赠送"
+                  "SAP_FEE_MONTH": "1"
                 },
                 "SMS": [
                   {
@@ -106,9 +102,7 @@
             ],
             "BI": [
               {
-                "SAP_ID": "SAP1151",
                 "SAP_TYPE": 1,
-                "SAP_TYPE_NAME": "128元畅享放心用套餐首充优惠首月-赠送",
                 "REMARK1": "BOSS-KS-2019-04-217-xx_zhaojin",
                 "REMARK2": "申小帆"
               }

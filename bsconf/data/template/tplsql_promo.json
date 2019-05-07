@@ -1,137 +1,217 @@
 {
   "PROMO_UNIFIED": {
 		"PROMO": {
+            "COMMENT": "新增promo表  PROMO_ID, PROMO_NAME, BUSI_TYPE_CODE",
 			"SQL": "insert into base.BS_BOOK_SCHEME_PROMO (PROMO_ID, PROMO_NAME, BUSI_TYPE_CODE, REGION_CODE, PROMO_TYPE, COUNTY_CODE, ORG_ID, PROMO_GROUP) values ('^<PROMO_ID^>', '^<PROMO_NAME^>', '^<BUSI_TYPE_CODE^>', '0', '1', '0', '0', '0');",
 			"FIELDS": {
 				"PROMO_ID": "PROMO_ID_TABLE"
 			}
 		},
 		"COND": {
+            "COMMENT": "新增cond表  关注 费用，名称，返费日期 PROMO_ID, COND_ID, COND_NAME,PRE_FEE, HIGH_PRE_FEE,RET_DAY",
 			"SQL": "insert into base.BS_BOOK_SCHEME_COND (PROMO_ID, COND_ID, COND_NAME, COND_TYPE, RES_HOLD_MONTH, RELATE_CODE,RELATE_NAME, PRE_TYPE, ALLOW_PRE_MORE, PRE_FEE, HIGH_PRE_FEE, SCHEME_TYPE, SCHEME_FEE, LOW_COST, VALID_DATE, EXPIRE_DATE, PRIV_ENTITY, RENT_PACK_ID, RES_PACK_ID, COND_ACCEPT_DESC, REMARK, COIN_RET_TYPE, COND_BONUS_ID, COND_HOLD_MONTH, COND_ENGAGE_TYPE, COND_CREDIT, COND_COST_STAT, COND_GROUP, ALLOW_BIND_IMEI, RES_VICE_MONTH, COND_UPLOAD_MODE, RELATE_HOLD_MONTH, ALLOW_CEASE_COND, CALL_CNT, SP_PACK_ID, COND_ATTR, RELATE_PROD_ID, SLOGAN, UNBIND_IMEI_MONTH, RELATE_PROMO_INFO, GIFT_INFO, RET_DAY) values ('^<PROMO_ID^>', '^<COND_ID^>', '^<COND_NAME^>', '11', '0', '0', null, '0', '0', '-1', '-1', '1', '0', '0', to_date('01-04-2010', 'dd-mm-yyyy'), to_date('30-11-2030', 'dd-mm-yyyy'), '0', '0', '0', '^<COND_NAME^>', '^<COND_NAME^>', '0', '0', '0', '1', '0', '1', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', null, '-1', null, null,  '^<RET_DAY^>');",
 			"FIELDS": {
 				"COND_ID": "COND_ID_INCR"
 			}
 		},
 		"ALLOT": {
+            "COMMENT": "新增allot表  关注 帐本，费用4个，BOOK_ITEM_ID, BOOK_TYPE,ALLOT_AMOUNT, ALLOT_MONTH, ALLOT_TYPE, ALLOT_SCALE,ALLOT_ATTR,CANCEL_BOOK_ITEM_ID",
 			"SQL": "insert into base.BS_BOOK_SCHEME_ALLOT (PROMO_ID, COND_ID, BOOK_ITEM_ID, BOOK_TYPE, ALLOT_AMOUNT, ALLOT_MONTH, ALLOT_TYPE, ALLOT_SCALE, EXPLICIT_MONTH, ALLOT_BEGIN_MONTH, ALLOT_BOOK_LIMIT, ALLOT_BOOK_BEGIN, ALLOT_BONUS_ID, ALLOT_BOOK_END, ALLOT_BOOK_LIMIT_TYPE, ALLOT_ATTR, EXTEND_MONTH, CANCEL_BOOK_ITEM_ID) values ('^<PROMO_ID^>', '^<COND_ID^>', '^<BOOK_ITEM_ID^>', '^<BOOK_TYPE^>', '-1', '-1', '1', '-1', '0', '0', '0', '-24', '0', '0', '0', '^<ALLOT_ATTR^>', '0', '^<CANCEL_BOOK_ITEM_ID^>');"
 		},
 		"SAP_MAP": {
-			"SQL": "insert into base.BS_BOOK_SCHEME_SAP_MAP (SAP_ID, SAP_FEE_TYPE, SAP_FEE_VALUE, SAP_OTHER_VALUE, PROMO_ID, COND_ID, STS, SAP_FEE_MONTH, SAP_NAME) values ('^<SAP_ID^>', '^<SAP_FEE_TYPE^>', '-1', '-1', '^<PROMO_ID^>', '^<COND_ID^>', '1', '-1', '^<SAP_NAME^>');"
+            "COMMENT": "新增SAP_map表  SAP_ID, SAP_FEE_TYPE, SAP_FEE_VALUE, SAP_OTHER_VALUE,PROMO_ID, COND_ID,SAP_FEE_MONTH, SAP_NAME",
+			"SQL": "insert into base.BS_BOOK_SCHEME_SAP_MAP (SAP_ID, SAP_FEE_TYPE, SAP_FEE_VALUE, SAP_OTHER_VALUE, PROMO_ID, COND_ID, STS, SAP_FEE_MONTH, SAP_NAME) values ('^<SAP_ID^>', '^<SAP_FEE_TYPE^>', '-1', '-1', '^<PROMO_ID^>', '^<COND_ID^>', '1', '-1', '^<COND_NAME^>');"
 		},
 		"BI": {
-			"SQL": "insert into base.bs_book_scheme_SAP_type (SAP_ID, SAP_TYPE, SAP_TYPE_NAME, REMARK1, REMARK2, REMARK3, REMARK4) values ('^<SAP_ID^>', ^<SAP_TYPE^>, '^<SAP_TYPE_NAME^>', '^<REMARK1^>', '^<REMARK2^>', null, null);"
+            "COMMENT": "新增BI统计表  SAP_ID, SAP_TYPE, SAP_TYPE_NAME, REMARK1, REMARK2",
+			"SQL": "insert into base.bs_book_scheme_SAP_type (SAP_ID, SAP_TYPE, SAP_TYPE_NAME, REMARK1, REMARK2, REMARK3, REMARK4) values ('^<SAP_ID^>', ^<SAP_TYPE^>, '^<PROMO_NAME^>', '^<REMARK1^>', '^<REMARK2^>', null, null);"
 		},
 		"SMS_FORM": {
+            "COMMENT": "新增form表 APPLY_TYPE 1-返费  5-生效   6-失效   9-黑名单不返费",
 			"SQL": "insert into base.BS_BOOK_SCHEME_SMS_FORM (PROMO_ID, COND_ID, APPLY_TYPE, SMS_TEMPLET_ID, NEW_SMS_TEMPLET_ID) values ('^<PROMO_ID^>', '^<COND_ID^>', '^<APPLY_TYPE^>', '^<COND_ID^>', '^<NEW_SMS_TEMPLET_ID^>');",
 			"FIELDS": {
 				"NEW_SMS_TEMPLET_ID": "SMS_ID_SEQ"
 			}
 		},
 		"SMS_RULE": {
+            "COMMENT": "短信ID映射表",
 			"SQL": "insert into base.bs_sms_rule (RULE_ID, RULE_CODE, RULE_EXP, RULE_ORDER, BUSINESS_ID, AC_SMS_TEMPLATE_ID, SMS_TEMPLATE_ID, STATE, CREATE_DATE) values (base.bs_sms_rule$seq.nextval, '^<NEW_SMS_TEMPLET_ID^>', '', '1', '^<BUSI_TYPE_CODE^>', '^<NEW_SMS_TEMPLET_ID^>', '^<SMS_TEMPLATE_ID^>', 'U', sysdate);"
 		}
-	},
-	"PROMO_COMMON": {
+  },
+  "PROMO_COMMON": {
 		"PROMO": {
+            "COMMENT": "新增promo表  PROMO_ID, PROMO_NAME, BUSI_TYPE_CODE",
 			"SQL": "insert into base.BS_BOOK_SCHEME_PROMO (PROMO_ID, PROMO_NAME, BUSI_TYPE_CODE, REGION_CODE, PROMO_TYPE, COUNTY_CODE, ORG_ID, PROMO_GROUP) values ('^<PROMO_ID^>', '^<PROMO_NAME^>', '^<BUSI_TYPE_CODE^>', '0', '1', '0', '0', '0');",
 			"FIELDS": {
 				"PROMO_ID": "PROMO_ID_TABLE"
 			}
 		},
 		"COND": {
+            "COMMENT": "新增cond表  关注 费用，名称，返费日期 PROMO_ID, COND_ID, COND_NAME,PRE_FEE, HIGH_PRE_FEE,RET_DAY",
 			"SQL": "insert into base.BS_BOOK_SCHEME_COND (PROMO_ID, COND_ID, COND_NAME, COND_TYPE, RES_HOLD_MONTH, RELATE_CODE,RELATE_NAME, PRE_TYPE, ALLOW_PRE_MORE, PRE_FEE, HIGH_PRE_FEE, SCHEME_TYPE, SCHEME_FEE, LOW_COST, VALID_DATE, EXPIRE_DATE, PRIV_ENTITY, RENT_PACK_ID, RES_PACK_ID, COND_ACCEPT_DESC, REMARK, COIN_RET_TYPE, COND_BONUS_ID, COND_HOLD_MONTH, COND_ENGAGE_TYPE, COND_CREDIT, COND_COST_STAT, COND_GROUP, ALLOW_BIND_IMEI, RES_VICE_MONTH, COND_UPLOAD_MODE, RELATE_HOLD_MONTH, ALLOW_CEASE_COND, CALL_CNT, SP_PACK_ID, COND_ATTR, RELATE_PROD_ID, SLOGAN, UNBIND_IMEI_MONTH, RELATE_PROMO_INFO, GIFT_INFO, RET_DAY) values ('^<PROMO_ID^>', '^<COND_ID^>', '^<COND_NAME^>', '11', '0', '0', null, '0', '0', '^<PRE_FEE^>', '^<HIGH_PRE_FEE^>', '1', '0', '0', to_date('01-04-2010', 'dd-mm-yyyy'), to_date('30-11-2030', 'dd-mm-yyyy'), '0', '0', '0', '^<COND_NAME^>', '^<COND_NAME^>', '0', '0', '0', '1', '0', '1', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', null, '-1', null, null,  '^<RET_DAY^>');",
 			"FIELDS": {
 				"COND_ID": "COND_ID_INCR"
 			}
 		},
 		"ALLOT": {
+            "COMMENT": "新增allot表  关注 帐本，费用4个，BOOK_ITEM_ID, BOOK_TYPE,ALLOT_AMOUNT, ALLOT_MONTH, ALLOT_TYPE, ALLOT_SCALE,ALLOT_ATTR,CANCEL_BOOK_ITEM_ID",
 			"SQL": "insert into base.BS_BOOK_SCHEME_ALLOT (PROMO_ID, COND_ID, BOOK_ITEM_ID, BOOK_TYPE, ALLOT_AMOUNT, ALLOT_MONTH, ALLOT_TYPE, ALLOT_SCALE, EXPLICIT_MONTH, ALLOT_BEGIN_MONTH, ALLOT_BOOK_LIMIT, ALLOT_BOOK_BEGIN, ALLOT_BONUS_ID, ALLOT_BOOK_END, ALLOT_BOOK_LIMIT_TYPE, ALLOT_ATTR, EXTEND_MONTH, CANCEL_BOOK_ITEM_ID) values ('^<PROMO_ID^>', '^<COND_ID^>', '^<BOOK_ITEM_ID^>', '^<BOOK_TYPE^>', '^<ALLOT_AMOUNT^>', '^<ALLOT_MONTH^>', '^<ALLOT_TYPE^>', '^<ALLOT_SCALE^>', '0', '0', '0', '-24', '0', '0', '0', '^<ALLOT_ATTR^>', '0', '^<CANCEL_BOOK_ITEM_ID^>');"
 		},
 		"SAP_MAP": {
-			"SQL": "insert into base.BS_BOOK_SCHEME_SAP_MAP (SAP_ID, SAP_FEE_TYPE, SAP_FEE_VALUE, SAP_OTHER_VALUE, PROMO_ID, COND_ID, STS, SAP_FEE_MONTH, SAP_NAME) values ('^<SAP_ID^>', '^<SAP_FEE_TYPE^>', '^<SAP_FEE_VALUE^>', '^<SAP_FEE_MONTH^>', '^<PROMO_ID^>', '^<COND_ID^>', '1', '^<SAP_FEE_MONTH^>', '^<SAP_NAME^>');"
+            "COMMENT": "新增SAP_map表  SAP_ID, SAP_FEE_TYPE, SAP_FEE_VALUE, SAP_OTHER_VALUE,PROMO_ID, COND_ID,SAP_FEE_MONTH, SAP_NAME",
+			"SQL": "insert into base.BS_BOOK_SCHEME_SAP_MAP (SAP_ID, SAP_FEE_TYPE, SAP_FEE_VALUE, SAP_OTHER_VALUE, PROMO_ID, COND_ID, STS, SAP_FEE_MONTH, SAP_NAME) values ('^<SAP_ID^>', '^<SAP_FEE_TYPE^>', '^<SAP_FEE_VALUE^>', '^<SAP_FEE_MONTH^>', '^<PROMO_ID^>', '^<COND_ID^>', '1', '^<SAP_FEE_MONTH^>', '^<COND_NAME^>');"
 		},
 		"BI": {
-			"SQL": "insert into base.bs_book_scheme_SAP_type (SAP_ID, SAP_TYPE, SAP_TYPE_NAME, REMARK1, REMARK2, REMARK3, REMARK4) values ('^<SAP_ID^>', ^<SAP_TYPE^>, '^<SAP_TYPE_NAME^>', '^<REMARK1^>', '^<REMARK2^>', null, null);"
+            "COMMENT": "新增BI统计表  SAP_ID, SAP_TYPE, SAP_TYPE_NAME, REMARK1, REMARK2",
+			"SQL": "insert into base.bs_book_scheme_SAP_type (SAP_ID, SAP_TYPE, SAP_TYPE_NAME, REMARK1, REMARK2, REMARK3, REMARK4) values ('^<SAP_ID^>', ^<SAP_TYPE^>, '^<PROMO_NAME^>', '^<REMARK1^>', '^<REMARK2^>', null, null);"
 		},
 		"SMS_FORM": {
+            "COMMENT": "新增form表 APPLY_TYPE 1-返费  5-生效   6-失效   9-黑名单不返费",
 			"SQL": "insert into base.BS_BOOK_SCHEME_SMS_FORM (PROMO_ID, COND_ID, APPLY_TYPE, SMS_TEMPLET_ID, NEW_SMS_TEMPLET_ID) values ('^<PROMO_ID^>', '^<COND_ID^>', '^<APPLY_TYPE^>', '^<COND_ID^>', '^<NEW_SMS_TEMPLET_ID^>');",
 			"FIELDS": {
 				"NEW_SMS_TEMPLET_ID": "SMS_ID_SEQ"
 			}
 		},
 		"SMS_RULE": {
+            "COMMENT": "短信ID映射表",
 			"SQL": "insert into base.bs_sms_rule (RULE_ID, RULE_CODE, RULE_EXP, RULE_ORDER, BUSINESS_ID, AC_SMS_TEMPLATE_ID, SMS_TEMPLATE_ID, STATE, CREATE_DATE) values (base.bs_sms_rule$seq.nextval, '^<NEW_SMS_TEMPLET_ID^>', '', '1', '^<BUSI_TYPE_CODE^>', '^<NEW_SMS_TEMPLET_ID^>', '^<SMS_TEMPLATE_ID^>', 'U', sysdate);"
 		}
-	},
-    "RECEIPT": {
+  },
+  "RECEIPT_1116": {
         "RECEIPT_TYPE": {
+            "COMMENT": "新增发票配置 receipt_type, receipt_type_name, receipt_class(5-预存（收据）；8－发票（通票，业务发票), receipt_class_name",
             "SQL": "insert into base.bs_busi_receipt_type (receipt_type, receipt_type_name, receipt_class, receipt_class_name, receipt_flag, tax_format, sts) values ('^<RECEIPT_TYPE^>', '^<RECEIPT_TYPE_NAME^>', '^<RECEIPT_CLASS^>', '^<RECEIPT_CLASS_NAME^>', '1', '1', '1');",
             "FIELDS": {
 				"RECEIPT_TYPE": "RECEIPT_TYPE_TABLE"
             }
         },
         "RECEIPT_ITEM": {
+            "COMMENT": "配置税率 receipt_type, receipt_item, receipt_item_name,tax_rate,valid_date, expire_date",
+            "SQL": "insert into base.bs_busi_receipt_item (receipt_type, receipt_item, receipt_item_name, unit, item_seq, sts, tax_rate, valid_date, expire_date) values ('^<RECEIPT_TYPE^>', '1116', '业务违约金', '张', '0', '1', '^<TAX_RATE^>', to_date('^<VALID_DATE^>', 'dd-mm-yyyy'), to_date('^<EXPIRE_DATE^>', 'dd-mm-yyyy'));",
+            "FIELDS": {
+				"RECEIPT_ITEM": "RECEIPT_ITEM_TABLE"
+            }
+        },
+        "ITEM_MAP": {
+            "COMMENT": "配置CRM费用项编码映射",
+            "SQL": "insert into base.bs_busi_item_map (busi_item_code, busi_item_type, fee_item_id, fee_item_name, sts, receipt_type, receipt_item) values ('^<BUSI_ITEM_CODE^>', '3', '^<BUSI_ITEM_CODE^>', '业务违约金', '1', '^<RECEIPT_TYPE^>', '1116');"
+        },
+        "MIS_BS_DEF_BILL_ITEM_MIS": {
+            "COMMENT": "配置统计，用10开头的  10  MIS配置类",
+            "SQL": "insert into base.bs_def_bill_item_mis (MIS_GROUP_NO, MIS_GROUP_NAME, STS) values ('^<MIS_GROUP_NO^>', '业务违约金', '1');"
+        },
+        "BS_BILL_ITEM_MIS_GRP": {
+            "COMMENT": "配置统计和发票科目的映射关系,税率拆分",
+            "SQL": "insert into base.bs_bill_item_mis_grp (MIS_GROUP_NO, BUSI_TYPE, BILL_ITEM_ID, STA_TYPE, TAX_RATE1, TAX_RATE1_PERCENT, TAX_RATE2, TAX_RATE2_PERCENT, TAX_RATE3, TAX_RATE3_PERCENT, TAX_RATE) values ('^<MIS_GROUP_NO^>', '^<RECEIPT_TYPE^>', '1116', null, null, null, null, null, null, null, null);"
+        },
+        "ACC_DEF_BILL_ITEM_AUDIT": {
+            "COMMENT": "财务mis码定义表 A财务mis码",
+            "SQL": "insert into inter.acc_def_bill_item_audit (AUDIT_GROUP_NO, AUDIT_GROUP_NAME, STS) values ('^<AUDIT_GROUP_NO^>', '业务违约金', '1');"
+        },
+        "ACC_BILL_ITEM_AUDIT_GRP": {
+            "COMMENT": "财务mis码和发票类型发票科目映射表",
+            "SQL": "insert into inter.acc_bill_item_audit_grp (AUDIT_GROUP_NO, BUSI_TYPE, BILL_ITEM_ID, STA_TYPE) values ('^<AUDIT_GROUP_NO^>', '^<RECEIPT_TYPE^>', '1116', null);"
+        }
+  },
+  "RECEIPT": {
+        "RECEIPT_TYPE": {
+            "COMMENT": "新增发票配置 receipt_type, receipt_type_name, receipt_class(5-预存（收据）；8－发票（通票，业务发票), receipt_class_name",
+            "SQL": "insert into base.bs_busi_receipt_type (receipt_type, receipt_type_name, receipt_class, receipt_class_name, receipt_flag, tax_format, sts) values ('^<RECEIPT_TYPE^>', '^<RECEIPT_TYPE_NAME^>', '^<RECEIPT_CLASS^>', '^<RECEIPT_CLASS_NAME^>', '1', '1', '1');",
+            "FIELDS": {
+				"RECEIPT_TYPE": "RECEIPT_TYPE_TABLE"
+            }
+        },
+        "RECEIPT_ITEM": {
+            "COMMENT": "配置税率  receipt_type, receipt_item, receipt_item_name,tax_rate,valid_date, expire_date",
             "SQL": "insert into base.bs_busi_receipt_item (receipt_type, receipt_item, receipt_item_name, unit, item_seq, sts, tax_rate, valid_date, expire_date) values ('^<RECEIPT_TYPE^>', '^<RECEIPT_ITEM^>', '^<RECEIPT_ITEM_NAME^>', '张', '0', '1', '^<TAX_RATE^>', to_date('^<VALID_DATE^>', 'dd-mm-yyyy'), to_date('^<EXPIRE_DATE^>', 'dd-mm-yyyy'));",
             "FIELDS": {
 				"RECEIPT_ITEM": "RECEIPT_ITEM_TABLE"
             }
         },
         "ITEM_MAP": {
+            "COMMENT": "配置CRM费用项编码映射 busi_item_code,fee_item_id,fee_item_name, receipt_type, receipt_item",
             "SQL": "insert into base.bs_busi_item_map (busi_item_code, busi_item_type, fee_item_id, fee_item_name, sts, receipt_type, receipt_item) values ('^<BUSI_ITEM_CODE^>', '3', '^<BUSI_ITEM_CODE^>', '^<RECEIPT_ITEM_NAME^>', '1', '^<RECEIPT_TYPE^>', '^<RECEIPT_ITEM^>');"
         },
         "HALL_BS_DEF_BILL_ITEM_MIS": {
+            "COMMENT": "厅台统计，财务统计定义，只要有mis码如A226，配置成10A226  厅台码（01 卡类收入 02 话费收入 09 其它收入  03  调整类MIS  ） ",
             "SQL": "insert into base.bs_def_bill_item_mis (MIS_GROUP_NO, MIS_GROUP_NAME, STS) values ('^<MIS_GROUP_NO_PAT^>', '^<RECEIPT_ITEM_NAME^>', '1');",
             "FIELDS": {
 				"MIS_GROUP_NO_PAT": "MIS_GROUP_NO_PAT"
             }
         },
         "BS_BILL_ITEM_GRP": {
-            "SQL": "insert into base.bs_bill_item_grp (MIS_GROUP_NO, BILL_ITEM_ID, STS) values ('^<MIS_GROUP_NO_PAT^> ', '^<RECEIPT_ITEM^>', '1');"
+            "COMMENT": "厅台码和发票科目的映射 ",
+            "SQL": "insert into base.bs_bill_item_grp (MIS_GROUP_NO, BILL_ITEM_ID, STS) values ('^<MIS_GROUP_NO_PAT^>', '^<RECEIPT_ITEM^>', '1');"
         },
         "MIS_BS_DEF_BILL_ITEM_MIS": {
+            "COMMENT": "配置统计，用10开头的  10  MIS配置类",
             "SQL": "insert into base.bs_def_bill_item_mis (MIS_GROUP_NO, MIS_GROUP_NAME, STS) values ('^<MIS_GROUP_NO^>', '^<RECEIPT_ITEM_NAME^>', '1');"
         },
         "BS_BILL_ITEM_MIS_GRP": {
+            "COMMENT": "配置统计和发票科目的映射关系,税率拆分",
             "SQL": "insert into base.bs_bill_item_mis_grp (MIS_GROUP_NO, BUSI_TYPE, BILL_ITEM_ID, STA_TYPE, TAX_RATE1, TAX_RATE1_PERCENT, TAX_RATE2, TAX_RATE2_PERCENT, TAX_RATE3, TAX_RATE3_PERCENT, TAX_RATE) values ('^<MIS_GROUP_NO^>', '^<RECEIPT_TYPE^>', '^<RECEIPT_ITEM^>', null, null, null, null, null, null, null, null);"
         },
         "ACC_DEF_BILL_ITEM_AUDIT": {
+            "COMMENT": "财务mis码定义表 A财务mis码",
             "SQL": "insert into inter.acc_def_bill_item_audit (AUDIT_GROUP_NO, AUDIT_GROUP_NAME, STS) values ('^<AUDIT_GROUP_NO^>', '^<RECEIPT_ITEM_NAME^>', '1');"
         },
         "ACC_BILL_ITEM_AUDIT_GRP": {
+            "COMMENT": "财务mis码和发票类型发票科目映射表",
             "SQL": "insert into inter.acc_bill_item_audit_grp (AUDIT_GROUP_NO, BUSI_TYPE, BILL_ITEM_ID, STA_TYPE) values ('^<AUDIT_GROUP_NO^>', '^<RECEIPT_TYPE^>', '^<RECEIPT_ITEM^>', null);"
         }
-    },
-	"FEE_ITEM": {
+  },
+  "FEE_ITEM": {
 		"FEE_ITEM": "None",
 		"ACCP_ITEM_TAX_RATE": {
-			"SQL": "INSERT INTO BASE.ACCP_ITEM_TAX_RATE (ITEM_CODE, TAX_RATE, VALID_DATE, EXPIRE_DATE) VALUES ('^<FEE_ITEM_ID^>', '^<TAX_RATE^>', TO_DATE('01-11-2017', 'DD-MM-YYYY'), TO_DATE('31-12-2030', 'DD-MM-YYYY'));"
+            "COMMENT": "新增费用科目税率配置 ITEM_CODE,TAX_RATE",
+			"SQL": "INSERT INTO BASE.ACCP_ITEM_TAX_RATE (ITEM_CODE, TAX_RATE, VALID_DATE, EXPIRE_DATE) VALUES ('^<FEE_ITEM_ID^>', '^<TAX_RATE^>', TO_DATE('01-11-2017', 'dd-mm-yyyy'), TO_DATE('31-12-2030', 'dd-mm-yyyy'));"
 		},
 		"ACC_DEF_FEE_ITEM_EX": {
+            "COMMENT": "费用项科目市场类型表 ：FEE_ITEM_ID,ITEM_NAME,MARKET_TYPE_ID,MARKET_TYPE_NAME 个人010，家庭：020，集客：030，缺省：000",
 			"SQL": "INSERT INTO ZG.ACC_DEF_FEE_ITEM_EX (FEE_ITEM_ID, ITEM_NAME, MARKET_TYPE_ID, MARKET_TYPE_NAME, BUSINESS_MANAGER, DEVELOPMENT_MANAGER) VALUES ('^<FEE_ITEM_ID^>', '^<ITEM_NAME^>', '^<MARKET_TYPE_ID^>', '^<MARKET_TYPE_NAME^>', NULL, NULL);"
 		},
 		"BS_ACCT_ITEM_TYPE": {
+            "COMMENT": "新增科目销账优先级 acct_item_type_id,acct_item_type_name,bill_priority",
 			"SQL": "INSERT INTO BASE.BS_ACCT_ITEM_TYPE (ACCT_ITEM_TYPE_ID, ACCT_ITEM_TYPE_NAME, ACCT_ITEM_TYPE_KIND, BILL_PRIORITY, STATE, STATE_DATE) VALUES ('^<FEE_ITEM_ID^>', '^<ITEM_NAME^>', '0', '^<BILL_PRIORITY^>', '1',SYSDATE);"
 		},
 		"BS_FEE_ITEM_BILL_ITEM": {
+            "COMMENT": "新增发票配置 bill_format_id, bill_item_id, fee_item_id 话费/转讫发票 1和999， 托收转讫998，转讫发票走哪个格式组：66666666：代表6%，11111111：代表10%，88888888：代表16%   配置21和997，固定配成239和196",
 			"SQL": "INSERT INTO BASE.BS_FEE_ITEM_BILL_ITEM (BILL_FORMAT_ID, BILL_ITEM_ID, FEE_ITEM_ID, STS, STS_TIME) VALUES ('^<BILL_FORMAT_ID^>', '^<BILL_ITEM_ID^>', '^<FEE_ITEM_ID^>', '1', TRUNC(SYSDATE,'MM'));"
 		},
 		"BS_FEE_ITEM_BILL_ITEM_1": {
+            "COMMENT": "新增发票配置 bill_format_id, bill_item_id, fee_item_id 话费/转讫发票 1和999， ",
 			"SQL": "INSERT INTO BASE.BS_FEE_ITEM_BILL_ITEM (BILL_FORMAT_ID, BILL_ITEM_ID, FEE_ITEM_ID, STS, STS_TIME) VALUES ('1', '^<BILL_ITEM_ID^>', '^<FEE_ITEM_ID^>', '1', TRUNC(SYSDATE,'MM'));"
 		},
 		"BS_FEE_ITEM_BILL_ITEM_999": {
+            "COMMENT": "新增发票配置 bill_format_id, bill_item_id, fee_item_id 话费/转讫发票 1和999， ",
 			"SQL": "INSERT INTO BASE.BS_FEE_ITEM_BILL_ITEM (BILL_FORMAT_ID, BILL_ITEM_ID, FEE_ITEM_ID, STS, STS_TIME) VALUES ('999', '^<BILL_ITEM_ID^>', '^<FEE_ITEM_ID^>', '1', TRUNC(SYSDATE,'MM'));"
 		},
 		"BS_FEE_ITEM_BILL_ITEM_998": {
+            "COMMENT": "新增发票配置 bill_format_id, bill_item_id, fee_item_id  托收转讫998，",
 			"SQL": "INSERT INTO BASE.BS_FEE_ITEM_BILL_ITEM (BILL_FORMAT_ID, BILL_ITEM_ID, FEE_ITEM_ID, STS, STS_TIME) VALUES ('998', '^<BILL_ITEM_ID^>', '^<FEE_ITEM_ID^>', '1', TRUNC(SYSDATE,'MM'));"
 		},
 		"BS_FEE_ITEM_BILL_ITEM_888": {
+            "COMMENT": "新增发票配置 bill_format_id, bill_item_id, fee_item_id 转讫发票走哪个格式组：66666666：代表6%，11111111：代表10%，88888888：代表16%   ",
 			"SQL": "INSERT INTO BASE.BS_FEE_ITEM_BILL_ITEM (BILL_FORMAT_ID, BILL_ITEM_ID, FEE_ITEM_ID, STS, STS_TIME) VALUES ('888', '^<BILL_ITEM_ID^>', '^<FEE_ITEM_ID^>', '1',TRUNC(SYSDATE,'MM'));"
 		},
 		"BS_FEE_ITEM_BILL_ITEM_21": {
+            "COMMENT": "新增发票配置 bill_format_id, bill_item_id, fee_item_id   配置21和997，固定配成239和196",
 			"SQL": "INSERT INTO BASE.BS_FEE_ITEM_BILL_ITEM (BILL_FORMAT_ID, BILL_ITEM_ID, FEE_ITEM_ID, STS, STS_TIME) VALUES ('21', '239', '^<FEE_ITEM_ID^>', '1', TRUNC(SYSDATE,'MM'));"
 		},
 		"BS_FEE_ITEM_BILL_ITEM_997": {
+            "COMMENT": "新增发票配置 bill_format_id, bill_item_id, fee_item_id   配置21和997，固定配成239和196",
 			"SQL": "INSERT INTO BASE.BS_FEE_ITEM_BILL_ITEM (BILL_FORMAT_ID, BILL_ITEM_ID, FEE_ITEM_ID, STS, STS_TIME) VALUES ('997', '196', '^<FEE_ITEM_ID^>', '1',TRUNC(SYSDATE,'MM'));"
+		},
+		"BS_ACCT_ITEM_TYPE_BALANCE_TYPE": {
+            "COMMENT": "增加配置：副二82950、副三82951账户不可以冲销上述费用项  sts:1(默认可冲销) 2代表这这几个科目不可冲销，其他的都可冲销",
+			"SQL": "INSERT INTO BASE.BS_ACCT_ITEM_TYPE_BALANCE_TYPE (BALANCE_TYPE_ID, ACCT_ITEM_TYPE_ID, BALANCE_MAX_VALUE, RELA_PRIORITY, OVERFLOW_RULE, STS) VALUES ('^<BALANCE_TYPE_ID^>', '^<FEE_ITEM_ID^>', '5000000000', '1', '0', '2');"
 		}
-	}
+  },
+  "ALARM_PROD": {
+    "ALARM_PROD_HEAD": "None",
+    "PACKAGE_ALARM_PROD": {
+      "COMMENT": "新增余量提醒  ALARM_TYPE 1-全球通  4-动感  5-神州行  15-其它",
+      "SQL": "INSERT INTO ZG.PACKAGE_ALARM_PROD (PROD_ID, PROD_NAME, ALARM_TYPE, VALID_DATE, EXPIRE_DATE, REMARK) VALUES ('^<PROD_ID^>', '^<PROD_NAME^>', '^<ALARM_TYPE^>', to_date('01-01-2001', 'dd-mm-yyyy'), to_date('01-01-2030', 'dd-mm-yyyy'), null);"
+    }
+  }
 }

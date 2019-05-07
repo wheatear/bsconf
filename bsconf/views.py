@@ -82,7 +82,8 @@ class BsConfiger(object):
     def writeBlockSql(self, block, num):
         self.fOut.write('-- %s %d%s' % (block.blockName, num, os.linesep))
         for sql in block.aSql:
-            self.fOut.write('%s%s' % (sql, os.linesep))
+            self.fOut.write('-- %s%s' % (sql[0], os.linesep))
+            self.fOut.write('%s%s' % (sql[1], os.linesep))
 
     def closeOut(self):
         self.fOut.close()
@@ -135,26 +136,38 @@ class BsBlock(object):
         if self.dTplSql[table] == "None":
             return None
         if table in dTabCheck:
-            if RawSql(dTabCheck[table]).fetchVal():
+            if self.checkExist(dTabCheck[table]):
                 return None
         dTabSql = self.dTplSql[table]
         # sql = dTabSql['SQL']
         # dTabFields = copy.deepcopy(self.dFields)
         bsSql = BsSql(dTabSql, self.dFields)
-        bsSql.makeSql()
+        bsSql.getField()
         sql = copy.deepcopy(dTabSql['SQL'])
         for f in self.dFields:
             pat = '^<%s^>' % f
             sql = sql.replace(pat, str(self.dFields[f]))
-        return sql
+        confSql = [dTabSql['COMMENT'], sql]
+        return confSql
 
+    def checkExist(self, sql):
+        for f in self.dFields:
+            pat = '^<%s^>' % f
+            sql = sql.replace(pat, str(self.dFields[f]))
+        print('check sql: %s' % sql)
+        val = RawSql(sql).fetchVal()
+        if val:
+            print('%s exist.' % val)
+            return val
+        else:
+            return None
 
 class BsSql(object):
     def __init__(self, dTabSql, dTabData):
         self.dTabSql = dTabSql
         self.dTabData = dTabData
 
-    def makeSql(self):
+    def getField(self):
         # sql = self.dTabSql['SQL']
         # sql = copy.deepcopy(self.dTabSql['SQL'])
         if 'FIELDS' not in self.dTabSql:

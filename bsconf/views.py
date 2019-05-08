@@ -1,4 +1,5 @@
 from django.shortcuts import render
+import time
 from boss import settings
 import os,logging
 import json
@@ -11,8 +12,13 @@ from django.db.models import Max
 class BsConfiger(object):
     tplSqlFile = "tplsql_promo.json"
     dTplSql = {}
-    def __init__(self, inFile):
+    def __init__(self, inFile, month=None, type='ZG'):
         self.inFile = inFile
+        if not month:
+            month = time.strftime('%Y%m', time.localtime())
+        self.month = month
+        self.type = type
+        self.userName = '王新田'
         print('in data file %s' % inFile)
         # self.outFile = 'DB配置-%s-王新田.sql' % inFile
         self.outFile = '%s.sql' % os.path.splitext(os.path.basename(inFile))[0]
@@ -35,27 +41,20 @@ class BsConfiger(object):
         with open(file) as fp:
             BsConfiger.dTplSql = json.load(fp)
 
+
     def loadData(self):
-        file = os.path.join(settings.IN_DIR, self.inFile)
+        # IN_DIR = os.path.join(BASE_DIR, 'bsconf', 'data', 'in')
+        file = os.path.join(settings.IN_DIR, self.month, self.inFile)
         with open(file) as fData:  # ,encoding='utf-8'
             self.dInData = json.load(fData)
-
-    def openOutFile(self):
-        if self.fOut:
-            return self.fOut
-        print('open out file %s' % self.outFile)
-        file = os.path.join(settings.OUT_DIR, self.outFile)
-        print(file)
-        try:
-            self.fOut = open(file, 'w')
-        except IOError as e:
-            print("can't open file %s. %s" % (file, e))
+        confReq = BsconfRequirement.create(self.inFile, self.type)
+        confReq.save()
 
     def parseDoc(self):
         aSql = []
 
         for req in self.dInData:
-            print('parse request %s' % req)
+            print('parse requirement %s' % req)
             self.outFile = '%s.sql' % os.path.splitext(os.path.basename(req))[0]
             self.openOutFile()
             self.fOut.write('-- %s%s' % (req, os.linesep))
@@ -79,14 +78,77 @@ class BsConfiger(object):
             self.fOut.write('%scommit;%s' % (os.linesep, os.linesep))
             self.closeOut()
 
+    def closeOut(self):
+        self.fOut.close()
+
+
+class ConfReq(object):
+    def __init__(self, configer, docName, reqData):
+        self.configer = configer
+        self.docName = docName
+        self.reqData = reqData
+        self.reqId = None
+        self.reqName = None
+        self.outName = None
+        self.fOut = None
+
+    def parseDocName(self):
+        docBase = os.path.splitext(os.path.basename(self.docName))[0]
+        docBase = docBase.replace('BOSS需求解决方案-','')
+        self.reqName = docBase.replace('需求解决方案-', '')
+        self.outName = '%s-%s.sql' % (self.configer.type, self.reqName)
+
+    def openOut(self):
+        if self.fOut:
+            return self.fOut
+        print('open out file %s' % self.outName)
+        file = os.path.join(settings.OUT_DIR, self.configer.month, self.outName)
+        print('open out file: %s' % file)
+        try:
+            self.fOut = open(file, 'w')
+        except IOError as e:
+            print("can't open file %s. %s" % (file, e))
+
     def writeBlockSql(self, block, num):
         self.fOut.write('-- %s %d%s' % (block.blockName, num, os.linesep))
         for sql in block.aSql:
             self.fOut.write('-- %s%s' % (sql[0], os.linesep))
             self.fOut.write('%s%s' % (sql[1], os.linesep))
 
-    def closeOut(self):
-        self.fOut.close()
+    def parse(self):
+        self.openOut()
+        self.fOut.write('-- %s%s' % (self.reqName, os.linesep))
+        for blockGrp in self.reqData:
+            print('parse block group %s ...' % blockGrp)
+            if blockGrp not in self.configer.dTplSql:
+                print('%s no sql template' % blockGrp)
+                break
+            dBlockSql = self.configer.dTplSql[blockGrp]
+            blockGrpData = self.reqData[blockGrp]
+            for i in range(len(blockGrpData)):
+                print('%s %d' % (blockGrp, i))
+                blockData = blockGrpData[i]
+                # dFields = {}
+                block = BsBlock(blockGrp, blockData, dBlockSql)
+                block.parse()
+                self.writeBlockSql(block, i + 1)
+                # ss = self.parseBlock(tpl, dFields, dTplSql)
+            print('block group %s of %d completed' % (blockGrp, i))
+        self.fOut.write('%scommit;%s' % (os.linesep, os.linesep))
+        self.closeOut()
+
+
+class TableComp(object):
+    pass
+
+
+class Table(TableComp):
+    pass
+
+
+class TableBlock(TableComp):
+    pass
+
 
 class BsBlock(object):
     def __init__(self, blockName, blockData, dTplSql):

@@ -1,5 +1,5 @@
 from django.shortcuts import render
-import time
+import time, re
 from boss import settings
 import os,logging
 import json
@@ -37,6 +37,8 @@ class BsConfiger(object):
         # self.closeOut()
 
     def loadTplSql(self):
+        if len(BsConfiger.dTplSql) > 0:
+            return
         file = os.path.join(settings.TPL_DIR, self.tplSqlFile)
         with open(file) as fp:
             BsConfiger.dTplSql = json.load(fp)
@@ -56,27 +58,31 @@ class BsConfiger(object):
         for req in self.dInData:
             print('parse requirement %s' % req)
             self.outFile = '%s.sql' % os.path.splitext(os.path.basename(req))[0]
-            self.openOutFile()
+            # self.openOutFile()
             self.fOut.write('-- %s%s' % (req, os.linesep))
             reqData = self.dInData[req]
-            for blockGrp in reqData:
-                print('parse block group %s ...' % blockGrp)
-                if blockGrp not in self.dTplSql:
-                    print('%s no sql' % blockGrp)
-                    break
-                dBlockSql = self.dTplSql[blockGrp]
-                blockGrpData = reqData[blockGrp]
-                for i in range(len(blockGrpData)):
-                    print('%s %d' % (blockGrp, i))
-                    blockData = blockGrpData[i]
-                    # dFields = {}
-                    block = BsBlock(blockGrp, blockData, dBlockSql)
-                    block.parse()
-                    self.writeBlockSql(block, i+1)
-                    # ss = self.parseBlock(tpl, dFields, dTplSql)
-                print('block group %s of %d completed' % (blockGrp, i))
-            self.fOut.write('%scommit;%s' % (os.linesep, os.linesep))
-            self.closeOut()
+            confReq = ConfReq(self, req, reqData)
+            confReq.parseDocName()
+            confReq.parse()
+
+            # for blockGrp in reqData:
+            #     print('parse block group %s ...' % blockGrp)
+            #     if blockGrp not in self.dTplSql:
+            #         print('%s no sql' % blockGrp)
+            #         break
+            #     dBlockSql = self.dTplSql[blockGrp]
+            #     blockGrpData = reqData[blockGrp]
+            #     for i in range(len(blockGrpData)):
+            #         print('%s %d' % (blockGrp, i))
+            #         blockData = blockGrpData[i]
+            #         # dFields = {}
+            #         block = BsBlock(blockGrp, blockData, dBlockSql)
+            #         block.parse()
+            #         self.writeBlockSql(block, i+1)
+            #         # ss = self.parseBlock(tpl, dFields, dTplSql)
+            #     print('block group %s of %d completed' % (blockGrp, i))
+            # self.fOut.write('%scommit;%s' % (os.linesep, os.linesep))
+            # self.closeOut()
 
     def closeOut(self):
         self.fOut.close()
@@ -109,9 +115,12 @@ class ConfReq(object):
         except IOError as e:
             print("can't open file %s. %s" % (file, e))
 
+    def closeOut(self):
+        self.fOut.close()
+
     def writeBlockSql(self, block, num):
         self.fOut.write('-- %s %d%s' % (block.blockName, num, os.linesep))
-        for sql in block.aSql:
+        for sql in block.getSql():
             self.fOut.write('-- %s%s' % (sql[0], os.linesep))
             self.fOut.write('%s%s' % (sql[1], os.linesep))
 
@@ -129,25 +138,126 @@ class ConfReq(object):
                 print('%s %d' % (blockGrp, i))
                 blockData = blockGrpData[i]
                 # dFields = {}
-                block = BsBlock(blockGrp, blockData, dBlockSql)
+                block = TableBlock(blockGrp, blockData)
                 block.parse()
                 self.writeBlockSql(block, i + 1)
                 # ss = self.parseBlock(tpl, dFields, dTplSql)
-            print('block group %s of %d completed' % (blockGrp, i))
+            print('block group %s of %d completed' % (blockGrp, len(blockGrpData)))
         self.fOut.write('%scommit;%s' % (os.linesep, os.linesep))
         self.closeOut()
 
 
 class TableComp(object):
-    pass
+    def __init__(self, name, data, blockName, parent=None):
+        self.tabName = name
+        self.dData = data
+        self.blockName = blockName
+        self.dBlockTmpl = BsConfiger.dTplSql[blockName]
+        self.parent = parent
+
+        self.children = []
+        self.dFields = {}
+        self.sql = None
+
+    def parse(self):
+        print('parse table of %s' % self.tabName)
+        aSubTable = []
+        for field in self.dData:
+            val = self.dData[field]
+            if type(val) is list:
+                for sub in val:
+                    self.children.append(Table(field, sub, self))
+            elif type(val) is dict:
+                self.children.append(Table(field, val, self))
+            else:
+                self.dFields[field] = val
+        print('make sql of table %s' % self.tabName)
+        if len(self.dFields) > 0:
+            sql = self.makeSql()
+            print(sql)
+            # self.aSql.append(sql)
+            self.sql = sql
+        # if sql:
+        #     self.aSql.append(sql)
+        for subTab in self.children:
+            subTab.parse()
+            # for subName in sub:
+            #     print('process subtab %s : %s' % (tName, subName))
+            #     tab = sub[subName]
+            #     self.parseTab(subName, tab)
+        print('table %s complate' % self.tabName)
+
+    def makeSql(self):#, self.dFields, self.dTplSql
+        if self.tabName not in self.dBlockTmpl:
+            print('%s not in block template %s' % (self.tabName, self.blockName))
+            return None
+        if self.dBlockTmpl[self.tabName] == "None":
+            return None
+        if self.tabName in dTabCheck:
+            if self.checkExist():
+                return None
+        dTabSql = self.dBlockTmpl[self.tabName]
+        # sql = dTabSql['SQL']
+        # dTabFields = copy.deepcopy(self.dFields)
+        bsSql = BsSql(dTabSql, self)
+        bsSql.getField()
+        sql = self.sqlReplaceValue(dTabSql['SQL'])
+        # sql = copy.deepcopy(dTabSql['SQL'])
+        # for f in self.dFields:
+        #     pat = '^<%s^>' % f
+        #     sql = sql.replace(pat, str(self.dFields[f]))
+        confSql = [dTabSql['COMMENT'], sql]
+        return confSql
+
+    def sqlReplaceValue(self, sql):
+        sqlDest = copy.deepcopy(sql)
+        patt = re.compile(r'^<(.+?)^>')
+        aMatch = patt.findall(sqlDest)
+        if aMatch:
+            for m in aMatch:
+                f = m.group()
+                fName = m.group(0)
+                sqlDest = sqlDest.replace(f, str(self.dFields[fName]))
+        # print('check sql: %s' % sqlDest)
+        return sqlDest
+
+    def checkExist(self):
+        sql = self.sqlReplaceValue(dTabCheck[self.tabName])
+        print('check sql: %s' % sql)
+        val = RawSql(sql).fetchVal()
+        if val:
+            print('%s exist.' % val)
+            return val
+        return None
+
+    def getField(self, fieldName):
+        if fieldName in self.dFields:
+            return self.dFields[fieldName]
+        if self.parent:
+            return self.parent.getField(fieldName)
+        return None
+
+    def getSql(self):
+        aSql = []
+        if self.sql:
+            aSql.append(self.sql)
+        for ch in self.children:
+            subSql = ch.getSql()
+            if subSql:
+                aSql.extend(subSql)
+        if len(aSql) == 0:
+            return None
+        return aSql
 
 
 class Table(TableComp):
-    pass
+    def __init__(self, name, data, parent):
+        super().__init__(name, data, parent.blockName, parent)
 
 
 class TableBlock(TableComp):
-    pass
+    def __init__(self, name, data):
+        super().__init__(name, data, name)
 
 
 class BsBlock(object):
@@ -225,9 +335,9 @@ class BsBlock(object):
             return None
 
 class BsSql(object):
-    def __init__(self, dTabSql, dTabData):
+    def __init__(self, dTabSql, table):
         self.dTabSql = dTabSql
-        self.dTabData = dTabData
+        self.table = table
 
     def getField(self):
         # sql = self.dTabSql['SQL']
@@ -238,17 +348,18 @@ class BsSql(object):
             return self.dTabSql
         dTplFields = self.dTabSql['FIELDS']
         for field in dTplFields:
-            # if field in self.dTabData:
+            # fValue = self.table.getField(field)
+            # if fValue:
             #     continue
             print('get field: %s' % field)
             val = None
             if field == 'MIS_GROUP_NO_PAT':
-                print('get MIS_GROUP_NO by %s' % self.dTabData[field])
-                speField = MisGroupNo(field, self.dTabData[field])
+                print('get MIS_GROUP_NO by %s' % self.table.getField(field))
+                speField = MisGroupNo(field, self.table.getField(field))
                 # val = speField.getVal()
             elif field == 'COND_ID':
-                print('get cond_id of promo_id %s' % self.dTabData['PROMO_ID'])
-                speField = CondId(field, self.dTabData['PROMO_ID'])
+                print('get cond_id of promo_id %s' % self.table.getField('PROMO_ID'))
+                speField = CondId(field, self.table.getField('PROMO_ID'))
                 # val = speField.getVal()
             elif field == 'NEW_SMS_TEMPLET_ID':
                 speField = SmsId(field)
@@ -259,10 +370,10 @@ class BsSql(object):
 
             if field == 'MIS_GROUP_NO_PAT':
                 print('get %s %08d' % ('MIS_GROUP_NO', int(val)))
-                self.dTabData[field] = val
+                self.table.dFields[field] = val
             else:
                 print('get %s %d' % (field, val))
-                self.dTabData[field] = val
+                self.table.dFields[field] = val
 
 
 class SpecialField(object):

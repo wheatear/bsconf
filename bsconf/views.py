@@ -65,25 +65,6 @@ class BsConfiger(object):
             confReq.parseDocName()
             confReq.parse()
 
-            # for blockGrp in reqData:
-            #     print('parse block group %s ...' % blockGrp)
-            #     if blockGrp not in self.dTplSql:
-            #         print('%s no sql' % blockGrp)
-            #         break
-            #     dBlockSql = self.dTplSql[blockGrp]
-            #     blockGrpData = reqData[blockGrp]
-            #     for i in range(len(blockGrpData)):
-            #         print('%s %d' % (blockGrp, i))
-            #         blockData = blockGrpData[i]
-            #         # dFields = {}
-            #         block = BsBlock(blockGrp, blockData, dBlockSql)
-            #         block.parse()
-            #         self.writeBlockSql(block, i+1)
-            #         # ss = self.parseBlock(tpl, dFields, dTplSql)
-            #     print('block group %s of %d completed' % (blockGrp, i))
-            # self.fOut.write('%scommit;%s' % (os.linesep, os.linesep))
-            # self.closeOut()
-
     def closeOut(self):
         self.fOut.close()
 
@@ -262,80 +243,6 @@ class TableBlock(TableComp):
     def __init__(self, name, data):
         super().__init__(name, data, name)
 
-
-class BsBlock(object):
-    def __init__(self, blockName, blockData, dTplSql):
-        self.blockName = blockName
-        self.blockData = blockData
-        self.dFields = {}
-        self.dTplSql = dTplSql
-        self.aSql = []
-
-    def parse(self):
-        for tName in self.blockData:
-            print('process table %s' % tName)
-            if tName not in self.dTplSql:
-                print('%s no sql tamplate' % tName)
-                break
-            table = self.blockData[tName]
-            self.parseTab(tName, table) #, self.dFields, self.dTplSql
-
-    def parseTab(self, tName, table):
-        print('parse table data of %s' % tName)
-        aSubTable = []
-        for field in table:
-            val = table[field]
-            if type(val) is list:
-                for it in val:
-                    aSubTable.append({field: it})
-            elif type(val) is dict:
-                aSubTable.append({field: val})
-            else:
-                self.dFields[field] = val
-        print('get sql of table %s' % tName)
-        sql = self.getSql(tName)
-        print(sql)
-        # self.aSql.append(sql)
-        if sql:
-            self.aSql.append(sql)
-        for sub in aSubTable:
-            for subName in sub:
-                print('process subtab %s : %s' % (tName, subName))
-                tab = sub[subName]
-                self.parseTab(subName, tab)
-        print('table %s complate' % tName)
-
-    def getSql(self, table):#, self.dFields, self.dTplSql
-        if table not in self.dTplSql:
-            return None
-        if self.dTplSql[table] == "None":
-            return None
-        if table in dTabCheck:
-            if self.checkExist(dTabCheck[table]):
-                return None
-        dTabSql = self.dTplSql[table]
-        # sql = dTabSql['SQL']
-        # dTabFields = copy.deepcopy(self.dFields)
-        bsSql = BsSql(dTabSql, self.dFields)
-        bsSql.getField()
-        sql = copy.deepcopy(dTabSql['SQL'])
-        for f in self.dFields:
-            pat = '^<%s^>' % f
-            sql = sql.replace(pat, str(self.dFields[f]))
-        confSql = [dTabSql['COMMENT'], sql]
-        return confSql
-
-    def checkExist(self, sql):
-        for f in self.dFields:
-            pat = '^<%s^>' % f
-            sql = sql.replace(pat, str(self.dFields[f]))
-        print('check sql: %s' % sql)
-        val = RawSql(sql).fetchVal()
-        if val:
-            print('%s exist.' % val)
-            return val
-        else:
-            return None
 
 class BsSql(object):
     def __init__(self, dTabSql, table):

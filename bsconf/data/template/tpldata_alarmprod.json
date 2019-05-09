@@ -1,6 +1,6 @@
 {
-  "DB配置-BOSS-KS-2019-05-173-wangting1-AM快速配置-快响需求-瑞幸咖啡代金券开发需求-王新田": {
-      "ALARM_PROD": [
+  "BOSS需求解决方案-BOSS-KS-2019-05-173-wangting1-AM快速配置-快响需求-瑞幸咖啡代金券开发需求": {
+      "ALARM_PROD_BLOCK": [
         {
           "ALARM_PROD_HEAD": {
             "PROD_ID": "50002343",

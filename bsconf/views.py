@@ -59,7 +59,7 @@ class BsConfiger(object):
             print('parse requirement %s' % req)
             self.outFile = '%s.sql' % os.path.splitext(os.path.basename(req))[0]
             # self.openOutFile()
-            self.fOut.write('-- %s%s' % (req, os.linesep))
+            # self.fOut.write('-- %s%s' % (req, os.linesep))
             reqData = self.dInData[req]
             confReq = ConfReq(self, req, reqData)
             confReq.parseDocName()
@@ -102,7 +102,7 @@ class ConfReq(object):
         docBase = os.path.splitext(os.path.basename(self.docName))[0]
         docBase = docBase.replace('BOSS需求解决方案-','')
         self.reqName = docBase.replace('需求解决方案-', '')
-        self.outName = '%s-%s.sql' % (self.configer.type, self.reqName)
+        self.outName = '%s-%s-%s.sql' % (self.configer.type, self.reqName, self.configer.userName)
 
     def openOut(self):
         if self.fOut:
@@ -135,7 +135,7 @@ class ConfReq(object):
             dBlockSql = self.configer.dTplSql[blockGrp]
             blockGrpData = self.reqData[blockGrp]
             for i in range(len(blockGrpData)):
-                print('%s %d' % (blockGrp, i))
+                print('%s %d' % (blockGrp, i+1))
                 blockData = blockGrpData[i]
                 # dFields = {}
                 block = TableBlock(blockGrp, blockData)
@@ -172,11 +172,11 @@ class TableComp(object):
             else:
                 self.dFields[field] = val
         print('make sql of table %s' % self.tabName)
-        if len(self.dFields) > 0:
-            sql = self.makeSql()
-            print(sql)
-            # self.aSql.append(sql)
-            self.sql = sql
+        # if len(self.dFields) > 0:
+        sql = self.makeSql()
+        print(sql)
+        # self.aSql.append(sql)
+        self.sql = sql
         # if sql:
         #     self.aSql.append(sql)
         for subTab in self.children:
@@ -211,13 +211,16 @@ class TableComp(object):
 
     def sqlReplaceValue(self, sql):
         sqlDest = copy.deepcopy(sql)
-        patt = re.compile(r'^<(.+?)^>')
+        patt = re.compile(r'\^<(.+?)\^>')
         aMatch = patt.findall(sqlDest)
-        if aMatch:
-            for m in aMatch:
-                f = m.group()
-                fName = m.group(0)
-                sqlDest = sqlDest.replace(f, str(self.dFields[fName]))
+        print('replace sql: %s' % sql)
+        print('fields: %s' % self.dFields)
+        print(aMatch)
+        for m in aMatch:
+            pat = '^<%s^>' % m
+            val = self.getField(m)
+            print('replace field: %s with %s' % (m, val))
+            sqlDest = sqlDest.replace(pat, str(val))
         # print('check sql: %s' % sqlDest)
         return sqlDest
 

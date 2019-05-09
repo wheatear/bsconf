@@ -1,6 +1,6 @@
 {
-  "DB配置-BOSS-FSC-2019-04-334-zhuyuanzheng_物联网CT-BOSS前台缴费费项配置需求": {
-      "RECEIPT_1116": [
+  "BOSS需求解决方案-BOSS-FSC-2019-04-334-zhuyuanzheng_物联网CT-BOSS前台缴费费项配置需求": {
+      "RECEIPT_1116_BLOCK": [
         {
           "RECEIPT_TYPE": {
             "RECEIPT_TYPE_NAME": "承诺128元畅享放心用套餐存费送费2019-违约金",
@@ -27,7 +27,7 @@
           }
         }
       ],
-    "RECEIPT": [
+    "RECEIPT_BLOCK": [
         {
           "RECEIPT_TYPE": {
             "RECEIPT_TYPE_NAME": "CT-BOSS缴费数据",

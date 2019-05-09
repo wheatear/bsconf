@@ -1,6 +1,6 @@
 {
-   "DB配置-BOSS-KS-2019-04-337-xx_zhaojin-承诺128元畅享放心用套餐存费送费2019-王新田": {
-      "PROMO_UNIFIED": [
+   "BOSS需求解决方案-BOSS-KS-2019-04-337-xx_zhaojin-承诺128元畅享放心用套餐存费送费2019": {
+      "PROMO_UNIFIED_BLOCK": [
         {
           "PROMO": {
             "SAP_ID": "SAP1151",
@@ -51,7 +51,7 @@
           }
         }
       ],
-      "PROMO_COMMON": [
+      "PROMO_COMMON_BLOCK": [
         {
           "PROMO": {
             "SAP_ID": "SAP1151",

@@ -24,18 +24,18 @@
                 "SMS": [
                   {
                     "SMS_FORM": {
-                      "APPLY_TYPE": "1"
-                    },
-                    "SMS_RULE": {
-                      "SMS_TEMPLATE_ID": "交互中心1"
+                      "APPLY_TYPE": "1",
+                      "SMS_RULE": {
+                      	"SMS_TEMPLATE_ID": "交互中心1"
+                    	}
                     }
                   },
                   {
                     "SMS_FORM": {
-                      "APPLY_TYPE": "5"
-                    },
-                    "SMS_RULE": {
-                      "SMS_TEMPLATE_ID": "交互中心2"
+                      "APPLY_TYPE": "6",
+                      "SMS_RULE": {
+                      	"SMS_TEMPLATE_ID": "交互中心2"
+                    	}
                     }
                   }
                 ]
@@ -83,18 +83,18 @@
                 "SMS": [
                   {
                     "SMS_FORM": {
-                      "APPLY_TYPE": "1"
-                    },
-                    "SMS_RULE": {
-                      "SMS_TEMPLATE_ID": "交互中心1"
+                      "APPLY_TYPE": "1",
+                      "SMS_RULE": {
+                      	"SMS_TEMPLATE_ID": "交互中心1"
+                    	}
                     }
                   },
                   {
                     "SMS_FORM": {
-                      "APPLY_TYPE": "5"
-                    },
-                    "SMS_RULE": {
-                      "SMS_TEMPLATE_ID": "交互中心2"
+                      "APPLY_TYPE": "6",
+                      "SMS_RULE": {
+                      	"SMS_TEMPLATE_ID": "交互中心2"
+                    	}
                     }
                   }
                 ]

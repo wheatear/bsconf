@@ -1,5 +1,6 @@
 from django.shortcuts import render
-from django.http import HttpResponse
+from django.http import HttpResponse, JsonResponse
+
 import time, re
 from boss import settings
 import os,logging
@@ -9,17 +10,44 @@ from bsconf.models import *
 from django.db.models import Max
 
 # Create your views here.
-def upload_file(request):
+
+logger = logging.getLogger('django')
+errlog = logging.getLogger('error')
+
+
+def index(request):
+    # request.session['ip'] = ip
+    # extra = getExtra(request)
+    # logger = LoggerAdapter(initLogger,extra)
+
+    # logger.info('access',extra)
+    return render(request,'bsconf/bsconfiger.html')
+
+def configer(request):
+    return render(request, 'bsconf/index.html')
+
+def uploadFile(request):
     if request.method == "POST":    # 请求方法为POST时，进行处理
         month = time.strftime('%Y%m', time.localtime())
         jsonFile =request.FILES.get("jsonFile", None)    # 获取上传的文件，如果没有文件，则默认为None
         if not jsonFile:
             return HttpResponse("no files for upload!")
-        destination = open(os.path.join(settings.IN_DIR, month, jsonFile.name),'wb+')    # 打开特定的文件进行二进制的写操作
+        jsonName = jsonFile.name
+        destination = open(os.path.join(settings.IN_DIR, month, jsonName),'wb+')    # 打开特定的文件进行二进制的写操作
         for chunk in jsonFile.chunks():      # 分块写入文件
             destination.write(chunk)
         destination.close()
-        return HttpResponse("upload over!")
+        bsf = BsConfiger(jsonName)
+        return JsonResponse(bsf.dInData)
+        bsf.start()
+        return HttpResponse("upload %s over!" % jsonName)
+
+def makeSql(request):
+    logger.info('request: %s %s from', request.method, request.path)
+    jsonName = request.Post['jsonFile']
+    bsf = BsConfiger(jsonName)
+    bsf.start()
+    return JsonResponse()
 
 class BsConfiger(object):
     tplSqlFile = "tplsql_promo.json"

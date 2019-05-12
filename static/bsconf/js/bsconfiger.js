@@ -39,7 +39,7 @@ $(function () {
 
         alert(jsonName);
         data = {'jsonName': jsonName};
-        $.post("makeSql",  function(){
+        $.get("makeSql", {"jsonName":jsonName}, function(){
             alert("make sql "+jsonName)
         })
     });
@@ -47,6 +47,6 @@ $(function () {
     function getFileName(o){
         var pos=o.lastIndexOf("\\");
         return o.substring(pos+1);
-    };
+    }
 });
 

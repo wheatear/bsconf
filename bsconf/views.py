@@ -44,10 +44,10 @@ def uploadFile(request):
 
 def makeSql(request):
     logger.info('request: %s %s from', request.method, request.path)
-    jsonName = request.Post['jsonFile']
+    jsonName = request.Get['jsonName']
     bsf = BsConfiger(jsonName)
     bsf.start()
-    return JsonResponse()
+    return JsonResponse({"reponse":"ok"})
 
 class BsConfiger(object):
     tplSqlFile = "tplsql_promo.json"

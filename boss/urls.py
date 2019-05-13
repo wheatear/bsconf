@@ -23,5 +23,5 @@ urlpatterns = [
     path('^$', views.index),
     path('', views.index),
     path('uploadFile', views.uploadFile),
-    path('makeSql', views.makeSql),
+    path('makeBsSql/', views.makeBsSql),
 ]

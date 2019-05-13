@@ -1,5 +1,6 @@
 from django.shortcuts import render
 from django.http import HttpResponse, JsonResponse
+from django.http import FileResponse
 
 import time, re
 from boss import settings
@@ -33,21 +34,36 @@ def uploadFile(request):
         if not jsonFile:
             return HttpResponse("no files for upload!")
         jsonName = jsonFile.name
-        destination = open(os.path.join(settings.IN_DIR, month, jsonName),'wb+')    # 打开特定的文件进行二进制的写操作
-        for chunk in jsonFile.chunks():      # 分块写入文件
-            destination.write(chunk)
-        destination.close()
-        bsf = BsConfiger(jsonName)
-        return JsonResponse(bsf.dInData)
-        bsf.start()
-        return HttpResponse("upload %s over!" % jsonName)
 
-def makeSql(request):
+        # destination = open(os.path.join(settings.IN_DIR, month, jsonName),'wb+')    # 打开特定的文件进行二进制的写操作
+        with open(os.path.join(settings.IN_DIR, month, jsonName),'wb+') as destination:
+            for chunk in jsonFile.chunks():      # 分块写入文件
+                destination.write(chunk)
+        # destination.close()
+
+        bsf = BsConfiger(jsonName)
+        bsf.start()
+        logger.info('download file')
+        return bsf.downLoad()
+        # return JsonResponse(bsf.dInData)
+        # bsf.start()
+        # return HttpResponse("upload %s over!" % jsonName)
+
+def makeBsSql(request):
     logger.info('request: %s %s from', request.method, request.path)
-    jsonName = request.Get['jsonName']
-    bsf = BsConfiger(jsonName)
-    bsf.start()
-    return JsonResponse({"reponse":"ok"})
+    if request.method == "GET":    # 请求方法为POST时，进行处理
+        jsonName = request.GET['jsonName']
+        bsf = BsConfiger(jsonName)
+        bsf.start()
+        return JsonResponse( {"rep": "ok"})
+
+def download(request):
+  file=open('crm/models.py','rb')
+  response =FileResponse(file)
+  response['Content-Type']='application/octet-stream'
+  response['Content-Disposition']='attachment;filename="models.py"'
+  return response
+
 
 class BsConfiger(object):
     tplSqlFile = "tplsql_promo.json"
@@ -61,11 +77,14 @@ class BsConfiger(object):
         self.userName = '王新田'
         print('in data file %s' % inFile)
         # self.outFile = 'DB配置-%s-王新田.sql' % inFile
-        self.outFile = '%s.sql' % os.path.splitext(os.path.basename(inFile))[0]
+        self.outFile = None
         self.dInData = {}
         self.fOut = None
+        self.bsReq = None
 
     def start(self):
+        self.bsReq = BsconfRequirement.create(self.inFile, self.type)
+        self.bsReq.save()
         print('load sql template')
         self.loadTplSql()
         print('load data')
@@ -73,6 +92,9 @@ class BsConfiger(object):
         # self.openOutFile()
         print('parse in file')
         self.parseDoc()
+        self.bsReq.sql_file = self.outFile
+        self.bsReq.state = 8
+        self.bsReq.save()
         # self.writeSql()
         # self.closeOut()
 
@@ -83,16 +105,16 @@ class BsConfiger(object):
         with open(file) as fp:
             BsConfiger.dTplSql = json.load(fp)
 
-
     def loadData(self):
         # IN_DIR = os.path.join(BASE_DIR, 'bsconf', 'data', 'in')
         file = os.path.join(settings.IN_DIR, self.month, self.inFile)
         with open(file) as fData:  # ,encoding='utf-8'
             self.dInData = json.load(fData)
-        confReq = BsconfRequirement.create(self.inFile, self.type)
-        confReq.save()
+        # confReq = BsconfRequirement.create(self.inFile, self.type)
+        # confReq.save()
 
     def parseDoc(self):
+        logger.info('parse json file %s', self.inFile)
         aSql = []
 
         for req in self.dInData:
@@ -104,9 +126,24 @@ class BsConfiger(object):
             confReq = ConfReq(self, req, reqData)
             confReq.parseDocName()
             confReq.parse()
+            self.outFile = confReq.outName
+            # reqSet = BsconfRequirement.objects.filter(json_file=self.inFile, conf_type=self.type, req_month=self.month)
+            # for bsReq in reqSet:
+            #     bsReq.sql_file = confReq.outName
+            #     bsReq.state = 8
+            #     bsReq.save()
 
-    def closeOut(self):
-        self.fOut.close()
+    def downLoad(self):
+        logger.info('download file %s', self.outFile)
+        fileName = os.path.join(settings.OUT_DIR, self.month, self.outFile)
+        file = open(fileName, 'rb')
+        response = FileResponse(file)
+        response['Content-Type'] = 'application/octet-stream'
+        response['Content-Disposition'] = 'attachment;filename="models.py"'
+        return response
+
+    # def closeOut(self):
+    #     self.fOut.close()
 
 
 class ConfReq(object):

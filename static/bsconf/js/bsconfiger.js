@@ -39,9 +39,16 @@ $(function () {
 
         alert(jsonName);
         data = {'jsonName': jsonName};
-        $.get("makeSql", {"jsonName":jsonName}, function(){
+        $.ajax({
+            url: "makeBsSql",
+            type: "GET",
+            data: {"jsonName":jsonName},
+        }).done(function(){
             alert("make sql "+jsonName)
-        })
+        });
+        // $.get("makeSql", {"jsonName":jsonName}, function(){
+        //     alert("make sql "+jsonName)
+        // })
     });
 
     function getFileName(o){

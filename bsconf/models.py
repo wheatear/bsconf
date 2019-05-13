@@ -121,6 +121,8 @@ class BsItemId(models.Model):
 class BsconfRequirement(models.Model):
     json_file = models.CharField(max_length=128,primary_key=True)
     conf_type = models.CharField(max_length=32)
+    create_date = models.DateTimeField(auto_now_add=True)
+    update_date = models.DateTimeField(auto_now=True)
     state = models.IntegerField()
     req_id = models.CharField(max_length=128)
     req_name = models.CharField(max_length=256)

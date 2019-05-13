@@ -42,9 +42,10 @@ def uploadFile(request):
         # destination.close()
 
         bsf = BsConfiger(jsonName)
-        bsf.start()
+        sqlFile = bsf.start()
         logger.info('download file')
-        return bsf.downLoad()
+        return JsonResponse({"sqlFile":sqlFile})
+        # return bsf.downLoad()
         # return JsonResponse(bsf.dInData)
         # bsf.start()
         # return HttpResponse("upload %s over!" % jsonName)
@@ -78,6 +79,7 @@ class BsConfiger(object):
         print('in data file %s' % inFile)
         # self.outFile = 'DB配置-%s-王新田.sql' % inFile
         self.outFile = None
+        self.outFull = None
         self.dInData = {}
         self.fOut = None
         self.bsReq = None
@@ -97,6 +99,7 @@ class BsConfiger(object):
         self.bsReq.save()
         # self.writeSql()
         # self.closeOut()
+        return self.outFull
 
     def loadTplSql(self):
         if len(BsConfiger.dTplSql) > 0:
@@ -127,6 +130,7 @@ class BsConfiger(object):
             confReq.parseDocName()
             confReq.parse()
             self.outFile = confReq.outName
+            self.outFull = os.path.join(settings.OUT_DIR, self.month, self.outFile)
             # reqSet = BsconfRequirement.objects.filter(json_file=self.inFile, conf_type=self.type, req_month=self.month)
             # for bsReq in reqSet:
             #     bsReq.sql_file = confReq.outName

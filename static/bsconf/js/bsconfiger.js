@@ -17,6 +17,8 @@ $(function () {
              */
             processData: false,
             success: function (data) {
+                var path = data.sqlFile;
+                $("#sqlFile").href = path;
                 alert("upload success")
                 // if (data.status == "true") {
                 //     alert("上传成功！");

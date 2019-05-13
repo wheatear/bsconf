@@ -18,8 +18,8 @@ $(function () {
             processData: false,
             success: function (data) {
                 var path = data.sqlFile;
-                $("#sqlFile").href = path;
-                alert("upload success")
+                // $("#sqlFile").href = path;
+                alert("生成SQL文件: " + path + " success")
                 // if (data.status == "true") {
                 //     alert("上传成功！");
                 // }

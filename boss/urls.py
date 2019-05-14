@@ -22,7 +22,8 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('^$', views.index),
     path('', views.index),
-    path('uploadFile', views.uploadFile),
+    path('uploadMakeSql', views.uploadMakeSql),
+    path('saveJson', views.saveJson),
     path('makeBsSql/', views.makeBsSql),
     path('qryRequirement/', views.qryRequirement),
 ]

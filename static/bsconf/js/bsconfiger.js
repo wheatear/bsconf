@@ -24,12 +24,12 @@ $(function () {
 
     qryReqm();
 
-    $("#upload").click(function () {
+    $("#uploadMmakeSql").click(function () {
         // $("#imgWait").show();
         var formData = new FormData();
         formData.append("jsonFile", document.getElementById("jsonFile").files[0]);
         $.ajax({
-            url: "uploadFile",
+            url: "uploadMakeSql",
             type: "POST",
             data: formData,
             /**
@@ -61,7 +61,43 @@ $(function () {
         });
     });
 
-    $('#makeSql').click(function(){
+    $("#saveJson").click(function(){
+        var formData = new FormData();
+        formData.append("jsonFile", document.getElementById("jsonFile").files[0]);
+        $.ajax({
+            url: "saveJson",
+            type: "POST",
+            data: formData,
+            /**
+             *必须false才会自动加上正确的Content-Type
+             */
+            contentType: false,
+            /**
+             * 必须false才会避开jQuery对 formdata 的默认处理
+             * XMLHttpRequest会对 formdata 进行正确的处理
+             */
+            processData: false,
+            success: function (data) {
+                var path = data.sqlFile;
+                // $("#sqlFile").href = path;
+                alert("上传json文件: " + getFileName($("#jsonFile").val()) + " success")
+                // if (data.status == "true") {
+                //     alert("上传成功！");
+                // }
+                // if (data.status == "error") {
+                //     alert(data.msg);
+                // }
+                // $("#imgWait").hide();
+                qryReqm();
+            },
+            error: function () {
+                alert("上传失败！");
+                // $("#imgWait").hide();
+            }
+        });
+    });
+
+    $('#makeSql0').click(function(){
         jsonFile = $("#jsonFile");
         jsonName = getFileName(jsonFile.val());
 

@@ -27,28 +27,47 @@ def index(request):
 def configer(request):
     return render(request, 'bsconf/index.html')
 
-def uploadFile(request):
+def uploadMakeSql(request):
+    logger.info('upload json')
+    bsReq = _uploadJson(request)
+    logger.info('upload %s ok.',bsReq.json_file)
+    logger.info('make sql for %s', bsReq.json_file)
+    sqlFile = _makeSql(bsReq)
+    return JsonResponse({"sqlFile":sqlFile})
+        # return bsf.downLoad()
+        # return JsonResponse(bsf.dInData)
+        # bsf.start()
+        # return HttpResponse("upload %s over!" % jsonName)
+
+def saveJson(request):
+    logger.info('upload json')
+    jsonName = _uploadJson(request)
+    logger.info('upload %s ok.', jsonName)
+    return JsonResponse({"rep": 'ok'})
+
+def _uploadJson(request):
     if request.method == "POST":    # 请求方法为POST时，进行处理
-        month = time.strftime('%Y%m', time.localtime())
         jsonFile =request.FILES.get("jsonFile", None)    # 获取上传的文件，如果没有文件，则默认为None
         if not jsonFile:
             return HttpResponse("no files for upload!")
         jsonName = jsonFile.name
+        month = request.POST.get("month", None)
+        if not month:
+            month = time.strftime('%Y%m', time.localtime())
 
         # destination = open(os.path.join(settings.IN_DIR, month, jsonName),'wb+')    # 打开特定的文件进行二进制的写操作
         with open(os.path.join(settings.IN_DIR, month, jsonName),'wb+') as destination:
             for chunk in jsonFile.chunks():      # 分块写入文件
                 destination.write(chunk)
         # destination.close()
+        bsReq = BsconfRequirement.create(jsonName, 'ZG')
+        bsReq.save()
+        return bsReq
 
-        bsf = BsConfiger(jsonName)
-        sqlFile = bsf.start()
-        logger.info('download file')
-        return JsonResponse({"sqlFile":sqlFile})
-        # return bsf.downLoad()
-        # return JsonResponse(bsf.dInData)
-        # bsf.start()
-        # return HttpResponse("upload %s over!" % jsonName)
+def _makeSql(bsReq):
+    bsf = BsConfiger(bsReq)
+    return bsf.start()
+    # return JsonResponse({"rep": "ok"})
 
 def makeBsSql(request):
     logger.info('request: %s %s from', request.method, request.path)
@@ -85,7 +104,7 @@ class BsConfiger(object):
     tplSqlFile = "tplsql_promo.json"
     dTplSql = {}
     def __init__(self, inFile, month=None, type='ZG'):
-        self.inFile = inFile
+        self.bsReq = inFile
         if not month:
             month = time.strftime('%Y%m', time.localtime())
         self.month = month
@@ -100,7 +119,7 @@ class BsConfiger(object):
         self.bsReq = None
 
     def start(self):
-        self.bsReq = BsconfRequirement.create(self.inFile, self.type)
+        self.bsReq.state = 1
         self.bsReq.save()
         print('load sql template')
         self.loadTplSql()

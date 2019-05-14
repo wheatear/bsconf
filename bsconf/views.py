@@ -58,6 +58,21 @@ def makeBsSql(request):
         bsf.start()
         return JsonResponse( {"rep": "ok"})
 
+def qryRequirement(request):
+    logger.info('query requirement')
+    jsonMonth = None
+    jsonType = None
+    if request.method == 'GET':
+        jsonType = request.GET.get('type','ZG')
+        jsonMonth = request.GET.get('month',None)
+    if not jsonMonth:
+        jsonMonth = time.strftime('%Y%m', time.localtime())
+    bsReq = BsconfRequirement.objects.filter(conf_type=jsonType, req_month=jsonMonth).values()
+    aReq = []
+    for r in bsReq:
+        aReq.append(r)
+    return JsonResponse({'bsReq': aReq})
+
 def download(request):
   file=open('crm/models.py','rb')
   response =FileResponse(file)

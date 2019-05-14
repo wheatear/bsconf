@@ -24,4 +24,5 @@ urlpatterns = [
     path('', views.index),
     path('uploadFile', views.uploadFile),
     path('makeBsSql/', views.makeBsSql),
+    path('qryRequirement/', views.qryRequirement),
 ]

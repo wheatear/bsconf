@@ -1,4 +1,29 @@
 $(function () {
+    dReq = {
+        "type":"ZG"
+    };
+    function qryReqm(){
+        dReq = {
+            "type":$('#reqType').val()
+        };
+        alert(dReq.type);
+        $.ajax({url:"qryRequirement",type: "GET",
+            data:dReq
+        }).done(function(aReqm){
+            hTab = $('#con');
+            fillTable(aReqm,hTab)
+        }).fail(function(rep){
+            alert("qryRequirement fail: " + rep);
+            errMsg = "";
+            $.each(rep, function(i,d){
+                errMsg = errMsg + i + " | " + d + "\n"
+            });
+            alert(errMsg)
+        });
+    }
+
+    qryReqm();
+
     $("#upload").click(function () {
         // $("#imgWait").show();
         var formData = new FormData();
@@ -27,6 +52,7 @@ $(function () {
                 //     alert(data.msg);
                 // }
                 // $("#imgWait").hide();
+                qryReqm();
             },
             error: function () {
                 alert("上传失败！");
@@ -56,6 +82,38 @@ $(function () {
     function getFileName(o){
         var pos=o.lastIndexOf("\\");
         return o.substring(pos+1);
+    }
+
+    //fill select
+    function fillTable(aReqm,hTab){
+        hTab.empty();
+        tabHead = "<tr>" +
+            "        <th class=\"json\">json文件</th>" +
+            "        <th class=\"state\">状态</th>" +
+            "        <th class=\"month\">月份</th>" +
+            "        <th class=\"sql\">sql文件</th>" +
+            "        <th class=\"type\">模块</th>" +
+            "        <th class=\"createtime\">生成时间</th>" +
+            "        <th class=\"updatetime\">更改时间</th>" +
+            "    </tr>";
+        hTab.append(tabHead);
+        $.each(aReqm.bsReq, function(i,dName){
+            // alert(i + dName)
+            json = dName["json_file"];
+
+            trReqm = "<tr>" +
+                "        <td class=\"json\" id=\"json\">" + dName["json_file"] + "</td>" +
+                "        <td class=\"state\" id=\"state\">" + dName["state"] + "</td>" +
+                "        <td class=\"month\" id=\"month\">" + dName["req_month"] + "</td>" +
+                "        <td class=\"sql\" id=\"sql\">" + dName["sql_file"] + "</td>" +
+                "        <td class=\"type\" id=\"type\">" + dName["conf_type"] + "</td>" +
+                "        <td class=\"createtime\" id=\"createtime\">" + dName["create_date"] + "</td>" +
+                "        <td class=\"updatetime\" id=\"updatetime\">" + dName["update_date"] + "</td>" +
+                "    </tr>";
+            // alert(trReqm);
+            hTab.append(trReqm);
+        });
+
     }
 });
 

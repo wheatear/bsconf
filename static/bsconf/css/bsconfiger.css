@@ -1,0 +1,47 @@
+.topdiv{
+    background-color: #dbe6f4;
+    border: 1px solid blue;
+    height: 50px;
+}
+.head{
+    line-height:50px;
+}
+.con{
+    border: 1px solid blue;
+    border-collapse: collapse;
+    width: 100%;
+}
+.con th,.con td{
+    border: 1px solid blue;
+
+    height: 25px;
+}
+.con td{
+    text-align: left;
+}
+.con th{
+    text-align: center;
+}
+
+/*.json{*/
+    /*width: 280px;*/
+/*}*/
+.state{
+    width:50px;
+}
+.month{
+    width: 50px;
+}
+/*.sql{*/
+    /*width: 400px;*/
+/*}*/
+.type{
+    width: 50px;
+}
+.createtime{
+    width: 80px;
+}
+.updatetime{
+    width: 80px;
+}
+

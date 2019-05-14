@@ -1,4 +1,5 @@
 from django.db import models,connection,connections
+import time
 
 # Create your models here.
 class RawSql(object):
@@ -116,6 +117,29 @@ class BsItemId(models.Model):
         bsItem = cls(item_name=name, item_id=id)
         return bsItem
 
+
+class BsconfRequirement(models.Model):
+    json_file = models.CharField(max_length=128,primary_key=True)
+    conf_type = models.CharField(max_length=32)
+    create_date = models.DateTimeField(auto_now_add=True)
+    update_date = models.DateTimeField(auto_now=True)
+    state = models.IntegerField()
+    req_id = models.CharField(max_length=128)
+    req_name = models.CharField(max_length=256)
+    req_month = models.IntegerField()
+    sql_file = models.CharField(max_length=256)
+    remark = models.CharField(max_length=256)
+
+    class Meta:
+        managed = False
+        db_table = 'BSCONF_REQUIREMENT'
+
+    @classmethod
+    def create(cls, json, type, state=0, month=None):
+        if not month:
+            month = time.strftime('%Y%m', time.localtime())
+        bsReq = cls(json_file=json, conf_type=type, state=state, req_month=month)
+        return bsReq
 
 
 class IdIncr(models.Model):

@@ -1,5 +1,5 @@
 {
-  "PROMO_UNIFIED": {
+  "PROMO_UNIFIED_BLOCK": {
 		"PROMO": {
             "COMMENT": "新增promo表  PROMO_ID, PROMO_NAME, BUSI_TYPE_CODE",
 			"SQL": "insert into base.BS_BOOK_SCHEME_PROMO (PROMO_ID, PROMO_NAME, BUSI_TYPE_CODE, REGION_CODE, PROMO_TYPE, COUNTY_CODE, ORG_ID, PROMO_GROUP) values ('^<PROMO_ID^>', '^<PROMO_NAME^>', '^<BUSI_TYPE_CODE^>', '0', '1', '0', '0', '0');",
@@ -38,7 +38,7 @@
 			"SQL": "insert into base.bs_sms_rule (RULE_ID, RULE_CODE, RULE_EXP, RULE_ORDER, BUSINESS_ID, AC_SMS_TEMPLATE_ID, SMS_TEMPLATE_ID, STATE, CREATE_DATE) values (base.bs_sms_rule$seq.nextval, '^<NEW_SMS_TEMPLET_ID^>', '', '1', '^<BUSI_TYPE_CODE^>', '^<NEW_SMS_TEMPLET_ID^>', '^<SMS_TEMPLATE_ID^>', 'U', sysdate);"
 		}
   },
-  "PROMO_COMMON": {
+  "PROMO_COMMON_BLOCK": {
 		"PROMO": {
             "COMMENT": "新增promo表  PROMO_ID, PROMO_NAME, BUSI_TYPE_CODE",
 			"SQL": "insert into base.BS_BOOK_SCHEME_PROMO (PROMO_ID, PROMO_NAME, BUSI_TYPE_CODE, REGION_CODE, PROMO_TYPE, COUNTY_CODE, ORG_ID, PROMO_GROUP) values ('^<PROMO_ID^>', '^<PROMO_NAME^>', '^<BUSI_TYPE_CODE^>', '0', '1', '0', '0', '0');",
@@ -77,7 +77,7 @@
 			"SQL": "insert into base.bs_sms_rule (RULE_ID, RULE_CODE, RULE_EXP, RULE_ORDER, BUSINESS_ID, AC_SMS_TEMPLATE_ID, SMS_TEMPLATE_ID, STATE, CREATE_DATE) values (base.bs_sms_rule$seq.nextval, '^<NEW_SMS_TEMPLET_ID^>', '', '1', '^<BUSI_TYPE_CODE^>', '^<NEW_SMS_TEMPLET_ID^>', '^<SMS_TEMPLATE_ID^>', 'U', sysdate);"
 		}
   },
-  "RECEIPT_1116": {
+  "RECEIPT_1116_BLOCK": {
         "RECEIPT_TYPE": {
             "COMMENT": "新增发票配置 receipt_type, receipt_type_name, receipt_class(5-预存（收据）；8－发票（通票，业务发票), receipt_class_name",
             "SQL": "insert into base.bs_busi_receipt_type (receipt_type, receipt_type_name, receipt_class, receipt_class_name, receipt_flag, tax_format, sts) values ('^<RECEIPT_TYPE^>', '^<RECEIPT_TYPE_NAME^>', '^<RECEIPT_CLASS^>', '^<RECEIPT_CLASS_NAME^>', '1', '1', '1');",
@@ -113,7 +113,7 @@
             "SQL": "insert into inter.acc_bill_item_audit_grp (AUDIT_GROUP_NO, BUSI_TYPE, BILL_ITEM_ID, STA_TYPE) values ('^<AUDIT_GROUP_NO^>', '^<RECEIPT_TYPE^>', '1116', null);"
         }
   },
-  "RECEIPT": {
+  "RECEIPT_BLOCK": {
         "RECEIPT_TYPE": {
             "COMMENT": "新增发票配置 receipt_type, receipt_type_name, receipt_class(5-预存（收据）；8－发票（通票，业务发票), receipt_class_name",
             "SQL": "insert into base.bs_busi_receipt_type (receipt_type, receipt_type_name, receipt_class, receipt_class_name, receipt_flag, tax_format, sts) values ('^<RECEIPT_TYPE^>', '^<RECEIPT_TYPE_NAME^>', '^<RECEIPT_CLASS^>', '^<RECEIPT_CLASS_NAME^>', '1', '1', '1');",
@@ -160,7 +160,7 @@
             "SQL": "insert into inter.acc_bill_item_audit_grp (AUDIT_GROUP_NO, BUSI_TYPE, BILL_ITEM_ID, STA_TYPE) values ('^<AUDIT_GROUP_NO^>', '^<RECEIPT_TYPE^>', '^<RECEIPT_ITEM^>', null);"
         }
   },
-  "FEE_ITEM": {
+  "FEE_ITEM_BLOCK": {
 		"FEE_ITEM": "None",
 		"ACCP_ITEM_TAX_RATE": {
             "COMMENT": "新增费用科目税率配置 ITEM_CODE,TAX_RATE",
@@ -207,7 +207,7 @@
 			"SQL": "INSERT INTO BASE.BS_ACCT_ITEM_TYPE_BALANCE_TYPE (BALANCE_TYPE_ID, ACCT_ITEM_TYPE_ID, BALANCE_MAX_VALUE, RELA_PRIORITY, OVERFLOW_RULE, STS) VALUES ('^<BALANCE_TYPE_ID^>', '^<FEE_ITEM_ID^>', '5000000000', '1', '0', '2');"
 		}
   },
-  "ALARM_PROD": {
+  "ALARM_PROD_BLOCK": {
     "ALARM_PROD_HEAD": "None",
     "PACKAGE_ALARM_PROD": {
       "COMMENT": "新增余量提醒  ALARM_TYPE 1-全球通  4-动感  5-神州行  15-其它",

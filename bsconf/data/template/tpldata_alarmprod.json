@@ -19,7 +19,18 @@
                 "ALARM_TYPE": "15"
               }
             ]
-          }
+          },
+          "PRE_ITEM": [
+            {
+              "ITEM_CODE": "66661174",
+              "ITEM_NAME": "语言扶贫定向流量",
+              "ALARM_ITEM_CONVERT_VOC": {},
+              "ALARM_ITEM_CONVERT_DAT": {},
+              "GPRS_FREEBIE_HFF": {
+                "COMMON_RES_FREE_TYPE": "6074"
+              }
+            }
+          ]
         }
       ]
    }

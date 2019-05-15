@@ -1,16 +1,45 @@
 .topdiv{
-    background-color: #dbe6f4;
+    /*background-color: #dbe6f4;*/
+    background-color: rgb(249,249,249);
     border: 1px solid blue;
-    height: 50px;
+    height: 40px;
+}
+.searcher,.makeSql{
+    /*float:left;*/
+    margin:0 auto;
+    height: 40px;
+    font: normal 12px/40px '微软雅黑';
+}
+.searcher{
+    /*width: 50%;*/
+    /*border-right: 1px solid blue;*/
+    margin-top: -1px;
+}
+.file{
+    line-height:23px;
 }
 .head{
-    line-height:50px;
+    line-height:40px;
+}
+
+.bodydiv{
+    margin-top: -1px;
+}
+.bodyHead{
+    background-color: rgb(224,237,255);
 }
 .con{
     border: 1px solid blue;
     border-collapse: collapse;
     width: 100%;
 }
+.con .bodyCon:hover{
+    background-color: rgb(236,237,239);
+}
+.con .active{
+    background-color: rgb(223,232,246);
+}
+
 .con th,.con td{
     border: 1px solid blue;
 
@@ -27,7 +56,7 @@
     /*width: 280px;*/
 /*}*/
 .state{
-    width:50px;
+    width:40px;
 }
 .month{
     width: 50px;
@@ -36,7 +65,7 @@
     /*width: 400px;*/
 /*}*/
 .type{
-    width: 50px;
+    width: 40px;
 }
 .createtime{
     width: 80px;

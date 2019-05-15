@@ -105,6 +105,8 @@ class BsConfiger(object):
     dTplSql = {}
     def __init__(self, inFile, month=None, type='ZG'):
         self.bsReq = inFile
+        self.inFile = inFile.json_file
+        # logger.debug('json file: %s', self.inFile)
         if not month:
             month = time.strftime('%Y%m', time.localtime())
         self.month = month
@@ -116,7 +118,7 @@ class BsConfiger(object):
         self.outFull = None
         self.dInData = {}
         self.fOut = None
-        self.bsReq = None
+        # self.bsReq = None
 
     def start(self):
         self.bsReq.state = 1

@@ -1,17 +1,24 @@
 $(function () {
-    dReq = {
+    var dReq = {
         "type":"ZG"
     };
+    aRequirement = null;
+    $reqTab = $('#con');
+    $activeReq = null;
+
     function qryReqm(){
         dReq = {
-            "type":$('#reqType').val()
+            "type":$('#reqType').val(),
+            "month":$('#month').val()
         };
-        alert(dReq.type);
+        // alert("type: " + dReq.type + " month: " + dReq.month);
         $.ajax({url:"qryRequirement",type: "GET",
             data:dReq
         }).done(function(aReqm){
-            hTab = $('#con');
-            fillTable(aReqm,hTab)
+            aRequirement = aReqm;
+            aRequirement.sortId = 'json';
+            // var hTab = $('#con');
+            fillTable(aReqm.bsReq,$reqTab)
         }).fail(function(rep){
             alert("qryRequirement fail: " + rep);
             errMsg = "";
@@ -23,6 +30,10 @@ $(function () {
     }
 
     qryReqm();
+
+    $("#query").click(function(){
+        qryReqm();
+    });
 
     $("#uploadMmakeSql").click(function () {
         // $("#imgWait").show();
@@ -60,6 +71,39 @@ $(function () {
             }
         });
     });
+
+    // $reqList = $('#con');
+
+    $reqTab.delegate('.bodyCon', 'click', function(event) {
+        if ($activeReq) {
+            $activeReq.removeClass('active');
+        }
+
+        $(this).addClass('active');
+        $activeReq = $(this);
+    });
+
+    $reqTab.delegate('th', 'click', function(event){
+        // alert($(this).attr('id'));
+        aRequirement.sortId = $(this).attr('id');
+        var newReq = aRequirement.bsReq.sort(sortReq);
+        // alert(aRequirement.sortId);
+        // $.each(newReq,function(i,v){
+        //     alert(v['json_file'])
+        // });
+
+        fillTable(newReq,$reqTab)
+    });
+
+    function sortReq(a,b){
+        if (a[aRequirement.sortId] < b[aRequirement.sortId]) {return -1}
+        else if (a[aRequirement.sortId] > b[aRequirement.sortId]) {return 1}
+        else {return 0}
+
+    }
+    // $("#con tr").click(function(){
+    //
+    // });
 
     $("#saveJson").click(function(){
         var formData = new FormData();
@@ -106,7 +150,7 @@ $(function () {
         $.ajax({
             url: "makeBsSql",
             type: "GET",
-            data: {"jsonName":jsonName},
+            data: {"jsonName":jsonName}
         }).done(function(){
             alert("make sql "+jsonName)
         });
@@ -123,21 +167,21 @@ $(function () {
     //fill select
     function fillTable(aReqm,hTab){
         hTab.empty();
-        tabHead = "<tr>" +
-            "        <th class=\"json\">json文件</th>" +
-            "        <th class=\"state\">状态</th>" +
-            "        <th class=\"month\">月份</th>" +
-            "        <th class=\"sql\">sql文件</th>" +
-            "        <th class=\"type\">模块</th>" +
-            "        <th class=\"createtime\">生成时间</th>" +
-            "        <th class=\"updatetime\">更改时间</th>" +
+        tabHead = "<tr class=\"bodyHead\">" +
+            "        <th class=\"json\" id=\"json_file\">json文件</th>" +
+            "        <th class=\"state\" id=\"state\">状态</th>" +
+            "        <th class=\"month\" id=\"req_month\">月份</th>" +
+            "        <th class=\"sql\" id=\"sql_file\">sql文件</th>" +
+            "        <th class=\"type\" id=\"conf_type\">模块</th>" +
+            "        <th class=\"createtime\" id=\"create_date\">生成时间</th>" +
+            "        <th class=\"updatetime\" id=\"update_date\">更改时间</th>" +
             "    </tr>";
         hTab.append(tabHead);
-        $.each(aReqm.bsReq, function(i,dName){
+        $.each(aReqm, function(i,dName){
             // alert(i + dName)
             json = dName["json_file"];
 
-            trReqm = "<tr>" +
+            trReqm = "<tr class=\"bodyCon\">" +
                 "        <td class=\"json\" id=\"json\">" + dName["json_file"] + "</td>" +
                 "        <td class=\"state\" id=\"state\">" + dName["state"] + "</td>" +
                 "        <td class=\"month\" id=\"month\">" + dName["req_month"] + "</td>" +

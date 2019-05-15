@@ -6,6 +6,25 @@ $(function () {
     $reqTab = $('#con');
     $activeReq = null;
 
+    // // fill month
+    // (function(){
+    //     $hMonth = $("#month");
+    //     tNow = new Date();
+    //     $hMonth.empty();
+    //     strNow = getYYYYMM(tNow);
+    //     $hMonth.append("<option selected=\"selected\" value=\"" + strNow + "\">" + strNow + "</option>");
+    //     for(var i=1;i<12;i++){
+    //
+    //     }
+    // })();
+
+    function getYYYYMM(date){
+        yyyy =date.getFullYear();
+        month = date.getMonth()+1;
+        strMon = month > 9 ? month : '0'+month;
+        return yyyy + "" + strMon
+    }
+
     function qryReqm(){
         dReq = {
             "type":$('#reqType').val(),

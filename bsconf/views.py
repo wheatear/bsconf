@@ -3,6 +3,7 @@ from django.http import HttpResponse, JsonResponse
 from django.http import FileResponse
 
 import time, re
+import datetime
 from boss import settings
 import os,logging
 import json
@@ -22,7 +23,21 @@ def index(request):
     # logger = LoggerAdapter(initLogger,extra)
 
     # logger.info('access',extra)
-    return render(request,'bsconf/bsconfiger.html')
+    aMonth = getMonthes()
+    context = {'aMonth': aMonth}
+    return render(request,'bsconf/bsconfiger.html', context)
+
+def getMonthes():
+    # tNow = time.localtime()
+    month = time.strftime('%Y%m', time.localtime())
+    # tNow = datetime.datetime.now()
+    aMonth = []
+    for i in range(6):
+        newTime = str(int(month) - i)
+        if newTime.endswith('00'):
+            month = str(int(newTime[:4]) - 1) + '12'
+        aMonth.append(month)
+    return aMonth
 
 def configer(request):
     return render(request, 'bsconf/index.html')
@@ -54,13 +69,18 @@ def _uploadJson(request):
         month = request.POST.get("month", None)
         if not month:
             month = time.strftime('%Y%m', time.localtime())
+        reqType = request.POST.get("type",None)
+        if not reqType:
+            reqType = 'ZG'
+        if not jsonName.startswith(reqType):
+            jsonName = '%s-%s' % (reqType, jsonName)
 
         # destination = open(os.path.join(settings.IN_DIR, month, jsonName),'wb+')    # 打开特定的文件进行二进制的写操作
         with open(os.path.join(settings.IN_DIR, month, jsonName),'wb+') as destination:
             for chunk in jsonFile.chunks():      # 分块写入文件
                 destination.write(chunk)
         # destination.close()
-        bsReq = BsconfRequirement.create(jsonName, 'ZG')
+        bsReq = BsconfRequirement.create(jsonName, reqType)
         bsReq.save()
         return bsReq
 

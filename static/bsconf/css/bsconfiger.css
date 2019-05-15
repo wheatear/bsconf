@@ -52,14 +52,14 @@
     text-align: center;
 }
 
-/*.json{*/
-    /*width: 280px;*/
-/*}*/
+.json{
+    width: 360px;
+}
 .state{
     width:40px;
 }
 .month{
-    width: 50px;
+    width: 65px;
 }
 /*.sql{*/
     /*width: 400px;*/
@@ -74,3 +74,13 @@
     width: 80px;
 }
 
+table { table-layout: fixed;}
+
+table tr td {
+    overflow:hidden;
+    white-space:nowrap;
+    text-overflow:ellipsis;
+    -o-text-overflow:ellipsis;
+    -moz-text-overflow: ellipsis;
+    -webkit-text-overflow: ellipsis;
+}

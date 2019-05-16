@@ -133,6 +133,7 @@ class BsconfRequirement(models.Model):
     class Meta:
         managed = False
         db_table = 'BSCONF_REQUIREMENT'
+        # unique_together = ("json_file", "conf_type", "req_month")
 
     @classmethod
     def create(cls, json, type, state=0, month=None):

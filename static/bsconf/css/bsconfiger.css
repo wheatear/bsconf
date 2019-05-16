@@ -21,6 +21,10 @@
 .head{
     line-height:40px;
 }
+.condition{
+    display: inline-block;
+    width:200px;
+}
 
 .bodydiv{
     margin-top: -1px;

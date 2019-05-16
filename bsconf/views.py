@@ -85,7 +85,7 @@ def _uploadJson(request):
         return bsReq
 
 def _makeSql(bsReq):
-    bsf = BsConfiger(bsReq)
+    bsf = BsConfiger(bsReq, type=bsReq.conf_type)
     return bsf.start()
     # return JsonResponse({"rep": "ok"})
 

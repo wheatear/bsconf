@@ -58,6 +58,10 @@ $(function () {
         // $("#imgWait").show();
         var formData = new FormData();
         formData.append("jsonFile", document.getElementById("jsonFile").files[0]);
+        // var dReq = {
+        //     "type":$('#reqType').val()
+        // };
+        formData.append("type", $('#reqType').val())
         $.ajax({
             url: "uploadMakeSql",
             type: "POST",

@@ -67,6 +67,11 @@ dTabCheck = {}
 dTabCheck['MIS_BS_DEF_BILL_ITEM_MIS'] = "select MIS_GROUP_NO from base.bs_def_bill_item_mis where MIS_GROUP_NO='^<MIS_GROUP_NO^>'"
 dTabCheck['ACC_DEF_BILL_ITEM_AUDIT'] = "select AUDIT_GROUP_NO from inter.acc_def_bill_item_audit where AUDIT_GROUP_NO='^<AUDIT_GROUP_NO^>'"
 
+dCheckTabSts = {
+    "SMS_RULE": {"SMS_TEMPLATE_ID": ["交互中心",'5']},
+    "ITEM_MAP": {"BUSI_ITEM_CODE": ["CRM提供",'4']},
+    "ALL": {"ALL": ["祖奎",'3']}
+}
 
 class SequenceJump(object):
     stepMany = "ALTER SEQUENCE %s INCREMENT BY %d"
@@ -123,12 +128,13 @@ class BsconfRequirement(models.Model):
     conf_type = models.CharField(max_length=32)
     create_date = models.DateTimeField(auto_now_add=True)
     update_date = models.DateTimeField(auto_now=True)
-    state = models.IntegerField()
+    state = models.CharField(max_length=16)
     req_id = models.CharField(max_length=128)
     req_name = models.CharField(max_length=256)
     req_month = models.IntegerField()
     sql_file = models.CharField(max_length=256)
     remark = models.CharField(max_length=256)
+    author = models.CharField(max_length=32)
 
     class Meta:
         managed = False
@@ -136,10 +142,10 @@ class BsconfRequirement(models.Model):
         # unique_together = ("json_file", "conf_type", "req_month")
 
     @classmethod
-    def create(cls, json, type, state=0, month=None):
+    def create(cls, json, type, author, state=0, month=None):
         if not month:
             month = time.strftime('%Y%m', time.localtime())
-        bsReq = cls(json_file=json, conf_type=type, state=state, req_month=month)
+        bsReq = cls(json_file=json, conf_type=type, author=author, state=state, req_month=month)
         return bsReq
 
 

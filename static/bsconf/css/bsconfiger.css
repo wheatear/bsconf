@@ -10,6 +10,9 @@
     height: 40px;
     font: normal 12px/40px '微软雅黑';
 }
+#saveJson{
+    display: none;
+}
 .searcher{
     /*width: 50%;*/
     /*border-right: 1px solid blue;*/

@@ -1,17 +1,43 @@
 $(function () {
-    dReq = {
+    var dReq = {
         "type":"ZG"
     };
+    aRequirement = null;
+    $reqTab = $('#con');
+    $activeReq = null;
+
+    // // fill month
+    // (function(){
+    //     $hMonth = $("#month");
+    //     tNow = new Date();
+    //     $hMonth.empty();
+    //     strNow = getYYYYMM(tNow);
+    //     $hMonth.append("<option selected=\"selected\" value=\"" + strNow + "\">" + strNow + "</option>");
+    //     for(var i=1;i<12;i++){
+    //
+    //     }
+    // })();
+
+    function getYYYYMM(date){
+        yyyy =date.getFullYear();
+        month = date.getMonth()+1;
+        strMon = month > 9 ? month : '0'+month;
+        return yyyy + "" + strMon
+    }
+
     function qryReqm(){
         dReq = {
-            "type":$('#reqType').val()
+            "type":$('#reqType').val(),
+            "month":$('#month').val()
         };
-        alert(dReq.type);
+        // alert("type: " + dReq.type + " month: " + dReq.month);
         $.ajax({url:"qryRequirement",type: "GET",
             data:dReq
         }).done(function(aReqm){
-            hTab = $('#con');
-            fillTable(aReqm,hTab)
+            aRequirement = aReqm;
+            aRequirement.sortId = 'json';
+            // var hTab = $('#con');
+            fillTable(aReqm.bsReq,$reqTab)
         }).fail(function(rep){
             alert("qryRequirement fail: " + rep);
             errMsg = "";
@@ -24,12 +50,82 @@ $(function () {
 
     qryReqm();
 
-    $("#upload").click(function () {
+    $("#query").click(function(){
+        qryReqm();
+    });
+
+    $("#uploadMmakeSql").click(function () {
         // $("#imgWait").show();
         var formData = new FormData();
         formData.append("jsonFile", document.getElementById("jsonFile").files[0]);
+        // var dReq = {
+        //     "type":$('#reqType').val()
+        // };
+        formData.append("type", $('#reqType').val())
         $.ajax({
-            url: "uploadFile",
+            url: "uploadMakeSql",
+            type: "POST",
+            data: formData,
+             // *必须false才会自动加上正确的Content-Type
+            contentType: false,
+
+             // * 必须false才会避开jQuery对 formdata 的默认处理
+             // * XMLHttpRequest会对 formdata 进行正确的处理
+            processData: false,
+            success: function (data) {
+                var path = data.sqlFile;
+                var errCode = data.errCode;
+                var errDesc = data.errDesc;
+                // $("#sqlFile").href = path;
+                alert("生成SQL文件: " + path + " result: " + errCode + ":" + errDesc)
+
+                qryReqm();
+            },
+            error: function () {
+                alert("生成SQL文件失败！");
+                // $("#imgWait").hide();
+            }
+        });
+    });
+
+    // $reqList = $('#con');
+
+    $reqTab.delegate('.bodyCon', 'click', function(event) {
+        if ($activeReq) {
+            $activeReq.removeClass('active');
+        }
+
+        $(this).addClass('active');
+        $activeReq = $(this);
+    });
+
+    $reqTab.delegate('th', 'click', function(event){
+        // alert($(this).attr('id'));
+        aRequirement.sortId = $(this).attr('id');
+        var newReq = aRequirement.bsReq.sort(sortReq);
+        // alert(aRequirement.sortId);
+        // $.each(newReq,function(i,v){
+        //     alert(v['json_file'])
+        // });
+
+        fillTable(newReq,$reqTab)
+    });
+
+    function sortReq(a,b){
+        if (a[aRequirement.sortId] < b[aRequirement.sortId]) {return -1}
+        else if (a[aRequirement.sortId] > b[aRequirement.sortId]) {return 1}
+        else {return 0}
+
+    }
+    // $("#con tr").click(function(){
+    //
+    // });
+
+    $("#saveJson").click(function(){
+        var formData = new FormData();
+        formData.append("jsonFile", document.getElementById("jsonFile").files[0]);
+        $.ajax({
+            url: "saveJson",
             type: "POST",
             data: formData,
             /**
@@ -44,7 +140,7 @@ $(function () {
             success: function (data) {
                 var path = data.sqlFile;
                 // $("#sqlFile").href = path;
-                alert("生成SQL文件: " + path + " success")
+                alert("上传json文件: " + getFileName($("#jsonFile").val()) + " success")
                 // if (data.status == "true") {
                 //     alert("上传成功！");
                 // }
@@ -61,7 +157,7 @@ $(function () {
         });
     });
 
-    $('#makeSql').click(function(){
+    $('#makeSql0').click(function(){
         jsonFile = $("#jsonFile");
         jsonName = getFileName(jsonFile.val());
 
@@ -70,7 +166,7 @@ $(function () {
         $.ajax({
             url: "makeBsSql",
             type: "GET",
-            data: {"jsonName":jsonName},
+            data: {"jsonName":jsonName}
         }).done(function(){
             alert("make sql "+jsonName)
         });
@@ -87,21 +183,21 @@ $(function () {
     //fill select
     function fillTable(aReqm,hTab){
         hTab.empty();
-        tabHead = "<tr>" +
-            "        <th class=\"json\">json文件</th>" +
-            "        <th class=\"state\">状态</th>" +
-            "        <th class=\"month\">月份</th>" +
-            "        <th class=\"sql\">sql文件</th>" +
-            "        <th class=\"type\">模块</th>" +
-            "        <th class=\"createtime\">生成时间</th>" +
-            "        <th class=\"updatetime\">更改时间</th>" +
+        tabHead = "<tr class=\"bodyHead\">" +
+            "        <th class=\"json\" id=\"json_file\">json文件</th>" +
+            "        <th class=\"state\" id=\"state\">状态</th>" +
+            "        <th class=\"month\" id=\"req_month\">月份</th>" +
+            "        <th class=\"sql\" id=\"sql_file\">sql文件</th>" +
+            "        <th class=\"type\" id=\"conf_type\">模块</th>" +
+            "        <th class=\"createtime\" id=\"create_date\">生成时间</th>" +
+            "        <th class=\"updatetime\" id=\"update_date\">更改时间</th>" +
             "    </tr>";
         hTab.append(tabHead);
-        $.each(aReqm.bsReq, function(i,dName){
+        $.each(aReqm, function(i,dName){
             // alert(i + dName)
             json = dName["json_file"];
 
-            trReqm = "<tr>" +
+            trReqm = "<tr class=\"bodyCon\">" +
                 "        <td class=\"json\" id=\"json\">" + dName["json_file"] + "</td>" +
                 "        <td class=\"state\" id=\"state\">" + dName["state"] + "</td>" +
                 "        <td class=\"month\" id=\"month\">" + dName["req_month"] + "</td>" +

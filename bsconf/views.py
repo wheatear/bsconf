@@ -3,6 +3,7 @@ from django.http import HttpResponse, JsonResponse
 from django.http import FileResponse
 
 import time, re
+import datetime
 from boss import settings
 import os,logging
 import json
@@ -22,33 +23,78 @@ def index(request):
     # logger = LoggerAdapter(initLogger,extra)
 
     # logger.info('access',extra)
-    return render(request,'bsconf/bsconfiger.html')
+    aMonth = getMonthes()
+    context = {'aMonth': aMonth}
+    return render(request,'bsconf/bsconfiger.html', context)
+
+def getMonthes():
+    # tNow = time.localtime()
+    month = time.strftime('%Y%m', time.localtime())
+    # tNow = datetime.datetime.now()
+    aMonth = []
+    for i in range(6):
+        newTime = str(int(month) - i)
+        if newTime.endswith('00'):
+            month = str(int(newTime[:4]) - 1) + '12'
+        aMonth.append(month)
+    return aMonth
 
 def configer(request):
     return render(request, 'bsconf/index.html')
 
-def uploadFile(request):
+def uploadMakeSql(request):
+    logger.info('upload json')
+    bsf = _uploadJson(request)
+    logger.info('upload %s ok.',bsf.inFile)
+    logger.info('make sql for %s', bsf.inFile)
+    sqlFile = _makeSql(bsf)
+    result = {
+        "sqlFile": sqlFile,
+        "errCode": bsf.chkSts,
+        "errDesc": bsf.chkDesc
+    }
+    logger.info('make sql %s result: errCode: %s; errDesc: %s', sqlFile, bsf.chkSts, bsf.chkDesc)
+    return JsonResponse({"sqlFile":sqlFile})
+        # return bsf.downLoad()
+        # return JsonResponse(bsf.dInData)
+        # bsf.start()
+        # return HttpResponse("upload %s over!" % jsonName)
+
+def saveJson(request):
+    logger.info('upload json')
+    jsonName = _uploadJson(request)
+    logger.info('upload %s ok.', jsonName)
+    return JsonResponse({"rep": 'ok'})
+
+def _uploadJson(request):
     if request.method == "POST":    # 请求方法为POST时，进行处理
-        month = time.strftime('%Y%m', time.localtime())
         jsonFile =request.FILES.get("jsonFile", None)    # 获取上传的文件，如果没有文件，则默认为None
         if not jsonFile:
             return HttpResponse("no files for upload!")
         jsonName = jsonFile.name
+        month = request.POST.get("month", None)
+        if not month:
+            month = time.strftime('%Y%m', time.localtime())
+        reqType = request.POST.get("type",'ZG')
+        author = request.POST.get("author", '王新田')
+
+        if not jsonName.startswith(reqType):
+            jsonName = '%s-%s' % (reqType, jsonName)
+        bsf = BsConfiger(jsonName, reqType, author, month)
+        bsf.saveReqSts('0')
 
         # destination = open(os.path.join(settings.IN_DIR, month, jsonName),'wb+')    # 打开特定的文件进行二进制的写操作
         with open(os.path.join(settings.IN_DIR, month, jsonName),'wb+') as destination:
             for chunk in jsonFile.chunks():      # 分块写入文件
                 destination.write(chunk)
         # destination.close()
+        bsf.saveReqSts('1')
+        return bsf
 
-        bsf = BsConfiger(jsonName)
-        sqlFile = bsf.start()
-        logger.info('download file')
-        return JsonResponse({"sqlFile":sqlFile})
-        # return bsf.downLoad()
-        # return JsonResponse(bsf.dInData)
-        # bsf.start()
-        # return HttpResponse("upload %s over!" % jsonName)
+def _makeSql(bsf):
+    # bsf = BsConfiger(bsReq, type=bsReq.conf_type)
+    return bsf.start()
+    # return JsonResponse({"rep": "ok"})
 
 def makeBsSql(request):
     logger.info('request: %s %s from', request.method, request.path)
@@ -84,23 +130,33 @@ def download(request):
 class BsConfiger(object):
     tplSqlFile = "tplsql_promo.json"
     dTplSql = {}
-    def __init__(self, inFile, month=None, type='ZG'):
+    # jsonName, reqType, author, month
+    def __init__(self, inFile, type='ZG', author='王新田', month=None):
+        self.bsReq = BsconfRequirement.create(inFile, type, author, month)
         self.inFile = inFile
+        # logger.debug('json file: %s', self.inFile)
         if not month:
             month = time.strftime('%Y%m', time.localtime())
         self.month = month
         self.type = type
-        self.userName = '王新田'
+        self.author = author
         print('in data file %s' % inFile)
-        # self.outFile = 'DB配置-%s-王新田.sql' % inFile
         self.outFile = None
         self.outFull = None
         self.dInData = {}
         self.fOut = None
-        self.bsReq = None
+        self.chkSts = ''
+        self.chkDesc = ''
+
+    def saveReqSts(self, sts='0'):
+        self.bsReq.state = sts
+        self.bsReq.save()
+
+    def checkReq(self):
+        pass
 
     def start(self):
-        self.bsReq = BsconfRequirement.create(self.inFile, self.type)
+        # self.bsReq.state = 1
         self.bsReq.save()
         print('load sql template')
         self.loadTplSql()
@@ -109,16 +165,15 @@ class BsConfiger(object):
         # self.openOutFile()
         print('parse in file')
         self.parseDoc()
-        self.bsReq.sql_file = self.outFile
-        self.bsReq.state = 8
-        self.bsReq.save()
-        # self.writeSql()
-        # self.closeOut()
+        # self.bsReq.sql_file = self.outFile
+        # self.bsReq.state = 8
+        # self.bsReq.save()
         return self.outFull
 
     def loadTplSql(self):
         if len(BsConfiger.dTplSql) > 0:
             return
+        logger.info('load template sql %s', self.tplSqlFile)
         file = os.path.join(settings.TPL_DIR, self.tplSqlFile)
         with open(file) as fp:
             BsConfiger.dTplSql = json.load(fp)
@@ -136,15 +191,29 @@ class BsConfiger(object):
         aSql = []
 
         for req in self.dInData:
-            print('parse requirement %s' % req)
-            self.outFile = '%s.sql' % os.path.splitext(os.path.basename(req))[0]
+            logger.info('parse requirement %s' % req)
             # self.openOutFile()
             # self.fOut.write('-- %s%s' % (req, os.linesep))
             reqData = self.dInData[req]
-            confReq = ConfReq(self, req, reqData)
-            confReq.parseDocName()
-            confReq.parse()
-            self.outFile = confReq.outName
+            reqParser = ReqParser(self, req, reqData)
+            reqParser.parseDocName()
+            self.outFile = reqParser.outName
+            self.bsReq.sql_file = reqParser.outName
+            reqParser.parse('sts')
+            self.chkSts = reqParser.chkSts
+            self.chkDesc = reqParser.chkDesc
+            if len(reqParser.chkSts) > 0:
+                self.chkSts = ','.join(reqParser.chkSts)
+                self.bsReq.state = self.chkSts
+                self.bsReq.remark = reqParser.chkDesc
+                self.bsReq.save()
+                return self.chkSts
+            self.bsReq.state = '2'
+            self.bsReq.save()
+
+            reqParser.parse('sql')
+            self.bsReq.state = '7'
+            self.bsReq.save()
             self.outFull = os.path.join(settings.OUT_DIR, self.month, self.outFile)
             # reqSet = BsconfRequirement.objects.filter(json_file=self.inFile, conf_type=self.type, req_month=self.month)
             # for bsReq in reqSet:
@@ -165,21 +234,23 @@ class BsConfiger(object):
     #     self.fOut.close()
 
 
-class ConfReq(object):
-    def __init__(self, configer, docName, reqData):
+class ReqParser(object):
+    def __init__(self, configer, reqName, reqData):
         self.configer = configer
-        self.docName = docName
+        self.reqName = reqName
         self.reqData = reqData
         self.reqId = None
-        self.reqName = None
+        # self.reqName = None
         self.outName = None
         self.fOut = None
+        self.chkSts = []
+        self.chkDesc = ''
 
     def parseDocName(self):
-        docBase = os.path.splitext(os.path.basename(self.docName))[0]
+        docBase = os.path.splitext(os.path.basename(self.reqName))[0]
         docBase = docBase.replace('BOSS需求解决方案-','')
         self.reqName = docBase.replace('需求解决方案-', '')
-        self.outName = '%s-%s-%s.sql' % (self.configer.type, self.reqName, self.configer.userName)
+        self.outName = '%s-%s-%s.sql' % (self.configer.type, self.reqName, self.configer.author)
 
     def openOut(self):
         if self.fOut:
@@ -201,28 +272,59 @@ class ConfReq(object):
             self.fOut.write('-- %s%s' % (sql[0], os.linesep))
             self.fOut.write('%s%s' % (sql[1], os.linesep))
 
-    def parse(self):
-        self.openOut()
-        self.fOut.write('-- %s%s' % (self.reqName, os.linesep))
+    # def checkReq(self):
+    #     chkResult = {}
+    #
+    #     for block in self.reqData:
+    #         if block not in self.configer.dTplSql:
+    #             print('%s no sql template' % block)
+    #             continue
+    #         dBlockSql = self.configer.dTplSql[block]
+    #         dBlockData = self.reqData[block]
+    #         for i in range(len(dBlockData)):
+    #             logger.info('check %s %d' % (block, i+1))
+    #             blockData = dBlockData[i]
+    #             # dFields = {}
+    #             block = TableBlock(block, blockData)
+    #             block.parse()
+    #             self.writeBlockSql(block, i + 1)
+    #
+
+    def parse(self, type='sts'):
+        if type == 'sql':
+            self.openOut()
+            self.fOut.write('-- %s%s' % (self.reqName, os.linesep))
         for blockGrp in self.reqData:
-            print('parse block group %s ...' % blockGrp)
+            logger.info('parse block group %s ...' % blockGrp)
             if blockGrp not in self.configer.dTplSql:
-                print('%s no sql template' % blockGrp)
+                logger.info('%s no sql template' % blockGrp)
                 break
             dBlockSql = self.configer.dTplSql[blockGrp]
             blockGrpData = self.reqData[blockGrp]
             for i in range(len(blockGrpData)):
-                print('%s %d' % (blockGrp, i+1))
+                logger.info('%s %d' % (blockGrp, i+1))
                 blockData = blockGrpData[i]
                 # dFields = {}
                 block = TableBlock(blockGrp, blockData)
-                block.parse()
-                self.writeBlockSql(block, i + 1)
+                block.parse(type)
+                if type == 'sts':
+                    self.setChkSts(block)
+                elif type == 'sql':
+                    self.writeBlockSql(block, i + 1)
                 # ss = self.parseBlock(tpl, dFields, dTplSql)
-            print('block group %s of %d completed' % (blockGrp, len(blockGrpData)))
-        self.fOut.write('%scommit;%s' % (os.linesep, os.linesep))
-        self.closeOut()
+            logger.info('block group %s of %d completed' % (blockGrp, len(blockGrpData)))
+        if type == 'sql':
+            self.fOut.write('%scommit;%s' % (os.linesep, os.linesep))
+            self.closeOut()
 
+    def setChkSts(self, block):
+        aChk = block.getCheck()
+        logger.info('chkSts: %s', aChk[0])
+        logger.info('chkDesc: %s', aChk[1])
+        for s in aChk[0]:
+            if s not in self.chkSts:
+                self.chkSts.append(s)
+        self.chkDesc = aChk[1]
 
 class TableComp(object):
     def __init__(self, name, data, blockName, parent=None):
@@ -235,9 +337,11 @@ class TableComp(object):
         self.children = []
         self.dFields = {}
         self.sql = None
+        self.chkSts = []
+        self.chkDesc = ''
 
-    def parse(self):
-        print('parse table of %s' % self.tabName)
+    def parse(self, ptype='sql'):
+        logger.info('parse table of %s' % self.tabName)
         aSubTable = []
         for field in self.dData:
             val = self.dData[field]
@@ -248,25 +352,53 @@ class TableComp(object):
                 self.children.append(Table(field, val, self))
             else:
                 self.dFields[field] = val
-        print('make sql of table %s' % self.tabName)
-        # if len(self.dFields) > 0:
-        sql = self.makeSql()
-        print(sql)
-        # self.aSql.append(sql)
-        self.sql = sql
-        # if sql:
-        #     self.aSql.append(sql)
+
+        if ptype == 'sql':
+            logger.debug('make sql of table %s' % self.tabName)
+            sql = self.makeSql()
+            # print(sql)
+            self.sql = sql
+        elif ptype == 'sts':
+            logger.debug('check status of table %s' % self.tabName)
+            self.checkSts()
+
         for subTab in self.children:
-            subTab.parse()
-            # for subName in sub:
-            #     print('process subtab %s : %s' % (tName, subName))
-            #     tab = sub[subName]
-            #     self.parseTab(subName, tab)
-        print('table %s complate' % self.tabName)
+            subTab.parse(ptype)
+        logger.info('parse table %s complate' % self.tabName)
+
+    def checkSts(self):
+        if self.tabName == self.blockName:
+            return
+        if self.tabName not in self.dBlockTmpl:
+            logger.error('%s not in block template %s' % (self.tabName, self.blockName))
+            self.chkSts.append('-1')
+            self.chkDesc = '%s%s; ' % (self.chkDesc, self.tabName)
+        allChkVal = dCheckTabSts['ALL']['ALL'][0]
+        allChkSts = dCheckTabSts['ALL']['ALL'][1]
+        for f in self.dFields:
+            if type(self.dFields[f]) is not str:
+                continue
+            if self.dFields[f].find(allChkVal) > -1:
+                if allChkSts not in self.chkSts:
+                    self.chkSts.append(allChkSts)
+        if self.tabName not in dCheckTabSts:
+            return
+        dChkField = dCheckTabSts[self.tabName]
+        for f in self.dFields:
+            if f in dChkField:
+                if type(self.dFields[f]) is not str:
+                    continue
+                if self.dFields[f].find(dChkField[f][0]) > -1:
+                    sts = dChkField[f][1]
+                    if sts not in self.chkSts:
+                        self.chkSts.append(sts)
+        logger.info('check status %s complete.', self.tabName)
 
     def makeSql(self):#, self.dFields, self.dTplSql
+        if self.tabName == self.blockName:
+            return
         if self.tabName not in self.dBlockTmpl:
-            print('%s not in block template %s' % (self.tabName, self.blockName))
+            logger.info('%s not in block template %s' % (self.tabName, self.blockName))
             return None
         if self.dBlockTmpl[self.tabName] == "None":
             return None
@@ -329,6 +461,20 @@ class TableComp(object):
             return None
         return aSql
 
+    def getCheck(self):
+        aChk = self.chkSts
+        chkDesc =self.chkDesc
+        # if self.chkSts:
+        #     aChk.extend(self.chkSts)
+        for ch in self.children:
+            chk = ch.getCheck()
+            subSts = chk[0]
+            chkDesc = '%s,%s' % (chkDesc, chk[1])
+            for s in subSts:
+                if s not in aChk:
+                    aChk.append(s)
+        return (aChk, chkDesc)
+
 
 class Table(TableComp):
     def __init__(self, name, data, parent):
@@ -357,10 +503,10 @@ class BsSql(object):
             # fValue = self.table.getField(field)
             # if fValue:
             #     continue
-            print('get field: %s' % field)
+            logger.debug('get field: %s' % field)
             val = None
             if field == 'MIS_GROUP_NO_PAT':
-                print('get MIS_GROUP_NO by %s' % self.table.getField(field))
+                logger.debug('get MIS_GROUP_NO by %s' % self.table.getField(field))
                 speField = MisGroupNo(field, self.table.getField(field))
                 # val = speField.getVal()
             elif field == 'COND_ID':

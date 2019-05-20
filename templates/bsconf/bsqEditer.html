@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="/static/bsconf/css/jquery.jsonview.css" />
+
+    <link rel="stylesheet" href="/static/bsconf/css/bsconfiger.css?v=1.0.40" />
+
+    <script src="/static/bsconf/js/jquery-3.3.1.min.js"></script>
+    <script type="text/javascript" src="/static/bsconf/js/jquery.jsonview.js"></script>
+    <script type="text/javascript" src="/static/bsconf/js/bsconfiger.js?v=1.0.67"></script>
+</head>
+<body>
+<div class="topdiv">
+
+    <div class="makeSql">
+        <span class="file">
+            <input type="file" class="head" id="jsonFile" />
+        </span>
+
+        {#    <a href="" id="sqlFile">下载</a>#}
+        <input type="button" class="head" id="uploadMmakeSql" value="生成SQL"/>
+        <input type="button" class="head" id="saveJson" value="保存json"/>
+    </div>
+
+</div>
+
+<div class="conts">
+    <div class="btns">
+        <span>
+            <input type="button" value="JSON"/>
+        </span>
+        <span>
+            <input type="button" value="SQL"/>
+        </span>
+    </div>
+    <div class="editer">
+        <div id="jsonEd">
+
+        </div>
+        <div id="sqlEd">
+
+        </div>
+    </div>
+</div>
+</body>
+</html>

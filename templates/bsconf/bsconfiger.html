@@ -5,24 +5,50 @@
     <title>BOSS配置</title>
     <link rel="stylesheet" href="/static/bsconf/css/jquery.jsonview.css" />
 
-    <link rel="stylesheet" href="/static/bsconf/css/bsconfiger.css?v=1.0.16" />
+    <link rel="stylesheet" href="/static/bsconf/css/bsconfiger.css?v=1.0.41" />
 
     <script src="/static/bsconf/js/jquery-3.3.1.min.js"></script>
     <script type="text/javascript" src="/static/bsconf/js/jquery.jsonview.js"></script>
-    <script type="text/javascript" src="/static/bsconf/js/bsconfiger.js?v=1.0.44"></script>
+    <script type="text/javascript" src="/static/bsconf/js/bsconfiger.js?v=1.0.67"></script>
 </head>
 <body>
-<div class="topdiv">
-    <label>模块</label>
-    <select class="head" id="reqType">
-        <option selected="selected" value="ZG">帐管配置</option>
-        <option value="ZC">帐处配置</option>
-        <option value="INTER">接口配置</option>
-    </select>
-    <input type="file" class="head" id="jsonFile" />
-    {#    <a href="" id="sqlFile">下载</a>#}
-    <input type="button" class="head" id="upload" value="生成SQL"/>
-    <input type="button" class="head" id="saveJson" value="保存json"/>
+
+<div class="topdiv searcher">
+        <span class="condition">
+            <label>模块</label>
+        <select class="head" id="reqType">
+            <option selected="selected" value="ZG">帐管配置</option>
+            <option value="ZC">帐处配置</option>
+            <option value="INTER">接口配置</option>
+        </select>
+        </span>
+    <span class="condition">
+            <label>月份</label>
+        <select class="head" id="month">
+{#            <option selected="selected" value="201905">201905</option>#}
+{#            <option value="201904">201904</option>#}
+{#            <option value="201903">201903</option>#}
+            {% for m in aMonth %}
+                <option value="{{ m }}">{{ m }}</option>
+            {% endfor %}
+        </select>
+        </span>
+    <span>
+            <input type="button" class="head" id="query" value="确定"/>
+        </span>
+
+</div>
+<div class="topdiv maker">
+
+    <div class="makeSql">
+        <span class="file">
+            <input type="file" class="head" id="jsonFile" />
+        </span>
+
+        {#    <a href="" id="sqlFile">下载</a>#}
+        <input type="button" class="head" id="uploadMmakeSql" value="生成SQL"/>
+        <input type="button" class="head" id="saveJson" value="保存json"/>
+    </div>
 
 </div>
 {#<div>#}
@@ -30,23 +56,23 @@
 {#</div>#}
 <div class="bodydiv">
 <table class="con" id="con">
-    <tr>
-        <th class="json">json文件</th>
-        <th class="state">状态</th>
-        <th class="month">月份</th>
-        <th class="sql">sql文件</th>
-        <th class="type">模块</th>
-        <th class="createtime">生成时间</th>
-        <th class="updatetime">更改时间</th>
+    <tr class="bodyHead">
+        <th class="json" id="json_file">json文件</th>
+        <th class="state" id="state">状态</th>
+        <th class="month" id="req_month">月份</th>
+        <th class="sql" id="sql_file">sql文件</th>
+        <th class="type" id="conf_type">模块</th>
+        <th class="createtime" id="create_date">生成时间</th>
+        <th class="updatetime" id="update_date">更改时间</th>
     </tr>
-    <tr>
+    <tr class="bodyCon">
         <td class="json" id="json"></td>
         <td class="state" id="state"></td>
         <td class="month" id="month"></td>
         <td class="sql" id="sql"></td>
         <td class="type" id="type"></td>
         <td class="createtime" id="createtime"></td>
-        <td class="updatetime" id="updatetime"></td>
+        <td class="updatetime" id="update_date"></td>
     </tr>
 </table>
 </div>

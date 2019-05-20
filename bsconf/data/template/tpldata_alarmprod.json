@@ -1,10 +1,10 @@
 {
-  "BOSS需求解决方案-BOSS-KS-2019-05-173-wangting1-AM快速配置-快响需求-瑞幸咖啡代金券开发需求": {
+  "BOSS需求解决方案-BOSS-JT-2019-05-326-zhangchong-一级能力开放平台配置语音扶贫及新浪微博定向流量产品": {
       "ALARM_PROD_BLOCK": [
         {
           "ALARM_PROD_HEAD": {
-            "PROD_ID": "50002343",
-            "PROD_NAME": "承诺128元畅享放心用套餐存费送费2019-赠送语音",
+            "PROD_ID": "54001869",
+            "PROD_NAME": "语言扶贫APP定向流量包",
             "PACKAGE_ALARM_PROD": [
               {
                 "ALARM_TYPE": "1"
@@ -20,15 +20,13 @@
               }
             ]
           },
-          "PRE_ITEM": [
+          "FREEBIE_ITEM": [
             {
               "ITEM_CODE": "66661174",
               "ITEM_NAME": "语言扶贫定向流量",
               "ALARM_ITEM_CONVERT_VOC": {},
               "ALARM_ITEM_CONVERT_DAT": {},
-              "GPRS_FREEBIE_HFF": {
-                "COMMON_RES_FREE_TYPE": "6074"
-              }
+              "GPRS_FREEBIE_HFF": {}
             }
           ]
         }

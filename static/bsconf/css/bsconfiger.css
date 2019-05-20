@@ -13,11 +13,14 @@
 #saveJson{
     display: none;
 }
-.searcher{
-    /*width: 50%;*/
-    /*border-right: 1px solid blue;*/
+.maker{
     margin-top: -1px;
 }
+/*.searcher{*/
+    /*!*width: 50%;*!*/
+    /*!*border-right: 1px solid blue;*!*/
+    /*margin-top: -1px;*/
+/*}*/
 .file{
     line-height:23px;
 }

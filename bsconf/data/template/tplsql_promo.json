@@ -213,17 +213,21 @@
       "COMMENT": "新增余量提醒  ALARM_TYPE 1-全球通  4-动感  5-神州行  15-其它",
       "SQL": "INSERT INTO ZG.PACKAGE_ALARM_PROD (PROD_ID, PROD_NAME, ALARM_TYPE, VALID_DATE, EXPIRE_DATE, REMARK) VALUES ('^<PROD_ID^>', '^<PROD_NAME^>', '^<ALARM_TYPE^>', to_date('01-01-2001', 'dd-mm-yyyy'), to_date('01-01-2030', 'dd-mm-yyyy'), null);"
     },
+    "FREEBIE_ITEM": "None",
     "ALARM_ITEM_CONVERT_VOC":{
-      "COMMENT": "语音",
+      "COMMENT": "套餐余量提醒免费资源科目转换表-语音",
       "SQL": "INSERT INTO ZG.PACKAGE_ALARM_ITEM_CONVERT (ITEM_CODE, ITEM_NAME, UNIT_CYCLE, UNIT_DES, UNIT_DEC, REMARK) values ('^<ITEM_CODE^>', '^<ITEM_NAME^>', '1', '分钟', '0', null);"
     },
     "ALARM_ITEM_CONVERT_DAT":{
-      "COMMENT": "流量",
+      "COMMENT": "套餐余量提醒免费资源科目转换表-流量",
       "SQL": "INSERT INTO ZG.PACKAGE_ALARM_ITEM_CONVERT (ITEM_CODE, ITEM_NAME, UNIT_CYCLE, UNIT_DES, UNIT_DEC, REMARK) values ('^<ITEM_CODE^>', '^<ITEM_NAME^>', '1024', 'MB', '2', null);"
     },
     "GPRS_FREEBIE_HFF": {
       "COMMENT": "新增免费资源科目纳入cxzsll (参考66661113科目)  CXLL,cxyl,cxzsll,CXGLL,cxyeyl",
-      "SQL": "INSERT INTO ZG.GPRS_FREEBIE_HFF (FREEBIE_ID, PRIORITY, REMARK, CRM_RES_FREE_TYPE, COMMON_RES_FREE_TYPE, FREEBIE_TYPE, TRANSFER_RES_FREE_TYPE, TRANSFER_RES_FREE_NAME, IS_USED) VALUES ('^<ITEM_CODE^>', '0', '^<ITEM_NAME^>', '0', '^<COMMON_RES_FREE_TYPE^>', '0', '0', null, '0');"
+      "SQL": "INSERT INTO ZG.GPRS_FREEBIE_HFF (FREEBIE_ID, PRIORITY, REMARK, CRM_RES_FREE_TYPE, COMMON_RES_FREE_TYPE, FREEBIE_TYPE, TRANSFER_RES_FREE_TYPE, TRANSFER_RES_FREE_NAME, IS_USED) VALUES ('^<ITEM_CODE^>', '0', '^<ITEM_NAME^>', '0', '^<COMMON_RES_FREE_TYPE^>', '0', '0', null, '0');",
+      "FIELDS": {
+        "COMMON_RES_FREE_TYPE": "COMMON_RES_FREE_TYPE"
+      }
     },
     "PACKAGE_ALARM_PROD_MOD": {
       "COMMENT": "修改余量提醒产品名称",

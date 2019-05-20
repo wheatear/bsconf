@@ -503,10 +503,10 @@ class BsSql(object):
             # fValue = self.table.getField(field)
             # if fValue:
             #     continue
-            print('get field: %s' % field)
+            logger.debug('get field: %s' % field)
             val = None
             if field == 'MIS_GROUP_NO_PAT':
-                print('get MIS_GROUP_NO by %s' % self.table.getField(field))
+                logger.debug('get MIS_GROUP_NO by %s' % self.table.getField(field))
                 speField = MisGroupNo(field, self.table.getField(field))
                 # val = speField.getVal()
             elif field == 'COND_ID':

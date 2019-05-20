@@ -59,6 +59,9 @@ dFieldSql['MIS_GROUP_NO_PAT03'] = ("select max(MIS_GROUP_NO) from base.bs_def_bi
 dFieldSql['MIS_GROUP_NO_PAT09'] = ("select max(MIS_GROUP_NO) from base.bs_def_bill_item_mis where MIS_GROUP_NO like '%s'",
                                    None)
 
+dFieldSql['COMMON_RES_FREE_TYPE'] = ("select max(common_res_free_type) from zg.gprs_freebie_hff where common_res_free_type>6073 and common_res_free_type<6099",
+                                   "select max(common_res_free_type) from zg.gprs_freebie_hff where common_res_free_type>6073 and common_res_free_type<6099")
+
 RECEIPT_TYPE = "select max(receipt_type) from  base.bs_busi_receipt_type t where t.receipt_type  >1000 AND  t.receipt_type<2000 "
 RECEIPT_ITEM = "select max(receipt_item) from base.bs_busi_receipt_item t where t.receipt_item >1400 AND t.receipt_item<2000c"
 MIS_GROUP_NO = "select max(MIS_GROUP_NO) from base.bs_def_bill_item_mis where MIS_GROUP_NO like '%s'"

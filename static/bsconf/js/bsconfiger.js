@@ -28,7 +28,8 @@ $(function () {
     function qryReqm(){
         dReq = {
             "type":$('#reqType').val(),
-            "month":$('#month').val()
+            "month":$('#month').val(),
+            "author":$('#author').val()
         };
         // alert("type: " + dReq.type + " month: " + dReq.month);
         $.ajax({url:"qryRequirement",type: "GET",
@@ -61,7 +62,8 @@ $(function () {
         // var dReq = {
         //     "type":$('#reqType').val()
         // };
-        formData.append("type", $('#reqType').val())
+        formData.append("type", $('#reqType').val());
+        formData.append("author", $('#author').val());
         $.ajax({
             url: "uploadMakeSql",
             type: "POST",

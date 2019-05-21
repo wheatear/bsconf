@@ -5,11 +5,11 @@
     <title>BOSS配置</title>
     <link rel="stylesheet" href="/static/bsconf/css/jquery.jsonview.css" />
 
-    <link rel="stylesheet" href="/static/bsconf/css/bsconfiger.css?v=1.0.41" />
+    <link rel="stylesheet" href="/static/bsconf/css/bsconfiger.css?v=1.0.49" />
 
     <script src="/static/bsconf/js/jquery-3.3.1.min.js"></script>
     <script type="text/javascript" src="/static/bsconf/js/jquery.jsonview.js"></script>
-    <script type="text/javascript" src="/static/bsconf/js/bsconfiger.js?v=1.0.67"></script>
+    <script type="text/javascript" src="/static/bsconf/js/bsconfiger.js?v=1.0.68"></script>
 </head>
 <body>
 
@@ -33,6 +33,9 @@
             {% endfor %}
         </select>
         </span>
+    <span class="condition">
+            <label>作者</label><input type="text" class="head" id="author" value="王新田" />
+        </span>
     <span>
             <input type="button" class="head" id="query" value="确定"/>
         </span>
@@ -47,6 +50,9 @@
 
         {#    <a href="" id="sqlFile">下载</a>#}
         <input type="button" class="head" id="uploadMmakeSql" value="生成SQL"/>
+        <input type="button" class="head" id="executeSql" value="执行SQL"/>
+        <input type="button" class="head" id="downloadSql" value="下载SQL"/>
+        <a href="/static/bsconf/js/jquery.jsonview.js">下载模板</a>
         <input type="button" class="head" id="saveJson" value="保存json"/>
     </div>
 

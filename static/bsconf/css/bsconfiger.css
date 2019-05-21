@@ -8,7 +8,7 @@
     /*float:left;*/
     margin:0 auto;
     height: 40px;
-    font: normal 12px/40px '微软雅黑';
+    font: normal 14px/40px '微软雅黑';
 }
 #saveJson{
     display: none;
@@ -25,7 +25,10 @@
     line-height:23px;
 }
 .head{
-    line-height:40px;
+    /*line-height:40px;*/
+    display: inline-block;
+    border: 1px ;
+    margin-left: 3px;
 }
 .condition{
     display: inline-block;
@@ -38,6 +41,8 @@
 .bodyHead{
     background-color: rgb(224,237,255);
 }
+
+
 .con{
     border: 1px solid blue;
     border-collapse: collapse;

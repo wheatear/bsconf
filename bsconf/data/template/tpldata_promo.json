@@ -4,11 +4,11 @@
       {
         "PROMO": {
           "SAP_ID": "SAP1151",
+          "SAP_FEE_TYPE": "1",
           "PROMO_NAME": "128元畅享放心用套餐首充优惠首月-赠送",
           "BUSI_TYPE_CODE": "4300",
           "COND": [
             {
-              "COND_NAME": "128元畅享放心用套餐首充优惠首月-赠送",
               "RET_DAY": "0",
               "ALLOT": [
                 {
@@ -18,9 +18,7 @@
                   "CANCEL_BOOK_ITEM_ID": "80501"
                 }
               ],
-              "SAP_MAP": {
-                "SAP_FEE_TYPE": "1"
-              },
+              "SAP_MAP": {},
               "SMS_FORM": [
                 {
                   "APPLY_TYPE": "1",
@@ -51,46 +49,36 @@
       {
         "PROMO": {
           "SAP_ID": "SAP1151",
+          "SAP_FEE_TYPE": "1",
           "PROMO_NAME": "128元畅享放心用套餐首充优惠首月-赠送",
           "BUSI_TYPE_CODE": "4300",
           "COND": [
             {
-              "COND_NAME": "128元畅享放心用套餐首充优惠首月-赠送",
-              "PRE_FEE": "5000",
-              "HIGH_PRE_FEE": "5000",
+              "ALLOT_AMOUNT": "5000",
+              "ALLOT_MONTH": "1",
               "RET_DAY": "0",
               "ALLOT": [
                 {
                   "BOOK_ITEM_ID": "82951",
                   "BOOK_TYPE": "1",
-                  "ALLOT_AMOUNT": "5000",
-                  "ALLOT_MONTH": "1",
                   "ALLOT_TYPE": "1",
                   "ALLOT_SCALE": "5000",
                   "ALLOT_ATTR": "00000000120000000010",
                   "CANCEL_BOOK_ITEM_ID": "80501"
                 }
               ],
-              "SAP_MAP": {
-                "SAP_FEE_TYPE": "1",
-                "SAP_FEE_VALUE": "5000",
-                "SAP_FEE_MONTH": "1"
-              },
-              "SMS": [
+              "SAP_MAP": {},
+              "SMS_FORM": [
                 {
-                  "SMS_FORM": {
-                    "APPLY_TYPE": "1",
-                    "SMS_RULE": {
-                      "SMS_TEMPLATE_ID": "交互中心1"
-                    }
+                  "APPLY_TYPE": "1",
+                  "SMS_RULE": {
+                    "SMS_TEMPLATE_ID": "交互中心1"
                   }
                 },
                 {
-                  "SMS_FORM": {
-                    "APPLY_TYPE": "6",
-                    "SMS_RULE": {
-                      "SMS_TEMPLATE_ID": "交互中心2"
-                    }
+                  "APPLY_TYPE": "6",
+                  "SMS_RULE": {
+                    "SMS_TEMPLATE_ID": "交互中心2"
                   }
                 }
               ]

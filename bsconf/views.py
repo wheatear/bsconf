@@ -34,6 +34,7 @@ def getMonthes():
     aMonth = []
     for i in range(6):
         newTime = str(int(month) - i)
+        month = newTime
         if newTime.endswith('00'):
             month = str(int(newTime[:4]) - 1) + '12'
         aMonth.append(month)
@@ -111,9 +112,10 @@ def qryRequirement(request):
     if request.method == 'GET':
         jsonType = request.GET.get('type','ZG')
         jsonMonth = request.GET.get('month',None)
+        jsonAuthor = request.GET.get('author', None)
     if not jsonMonth:
         jsonMonth = time.strftime('%Y%m', time.localtime())
-    bsReq = BsconfRequirement.objects.filter(conf_type=jsonType, req_month=jsonMonth).values()
+    bsReq = BsconfRequirement.objects.filter(conf_type=jsonType, req_month=jsonMonth, author=jsonAuthor).values()
     aReq = []
     for r in bsReq:
         aReq.append(r)

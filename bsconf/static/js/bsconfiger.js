@@ -75,12 +75,13 @@ $(function () {
              // * XMLHttpRequest会对 formdata 进行正确的处理
             processData: false,
             success: function (data) {
-                var path = data.sqlFile;
+                var sqlFile = data.sqlFile;
+                var path = data.downPath;
                 var errCode = data.errCode;
                 var errDesc = data.errDesc;
                 // $("#sqlFile").href = path;
-                alert("生成SQL文件: " + path + " result: " + errCode + ":" + errDesc)
-
+                alert("生成SQL文件: " + sqlFile + " result: " + errCode + ":" + errDesc)
+                $('#downloadSql').href(path + "/" + sqlFile)
                 qryReqm();
             },
             error: function () {

@@ -34,10 +34,10 @@ def getMonthes():
     aMonth = []
     for i in range(6):
         newTime = str(int(month) - i)
-        month = newTime
         if newTime.endswith('00'):
-            month = str(int(newTime[:4]) - 1) + '12'
-        aMonth.append(month)
+            month = str(int(newTime[:4]) - 1) + str(int(newTime[:4]) + 12)
+            newTime = str(int(month) - i)
+        aMonth.append(newTime)
     return aMonth
 
 def configer(request):
@@ -49,8 +49,10 @@ def uploadMakeSql(request):
     logger.info('upload %s ok.',bsf.inFile)
     logger.info('make sql for %s', bsf.inFile)
     sqlFile = _makeSql(bsf)
+    downPath = 'bsconf/out/%s' % bsf.month
     result = {
         "sqlFile": sqlFile,
+        "downPath": downPath,
         "errCode": bsf.chkSts,
         "errDesc": bsf.chkDesc
     }
@@ -85,7 +87,10 @@ def _uploadJson(request):
         bsf.saveReqSts('0')
 
         # destination = open(os.path.join(settings.IN_DIR, month, jsonName),'wb+')    # 打开特定的文件进行二进制的写操作
-        with open(os.path.join(settings.IN_DIR, month, jsonName),'wb+') as destination:
+        jsonDir = os.path.join(settings.IN_DIR, month)
+        if not os.path.exists(jsonDir):
+            os.makedirs(jsonDir)
+        with open(os.path.join(jsonDir, jsonName),'wb+') as destination:
             for chunk in jsonFile.chunks():      # 分块写入文件
                 destination.write(chunk)
         # destination.close()
@@ -142,7 +147,7 @@ class BsConfiger(object):
         self.month = month
         self.type = type
         self.author = author
-        print('in data file %s' % inFile)
+        logger.info('in data file %s' % inFile)
         self.outFile = None
         self.outFull = None
         self.dInData = {}
@@ -160,12 +165,12 @@ class BsConfiger(object):
     def start(self):
         # self.bsReq.state = 1
         self.bsReq.save()
-        print('load sql template')
+        logger.info('load sql template')
         self.loadTplSql()
-        print('load data')
+        logger.info('load data')
         self.loadData()
         # self.openOutFile()
-        print('parse in file')
+        logger.info('parse in file')
         self.parseDoc()
         # self.bsReq.sql_file = self.outFile
         # self.bsReq.state = 8
@@ -258,7 +263,10 @@ class ReqParser(object):
         if self.fOut:
             return self.fOut
         print('open out file %s' % self.outName)
-        file = os.path.join(settings.OUT_DIR, self.configer.month, self.outName)
+        sqlDir = os.path.join(settings.OUT_DIR, self.configer.month)
+        if not os.path.exists(sqlDir):
+            os.makedirs(sqlDir)
+        file = os.path.join(sqlDir, self.outName)
         print('open out file: %s' % file)
         try:
             self.fOut = open(file, 'w')

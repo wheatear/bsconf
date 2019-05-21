@@ -17,6 +17,8 @@ $(function () {
     //
     //     }
     // })();
+    $('#reqType').val(localStorage.reqType);
+    $('#author').val(localStorage.author);
 
     function getYYYYMM(date){
         yyyy =date.getFullYear();
@@ -80,8 +82,8 @@ $(function () {
                 var errCode = data.errCode;
                 var errDesc = data.errDesc;
                 // $("#sqlFile").href = path;
-                alert("生成SQL文件: " + sqlFile + " result: " + errCode + ":" + errDesc)
-                $('#downloadSql').href(path + "/" + sqlFile)
+                alert("生成SQL文件: " + sqlFile + " result: " + errCode + ":" + errDesc);
+                $('#downloadSql').href(path + "/" + sqlFile);
                 qryReqm();
             },
             error: function () {
@@ -92,6 +94,14 @@ $(function () {
     });
 
     // $reqList = $('#con');
+    $('#reqType').change(function(ev){
+        localStorage.reqType = $(this).val();
+    });
+
+    $('#author').change(function(ev){
+        localStorage.author = $(this).val();
+    });
+
 
     $reqTab.delegate('.bodyCon', 'click', function(event) {
         if ($activeReq) {

@@ -125,6 +125,18 @@ class BsItemId(models.Model):
         bsItem = cls(item_name=name, item_id=id)
         return bsItem
 
+dBsReqState = {
+    '-1': '失败;',
+    '0': '收到上传请求；',
+    '1': '上传成功；',
+    '2': '检查完成；',
+    '3': '需要祖奎ID；',
+    '4': '需要CRM费用项编码；',
+    '5': ' 需要交互中心短信ID；',
+    '7': '生成SQL成功；',
+    '8': '执行成功；',
+    '9': '下载成功；'
+}
 
 class BsconfRequirement(models.Model):
     json_file = models.CharField(max_length=128,primary_key=True)

@@ -35,7 +35,7 @@ def getMonthes():
     for i in range(6):
         newTime = str(int(month) - i)
         if newTime.endswith('00'):
-            month = str(int(newTime[:4]) - 1) + str(int(newTime[:4]) + 12)
+            month = str(int(newTime[:4]) - 1) + str(int(month[-2:]) + 12)
             newTime = str(int(month) - i)
         aMonth.append(newTime)
     return aMonth
@@ -49,15 +49,15 @@ def uploadMakeSql(request):
     logger.info('upload %s ok.',bsf.inFile)
     logger.info('make sql for %s', bsf.inFile)
     sqlFile = _makeSql(bsf)
-    downPath = 'bsconf/out/%s' % bsf.month
+    downPath = 'static/bsconf/out/%s' % bsf.month
     result = {
-        "sqlFile": sqlFile,
+        "sqlFile": bsf.outFile,
         "downPath": downPath,
-        "errCode": bsf.chkSts,
-        "errDesc": bsf.chkDesc
+        "errCode": bsf.bsReq.state,
+        "errDesc": bsf.getReqErrDesc()
     }
-    logger.info('make sql %s result: errCode: %s; errDesc: %s', sqlFile, bsf.chkSts, bsf.chkDesc)
-    return JsonResponse({"sqlFile":sqlFile})
+    logger.info('make sql %s %s result: errCode: %s; errDesc: %s', downPath, sqlFile, bsf.chkSts, bsf.chkDesc)
+    return JsonResponse(result)
         # return bsf.downLoad()
         # return JsonResponse(bsf.dInData)
         # bsf.start()
@@ -159,6 +159,13 @@ class BsConfiger(object):
         self.bsReq.state = sts
         self.bsReq.save()
 
+    def getReqErrDesc(self):
+        aSts = self.bsReq.state.split(',')
+        errDesc = ''
+        for s in aSts:
+            errDesc = "%s%s" % (errDesc, dBsReqState[s])
+        return errDesc
+
     def checkReq(self):
         pass
 
@@ -221,7 +228,7 @@ class BsConfiger(object):
             reqParser.parse('sql')
             self.bsReq.state = '7'
             self.bsReq.save()
-            self.outFull = os.path.join(settings.OUT_DIR, self.month, self.outFile)
+            # self.outFull = os.path.join(settings.OUT_DIR, self.month, self.outFile)
             # reqSet = BsconfRequirement.objects.filter(json_file=self.inFile, conf_type=self.type, req_month=self.month)
             # for bsReq in reqSet:
             #     bsReq.sql_file = confReq.outName

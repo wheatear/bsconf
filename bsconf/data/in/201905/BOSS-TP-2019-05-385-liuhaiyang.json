@@ -1,0 +1,36 @@
+{
+  "BOSS需求解决方案-BOSS-TP-2019-05-385-liuhaiyang-承诺订购2个月影视会员送智能语音遥控器": {
+      "FEE_ITEM_BLOCK": [
+        {
+          "FEE_ITEM": {
+            "FEE_ITEM_ID": "88002530",
+            "ITEM_NAME": "影视会员送语音遥控器",
+            "ACCP_ITEM_TAX_RATE": {
+                  "TAX_RATE": "600"
+            },
+            "ACC_DEF_FEE_ITEM_EX": {
+              "MARKET_TYPE_ID": "010",
+              "MARKET_TYPE_NAME": "个人"
+            },
+            "BS_ACCT_ITEM_TYPE": {
+              "BILL_PRIORITY": "143"
+            },
+            "BS_FEE_ITEM_BILL_ITEM_1": {
+              "BILL_ITEM_ID": "238"
+            },
+            "BS_FEE_ITEM_BILL_ITEM_999": {
+              "BILL_ITEM_ID": "238"
+            },
+            "BS_FEE_ITEM_BILL_ITEM_998": {
+              "BILL_ITEM_ID": "319"
+            },
+            "BS_FEE_ITEM_BILL_ITEM_888": {
+              "BILL_ITEM_ID": "66666666"
+            },
+            "BS_FEE_ITEM_BILL_ITEM_21": {},
+            "BS_FEE_ITEM_BILL_ITEM_997": {}
+          }
+        }
+      ]
+   }
+}

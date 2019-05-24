@@ -1,0 +1,42 @@
+{
+  "BOSS需求解决方案-BOSS-TP-2019-04-362-wangting1AM特批需求-喜马拉雅超级会员-全球通营销方案开发需求.doc": {
+    "RECEIPT_BLOCK": [
+        {
+          "RECEIPT_TYPE": {
+            "RECEIPT_TYPE_NAME": "喜马拉雅超级会员营销案",
+            "RECEIPT_CLASS": "8",
+            "RECEIPT_CLASS_NAME": "业务发票",
+            "RECEIPT_ITEM": [
+              {
+                "RECEIPT_ITEM_NAME": "喜马拉雅超级会员营销案违约金",
+                "TAX_RATE": "760",
+                "VALID_DATE": "01-01-1900",
+                "EXPIRE_DATE": "31-05-2014",
+                "ITEM_MAP": {
+                    "BUSI_ITEM_CODE": "CRM"
+                  },
+                "HALL_BS_DEF_BILL_ITEM_MIS": [
+                  {
+                    "MIS_GROUP_NO_PAT": "03011___",
+                    "BS_BILL_ITEM_GRP": {}
+                  },
+                  {
+                    "MIS_GROUP_NO_PAT": "09011___",
+                    "BS_BILL_ITEM_GRP": {}
+                  }
+                ],
+                "MIS_BS_DEF_BILL_ITEM_MIS": {
+                  "MIS_GROUP_NO": "10A401",
+                  "BS_BILL_ITEM_MIS_GRP": {}
+                },
+                "ACC_DEF_BILL_ITEM_AUDIT": {
+                  "AUDIT_GROUP_NO": "A401",
+                  "ACC_BILL_ITEM_AUDIT_GRP": {}
+                }
+              }
+            ]
+          }
+        }
+      ]
+   }
+}

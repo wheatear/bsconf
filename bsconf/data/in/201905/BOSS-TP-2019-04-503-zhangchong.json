@@ -1,0 +1,55 @@
+{
+  "BOSS需求解决方案-BOSS-TP-2019-04-503-zhangchong-集团要求开发语音翻番产品.doc": {
+      "FEE_ITEM_BLOCK": [
+        {
+          "FEE_ITEM": {
+            "FEE_ITEM_ID": "88002520",
+            "ITEM_NAME": "语音翻番包",
+            "ACCP_ITEM_TAX_RATE": {
+                  "TAX_RATE": "900"
+            },
+            "ACC_DEF_FEE_ITEM_EX": {
+              "MARKET_TYPE_ID": "010",
+              "MARKET_TYPE_NAME": "个人"
+            },
+            "BS_ACCT_ITEM_TYPE": {
+              "BILL_PRIORITY": "143"
+            },
+            "BS_FEE_ITEM_BILL_ITEM_1": {
+              "BILL_ITEM_ID": "239"
+            },
+            "BS_FEE_ITEM_BILL_ITEM_999": {
+              "BILL_ITEM_ID": "239"
+            },
+            "BS_FEE_ITEM_BILL_ITEM_998": {
+              "BILL_ITEM_ID": "317"
+            },
+            "BS_FEE_ITEM_BILL_ITEM_888": {
+              "BILL_ITEM_ID": "11111111"
+            },
+            "BS_FEE_ITEM_BILL_ITEM_21": {},
+            "BS_FEE_ITEM_BILL_ITEM_997": {}
+          }
+        }
+      ],
+      "ALARM_PROD_BLOCK": [
+        {
+          "ALARM_PROD_HEAD": {
+            "PROD_ID": "50002354",
+            "PROD_NAME": "语音翻番包",
+            "PACKAGE_ALARM_PROD": [
+              {
+                "ALARM_TYPE": "1"
+              },
+              {
+                "ALARM_TYPE": "4"
+              },
+              {
+                "ALARM_TYPE": "5"
+              }
+            ]
+          }
+        }
+      ]
+   }
+}

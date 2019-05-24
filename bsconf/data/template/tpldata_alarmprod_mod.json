@@ -1,0 +1,12 @@
+{
+  "BOSS需求解决方案-BOSS-KS-2019-05-173-wangting1-AM快速配置-快响需求-瑞幸咖啡代金券开发需求": {
+      "ALARM_PROD_BLOCK": [
+        {
+          "PACKAGE_ALARM_PROD_MOD": {
+            "PROD_ID": "50002343",
+            "PROD_NAME": "承诺128元畅享放心用套餐存费送费2019-赠送语音"
+          }
+        }
+      ]
+   }
+}

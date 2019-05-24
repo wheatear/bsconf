@@ -1,0 +1,24 @@
+{
+  "BOSS需求解决方案-BOSS-PQ-2019-05-034-wangting1-互联网电视电影会员连续月包开发需求": {
+    "BALANCE_TYPE_BLOCK": [
+      {
+        "BALANCE_TYPE": {
+          "BALANCE_TYPE_ID": "92112",
+          "BALANCE_TYPE_KIND": "20",
+          "BALANCE_TYPE_NAME": "魔百和电影VIP首月1元",
+          "BOOK_PRIORITY": "2000",
+          "USE_TYPE": "1",
+          "IS_INV": "0",
+          "ALLOW_ADJUST": "0",
+          "ALLOW_REFUND": "0",
+          "BS_ACCT_ITEM_TYPE_BALANCE_TYPE": [
+            {
+              "ACCT_ITEM_TYPE_ID": "88002525",
+              "STS": "1"
+            }
+          ]
+        }
+      }
+    ]
+  }
+}

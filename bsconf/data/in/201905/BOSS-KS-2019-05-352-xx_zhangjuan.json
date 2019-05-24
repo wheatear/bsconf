@@ -1,0 +1,42 @@
+{
+  "BOSS需求解决方案-BOSS-KS-2019-05-352-xx_zhangjuan_部分可选包更名": {
+      "ALARM_PROD_BLOCK": [
+        {
+          "PACKAGE_ALARM_PROD_MOD": {
+            "PROD_ID": "53001005",
+            "PROD_NAME": "5元数据流量可选包"
+          }
+        },
+        {
+          "PACKAGE_ALARM_PROD_MOD": {
+            "PROD_ID": "53001010",
+            "PROD_NAME": "10元数据流量可选包"
+          }
+        },
+        {
+          "PACKAGE_ALARM_PROD_MOD": {
+            "PROD_ID": "53001017",
+            "PROD_NAME": "2元数据流量可选包"
+          }
+        },
+        {
+          "PACKAGE_ALARM_PROD_MOD": {
+            "PROD_ID": "53001020",
+            "PROD_NAME": "20元数据流量可选包"
+          }
+        },
+        {
+          "PACKAGE_ALARM_PROD_MOD": {
+            "PROD_ID": "53001860",
+            "PROD_NAME": "40元数据流量可选包"
+          }
+        },
+        {
+          "PACKAGE_ALARM_PROD_MOD": {
+            "PROD_ID": "53001861",
+            "PROD_NAME": "50元数据流量可选包"
+          }
+        }
+      ]
+   }
+}

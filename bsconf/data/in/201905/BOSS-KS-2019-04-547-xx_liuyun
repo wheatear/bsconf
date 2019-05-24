@@ -1,0 +1,29 @@
+{
+  "BOSS需求解决方案-BOSS-KS-2019-04-547-xx_liuyun畅享智选更名为全球通畅享套餐": {
+    "INTER_REMIND_MOD_BLOCK": [
+      {
+        "REMIND_HEAD": {
+          "REMARK": "csc-wh\\04-解决方案\\2019年\\2019-05\\BOSS需求解决方案-BOSS-KS-2019-04-547-xx_liuyun畅享智选更名为全球通畅享套餐.doc",
+          "REMIND_SMS": [
+            {
+              "PROD_ID": "50002301",
+              "PROD_NAME": "88元全球通畅享套餐"
+            },
+            {
+              "PROD_ID": "50002302",
+              "PROD_NAME": "128元全球通畅享套餐"
+            },
+            {
+              "PROD_ID": "50002303",
+              "PROD_NAME": "188元全球通畅享套餐"
+            },
+            {
+              "PROD_ID": "50002304",
+              "PROD_NAME": "238元全球通畅享套餐"
+            }
+          ]
+        }
+      }
+    ]
+  }
+}

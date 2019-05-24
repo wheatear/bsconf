@@ -1,0 +1,36 @@
+{
+  "BOSS需求解决方案-BOSS-TP-2019-04-466-xx_zhangjuan-和家固话全网支撑方案-11位手机号支持和家固 话功能开发": {
+      "FEE_ITEM_BLOCK": [
+        {
+          "FEE_ITEM": {
+            "FEE_ITEM_ID": "88002527",
+            "ITEM_NAME": "和家固话手机版功能费月包",
+            "ACCP_ITEM_TAX_RATE": {
+                  "TAX_RATE": "600"
+            },
+            "ACC_DEF_FEE_ITEM_EX": {
+              "MARKET_TYPE_ID": "010",
+              "MARKET_TYPE_NAME": "个人"
+            },
+            "BS_ACCT_ITEM_TYPE": {
+              "BILL_PRIORITY": "143"
+            },
+            "BS_FEE_ITEM_BILL_ITEM_1": {
+              "BILL_ITEM_ID": "239"
+            },
+            "BS_FEE_ITEM_BILL_ITEM_999": {
+              "BILL_ITEM_ID": "239"
+            },
+            "BS_FEE_ITEM_BILL_ITEM_998": {
+              "BILL_ITEM_ID": "317"
+            },
+            "BS_FEE_ITEM_BILL_ITEM_888": {
+              "BILL_ITEM_ID": "66666666"
+            },
+            "BS_FEE_ITEM_BILL_ITEM_21": {},
+            "BS_FEE_ITEM_BILL_ITEM_997": {}
+          }
+        }
+      ]
+   }
+}

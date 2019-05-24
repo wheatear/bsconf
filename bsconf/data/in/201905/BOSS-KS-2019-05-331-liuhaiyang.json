@@ -1,0 +1,23 @@
+{
+  "BOSS需求解决方案-BOSS-KS-2019-05-331-liuhaiyang-自备机赠流量定向方案": {
+      "ALARM_PROD_BLOCK": [
+        {
+          "ALARM_PROD_HEAD": {
+            "PROD_ID": "54001873",
+            "PROD_NAME": "购机赠流量方案10月3G",
+            "PACKAGE_ALARM_PROD": [
+              {
+                "ALARM_TYPE": "1"
+              },
+              {
+                "ALARM_TYPE": "4"
+              },
+              {
+                "ALARM_TYPE": "5"
+              }
+            ]
+          }
+        }
+      ]
+   }
+}

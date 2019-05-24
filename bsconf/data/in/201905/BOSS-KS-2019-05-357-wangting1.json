@@ -1,0 +1,16 @@
+{
+  "BOSS需求解决方案-BOSS-KS-2019-05-357-wangting1-基于内容的定向流量包开发需求": {
+      "ALARM_PROD_BLOCK": [
+        {
+          "FREEBIE_ITEM": [
+            {
+              "ITEM_CODE": "66661175",
+              "ITEM_NAME": "咪咕内容定向流量",
+              "ALARM_ITEM_CONVERT_DAT": {},
+              "GPRS_FREEBIE_HFF": {}
+            }
+          ]
+        }
+      ]
+   }
+}

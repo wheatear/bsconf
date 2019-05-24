@@ -1,0 +1,51 @@
+{
+   "BOSS需求解决方案-BOSS-KS-2019-05-253-xx_xiechao-请协助开发88元畅享放心用套餐首月免月费营销方案": {
+      "PROMO_UNIFIED_BLOCK": [
+        {
+          "PROMO": {
+            "SAP_ID": "SAP1169",
+            "PROMO_NAME": "88元畅享放心用套餐首月免月费-赠送",
+            "BUSI_TYPE_CODE": "4300",
+            "COND": [
+              {
+                "COND_NAME": "88元畅享放心用套餐首月免月费-赠送",
+                "RET_DAY": "0",
+                "ALLOT": [
+                  {
+                    "BOOK_ITEM_ID": "82951",
+                    "BOOK_TYPE": "1",
+                    "ALLOT_ATTR": "00000000020000000010",
+                    "CANCEL_BOOK_ITEM_ID": "0"
+                  }
+                ],
+                "SAP_MAP": {
+                  "SAP_FEE_TYPE": "1"
+                },
+                "SMS_FORM": [
+                  {
+                     "APPLY_TYPE": "1",
+                    "SMS_RULE": {
+                      "SMS_TEMPLATE_ID": "4000004300103381"
+                    }
+                  },
+                  {
+                      "APPLY_TYPE": "6",
+                    "SMS_RULE": {
+                      "SMS_TEMPLATE_ID": "4000004300103382"
+                    }
+                  }
+                ]
+              }
+            ],
+            "BI": [
+              {
+                "SAP_TYPE": 1,
+                "REMARK1": "BOSS-KS-2019-05-253-xx_xiechao",
+                "REMARK2": "郑植"
+              }
+            ]
+          }
+        }
+      ]
+   }
+}

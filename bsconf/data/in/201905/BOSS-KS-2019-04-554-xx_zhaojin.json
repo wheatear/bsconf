@@ -1,0 +1,66 @@
+{
+  "BOSS需求解决方案-BOSS-KS-2019-04-554-xx_zhaojin-畅游包扩容升档优惠": {
+      "ALARM_PROD_BLOCK": [
+        {
+          "ALARM_PROD_HEAD": {
+            "PROD_ID": "54001865",
+            "PROD_NAME": "加量不加价活动赠送3G流量",
+            "PACKAGE_ALARM_PROD": [
+              {
+                "ALARM_TYPE": "1"
+              },
+              {
+                "ALARM_TYPE": "4"
+              },
+              {
+                "ALARM_TYPE": "5"
+              },
+              {
+                "ALARM_TYPE": "15"
+              }
+            ]
+          }
+        },
+        {
+          "ALARM_PROD_HEAD": {
+            "PROD_ID": "54001866",
+            "PROD_NAME": "畅游包升档优惠赠送30GB流量",
+            "PACKAGE_ALARM_PROD": [
+              {
+                "ALARM_TYPE": "1"
+              },
+              {
+                "ALARM_TYPE": "4"
+              },
+              {
+                "ALARM_TYPE": "5"
+              },
+              {
+                "ALARM_TYPE": "15"
+              }
+            ]
+          }
+        },
+        {
+          "ALARM_PROD_HEAD": {
+            "PROD_ID": "54001867",
+            "PROD_NAME": "畅游包升档优惠赠送50GB流量",
+            "PACKAGE_ALARM_PROD": [
+              {
+                "ALARM_TYPE": "1"
+              },
+              {
+                "ALARM_TYPE": "4"
+              },
+              {
+                "ALARM_TYPE": "5"
+              },
+              {
+                "ALARM_TYPE": "15"
+              }
+            ]
+          }
+        }
+      ]
+   }
+}

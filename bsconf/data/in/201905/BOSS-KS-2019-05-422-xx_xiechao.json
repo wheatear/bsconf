@@ -1,0 +1,76 @@
+{
+  "BOSS需求解决方案-BOSS-KS-2019-05-422-xx_xiechao_（集团）畅享30GB套餐赠费合约（24月）": {
+    "PROMO_UNIFIED_BLOCK": [
+      {
+        "PROMO": {
+          "SAP_ID": "SAP1444",
+          "SAP_FEE_TYPE": "1",
+          "PROMO_NAME": "畅享30GB套餐赠费合约（24月）-赠送",
+          "BUSI_TYPE_CODE": "4300",
+          "COND": [
+            {
+              "RET_DAY": "0",
+              "ALLOT": [
+                {
+                  "BOOK_ITEM_ID": "82951",
+                  "BOOK_TYPE": "1",
+                  "ALLOT_ATTR": "00000000020000000010",
+                  "CANCEL_BOOK_ITEM_ID": "80501"
+                }
+              ],
+              "SAP_MAP": {},
+              "SMS_FORM": [
+                {
+                  "APPLY_TYPE": "1",
+                  "SMS_RULE": {
+                    "SMS_TEMPLATE_ID": "交互中心1"
+                  }
+                },
+                {
+                  "APPLY_TYPE": "6",
+                  "SMS_RULE": {
+                    "SMS_TEMPLATE_ID": "交互中心2"
+                  }
+                }
+              ]
+            }
+          ],
+          "BI": [
+            {
+              "SAP_TYPE": 1,
+              "REMARK1": "BOSS-KS-2019-05-422-xx_xiechao",
+              "REMARK2": "丛然"
+            }
+          ]
+        }
+      }
+    ],
+    "RECEIPT_1116_BLOCK": [
+        {
+          "RECEIPT_TYPE": {
+            "RECEIPT_TYPE_NAME": "畅享30GB套餐赠费合约（24月）-违约金",
+            "RECEIPT_CLASS": "8",
+            "RECEIPT_CLASS_NAME": "业务发票",
+            "RECEIPT_ITEM": [
+              {
+                "TAX_RATE": "760",
+                "VALID_DATE": "01-06-2014",
+                "EXPIRE_DATE": "31-12-2015",
+                "ITEM_MAP": {
+                    "BUSI_ITEM_CODE": "70617"
+                  },
+                "MIS_BS_DEF_BILL_ITEM_MIS": {
+                  "MIS_GROUP_NO": "10A188",
+                  "BS_BILL_ITEM_MIS_GRP": {}
+                },
+                "ACC_DEF_BILL_ITEM_AUDIT": {
+                  "AUDIT_GROUP_NO": "A188",
+                  "ACC_BILL_ITEM_AUDIT_GRP": {}
+                }
+              }
+            ]
+          }
+        }
+      ]
+  }
+}

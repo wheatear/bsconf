@@ -1,0 +1,151 @@
+{
+   "BOSS需求解决方案-BOSS-KS-2019-05-311-xx_zhaojin-新老同权-两年48方案": {
+      "PROMO_UNIFIED_BLOCK": [
+        {
+          "PROMO": {
+            "SAP_ID": "SAP1170",
+            "PROMO_NAME": "88元畅享放心用套餐充值优惠-预存",
+            "BUSI_TYPE_CODE": "4300",
+            "COND": [
+              {
+                "COND_NAME": "88元畅享放心用套餐充值优惠-预存",
+                "RET_DAY": "0",
+                "ALLOT": [
+                  {
+                    "BOOK_ITEM_ID": "82950",
+                    "BOOK_TYPE": "1",
+                    "ALLOT_ATTR": "00000000000000000000",
+                    "CANCEL_BOOK_ITEM_ID": "0"
+                  }
+                ],
+                "SAP_MAP": {
+                  "SAP_FEE_TYPE": "1"
+                }
+              }
+            ],
+            "BI": [
+              {
+                "SAP_TYPE": 1,
+                "REMARK1": "BOSS-KS-2019-05-311-xx_zhaojin",
+                "REMARK2": "张朋伟"
+              }
+            ]
+          }
+        },
+        {
+          "PROMO": {
+            "SAP_ID": "SAP1171",
+            "PROMO_NAME": "88元畅享放心用套餐充值优惠-赠送",
+            "BUSI_TYPE_CODE": "4300",
+            "COND": [
+              {
+                "COND_NAME": "88元畅享放心用套餐充值优惠-赠送",
+                "RET_DAY": "0",
+                "ALLOT": [
+                  {
+                    "BOOK_ITEM_ID": "82951",
+                    "BOOK_TYPE": "1",
+                    "ALLOT_ATTR": "00000000020000000010",
+                    "CANCEL_BOOK_ITEM_ID": "0"
+                  }
+                ],
+                "SAP_MAP": {
+                  "SAP_FEE_TYPE": "1"
+                },
+                "SMS_FORM": [
+                  {
+                      "APPLY_TYPE": "1",
+                      "SMS_RULE": {
+                      	"SMS_TEMPLATE_ID": "4000004300103376"
+                    	}
+                  },
+                  {
+                      "APPLY_TYPE": "6",
+                      "SMS_RULE": {
+                      	"SMS_TEMPLATE_ID": "4000004300103377"
+                    	}
+                  }
+                ]
+              }
+            ],
+            "BI": [
+              {
+                "SAP_TYPE": 1,
+                "REMARK1": "BOSS-KS-2019-05-311-xx_zhaojin",
+                "REMARK2": "张朋伟"
+              }
+            ]
+          }
+        }
+      ],
+      "RECEIPT_1116_BLOCK": [
+        {
+          "RECEIPT_TYPE": {
+            "RECEIPT_TYPE_NAME": "88元畅享放心用套餐充值优惠方案-违约金",
+            "RECEIPT_CLASS": "8",
+            "RECEIPT_CLASS_NAME": "业务发票",
+            "RECEIPT_ITEM": [
+              {
+                "TAX_RATE": "760",
+                "VALID_DATE": "01-01-1900",
+                "EXPIRE_DATE": "31-05-2014",
+                "ITEM_MAP": {
+                    "BUSI_ITEM_CODE": "70011"
+                  },
+                "MIS_BS_DEF_BILL_ITEM_MIS": {
+                  "MIS_GROUP_NO": "10A188",
+                  "BS_BILL_ITEM_MIS_GRP": {}
+                },
+                "ACC_DEF_BILL_ITEM_AUDIT": {
+                  "AUDIT_GROUP_NO": "A188",
+                  "ACC_BILL_ITEM_AUDIT_GRP": {}
+                }
+              }
+            ]
+          }
+        }
+      ],
+      "ALARM_PROD_BLOCK": [
+        {
+          "ALARM_PROD_HEAD": {
+            "PROD_ID": "54001868",
+            "PROD_NAME": "88元畅享放心用套餐充值优惠-赠送流量",
+            "PACKAGE_ALARM_PROD": [
+              {
+                "ALARM_TYPE": "1"
+              },
+              {
+                "ALARM_TYPE": "4"
+              },
+              {
+                "ALARM_TYPE": "5"
+              },
+              {
+                "ALARM_TYPE": "15"
+              }
+            ]
+          }
+        },
+        {
+          "ALARM_PROD_HEAD": {
+            "PROD_ID": "50002355",
+            "PROD_NAME": "88元畅享放心用套餐充值优惠-赠送语音",
+            "PACKAGE_ALARM_PROD": [
+              {
+                "ALARM_TYPE": "1"
+              },
+              {
+                "ALARM_TYPE": "4"
+              },
+              {
+                "ALARM_TYPE": "5"
+              },
+              {
+                "ALARM_TYPE": "15"
+              }
+            ]
+          }
+        }
+      ]
+   }
+}

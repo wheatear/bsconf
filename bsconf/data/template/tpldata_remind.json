@@ -1,0 +1,17 @@
+{
+  "BOSS需求解决方案-BOSS-KS-2019-05-361-xx_liuyun-优化5G测试套餐": {
+    "INTER_REMIND_BLOCK": [
+      {
+        "REMIND_HEAD": {
+          "REMARK": "csc-wh\\04-解决方案\\2019年\\2019-05\\BOSS需求解决方案-BOSS-KS-2019-05-361-xx_liuyun-优化5G测试套餐.doc",
+          "REMIND_SMS": [
+            {
+              "PROD_ID": "50002352",
+              "PROD_NAME": "5G测试套餐"
+            }
+          ]
+        }
+      }
+    ]
+  }
+}

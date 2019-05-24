@@ -131,7 +131,8 @@ Python.gitignore
 log/
 .idea/
 out/
-data/
+data/in/
+data/out/
 admin/
 
 MP_verify_EddIaEBDpA3ond3X.txt

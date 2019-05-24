@@ -1,0 +1,184 @@
+{
+   "BOSS需求解决方案-BOSS-TP-2019-05-052-liuhaiyang_存一得十预存返自由话费方案开发-20190528": {
+      "PROMO_UNIFIED_BLOCK": [
+        {
+          "PROMO": {
+            "SAP_ID": "SAP1441",
+            "PROMO_NAME": "存一得十预存返自由话费-赠送",
+            "BUSI_TYPE_CODE": "4300",
+            "COND": [
+              {
+                "COND_NAME": "存一得十预存返自由话费-赠送",
+                "RET_DAY": "0",
+                "ALLOT": [
+                  {
+                    "BOOK_ITEM_ID": "98006",
+                    "BOOK_TYPE": "1",
+                    "ALLOT_ATTR": "00000000000000000010",
+                    "CANCEL_BOOK_ITEM_ID": "0"
+                  }
+                ],
+                "SAP_MAP": {
+                  "SAP_FEE_TYPE": "1"
+                },
+                "SMS_FORM": [
+                  {
+                      "APPLY_TYPE": "1",
+                      "SMS_RULE": {
+                      	"SMS_TEMPLATE_ID": "4000004300103380"
+                    	}
+                  }
+                ]
+              }
+            ],
+            "BI": [
+              {
+                "SAP_TYPE": 1,
+                "REMARK1": "BOSS-TP-2019-05-052-liuhaiyang",
+                "REMARK2": "王南"
+              }
+            ]
+          }
+        }
+      ],
+      "PROMO_COMMON_BLOCK": [
+        {
+          "PROMO": {
+            "SAP_ID": "SAP1440",
+            "PROMO_NAME": "存一得十预存返自由话费-冻结",
+            "BUSI_TYPE_CODE": "4300",
+            "COND": [
+              {
+                "COND_NAME": "存一得十预存返自由话费-冻结",
+                "PRE_FEE": "10000",
+                "HIGH_PRE_FEE": "10000",
+                "RET_DAY": "0",
+                "ALLOT": [
+                  {
+                    "BOOK_ITEM_ID": "80501",
+                    "BOOK_TYPE": "33",
+                    "ALLOT_AMOUNT": "10000",
+                    "ALLOT_MONTH": "1",
+                    "ALLOT_TYPE": "1",
+                    "ALLOT_SCALE": "10000",
+                    "ALLOT_ATTR": "00000000000000000000",
+                    "CANCEL_BOOK_ITEM_ID": "0"
+                  },
+                  {
+                    "BOOK_ITEM_ID": "82950",
+                    "BOOK_TYPE": "1",
+                    "ALLOT_AMOUNT": "10000",
+                    "ALLOT_MONTH": "20",
+                    "ALLOT_TYPE": "1",
+                    "ALLOT_SCALE": "500",
+                    "ALLOT_ATTR": "00000000020000000010",
+                    "CANCEL_BOOK_ITEM_ID": "80501"
+                  }
+                ],
+                "SAP_MAP": {
+                  "SAP_FEE_TYPE": "1",
+                  "SAP_FEE_VALUE": "10000",
+                  "SAP_FEE_MONTH": "20"
+                },
+                "SMS_FORM":[
+                 {
+                      "APPLY_TYPE": "1",
+                      "SMS_RULE": {
+                      	"SMS_TEMPLATE_ID": "4000004300103378"
+                    	}
+                  },
+                  {
+                      "APPLY_TYPE": "6",
+                      "SMS_RULE": {
+                      	"SMS_TEMPLATE_ID": "4000004300103379"
+                    	}
+                  }
+                ]
+              },
+              {
+                "COND_NAME": "存一得十预存返自由话费-冻结",
+                "PRE_FEE": "20000",
+                "HIGH_PRE_FEE": "20000",
+                "RET_DAY": "0",
+                "ALLOT": [
+                  {
+                    "BOOK_ITEM_ID": "80501",
+                    "BOOK_TYPE": "33",
+                    "ALLOT_AMOUNT": "20000",
+                    "ALLOT_MONTH": "1",
+                    "ALLOT_TYPE": "1",
+                    "ALLOT_SCALE": "20000",
+                    "ALLOT_ATTR": "00000000000000000000",
+                    "CANCEL_BOOK_ITEM_ID": "0"
+                  },
+                  {
+                    "BOOK_ITEM_ID": "82950",
+                    "BOOK_TYPE": "1",
+                    "ALLOT_AMOUNT": "20000",
+                    "ALLOT_MONTH": "20",
+                    "ALLOT_TYPE": "1",
+                    "ALLOT_SCALE": "1000",
+                    "ALLOT_ATTR": "00000000020000000010",
+                    "CANCEL_BOOK_ITEM_ID": "80501"
+                  }
+                ],
+                "SAP_MAP": {
+                  "SAP_FEE_TYPE": "1",
+                  "SAP_FEE_VALUE": "20000",
+                  "SAP_FEE_MONTH": "20"
+                },
+                "SMS_FORM": [
+                  {
+                      "APPLY_TYPE": "1",
+                      "SMS_RULE": {
+                      	"SMS_TEMPLATE_ID": "4000004300103378"
+                    	}
+                  },
+                  {
+                      "APPLY_TYPE": "6",
+                      "SMS_RULE": {
+                      	"SMS_TEMPLATE_ID": "4000004300103379"
+                    	}
+                  }
+                ]
+              }
+            ],
+            "BI": [
+              {
+                "SAP_TYPE": 2,
+                "REMARK1": "BOSS-TP-2019-05-052-liuhaiyang",
+                "REMARK2": "王南"
+              }
+            ]
+          }
+        }
+      ],
+      "RECEIPT_1116_BLOCK": [
+        {
+          "RECEIPT_TYPE": {
+            "RECEIPT_TYPE_NAME": "存一得十预存返自由话费-违约金",
+            "RECEIPT_CLASS": "8",
+            "RECEIPT_CLASS_NAME": "业务发票",
+            "RECEIPT_ITEM": [
+              {
+                "TAX_RATE": "760",
+                "VALID_DATE": "01-01-1900",
+                "EXPIRE_DATE": "31-05-2014",
+                "ITEM_MAP": {
+                    "BUSI_ITEM_CODE": "70615"
+                  },
+                "MIS_BS_DEF_BILL_ITEM_MIS": {
+                  "MIS_GROUP_NO": "10A188",
+                  "BS_BILL_ITEM_MIS_GRP": {}
+                },
+                "ACC_DEF_BILL_ITEM_AUDIT": {
+                  "AUDIT_GROUP_NO": "A188",
+                  "ACC_BILL_ITEM_AUDIT_GRP": {}
+                }
+              }
+            ]
+          }
+        }
+      ]
+   }
+}

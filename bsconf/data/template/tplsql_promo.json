@@ -77,6 +77,39 @@
 			"SQL": "insert into base.bs_sms_rule (RULE_ID, RULE_CODE, RULE_EXP, RULE_ORDER, BUSINESS_ID, AC_SMS_TEMPLATE_ID, SMS_TEMPLATE_ID, STATE, CREATE_DATE) values (base.bs_sms_rule$seq.nextval, '^<NEW_SMS_TEMPLET_ID^>', '', '1', '^<BUSI_TYPE_CODE^>', '^<NEW_SMS_TEMPLET_ID^>', '^<SMS_TEMPLATE_ID^>', 'U', sysdate);"
 		}
   },
+  "PROMO_COND_BLOCK": {
+		"PROMO": "None",
+		"COND": {
+            "COMMENT": "新增cond表  关注 费用，名称，返费日期 PROMO_ID, COND_ID, COND_NAME,PRE_FEE, HIGH_PRE_FEE,RET_DAY",
+			"SQL": "insert into base.BS_BOOK_SCHEME_COND (PROMO_ID, COND_ID, COND_NAME, COND_TYPE, RES_HOLD_MONTH, RELATE_CODE,RELATE_NAME, PRE_TYPE, ALLOW_PRE_MORE, PRE_FEE, HIGH_PRE_FEE, SCHEME_TYPE, SCHEME_FEE, LOW_COST, VALID_DATE, EXPIRE_DATE, PRIV_ENTITY, RENT_PACK_ID, RES_PACK_ID, COND_ACCEPT_DESC, REMARK, COIN_RET_TYPE, COND_BONUS_ID, COND_HOLD_MONTH, COND_ENGAGE_TYPE, COND_CREDIT, COND_COST_STAT, COND_GROUP, ALLOW_BIND_IMEI, RES_VICE_MONTH, COND_UPLOAD_MODE, RELATE_HOLD_MONTH, ALLOW_CEASE_COND, CALL_CNT, SP_PACK_ID, COND_ATTR, RELATE_PROD_ID, SLOGAN, UNBIND_IMEI_MONTH, RELATE_PROMO_INFO, GIFT_INFO, RET_DAY) values ('^<PROMO_ID^>', '^<COND_ID^>', '^<PROMO_NAME^>', '11', '0', '0', null, '0', '0', '^<ALLOT_AMOUNT^>', '^<ALLOT_AMOUNT^>', '1', '0', '0', to_date('01-04-2010', 'dd-mm-yyyy'), to_date('30-11-2030', 'dd-mm-yyyy'), '0', '0', '0', '^<COND_NAME^>', '^<COND_NAME^>', '0', '0', '0', '1', '0', '1', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', null, '-1', null, null,  '^<RET_DAY^>');",
+			"FIELDS": {
+				"COND_ID": "COND_ID_INCR"
+			}
+		},
+		"ALLOT": {
+            "COMMENT": "新增allot表  关注 帐本，费用4个，BOOK_ITEM_ID, BOOK_TYPE,ALLOT_AMOUNT, ALLOT_MONTH, ALLOT_TYPE, ALLOT_SCALE,ALLOT_ATTR,CANCEL_BOOK_ITEM_ID",
+			"SQL": "insert into base.BS_BOOK_SCHEME_ALLOT (PROMO_ID, COND_ID, BOOK_ITEM_ID, BOOK_TYPE, ALLOT_AMOUNT, ALLOT_MONTH, ALLOT_TYPE, ALLOT_SCALE, EXPLICIT_MONTH, ALLOT_BEGIN_MONTH, ALLOT_BOOK_LIMIT, ALLOT_BOOK_BEGIN, ALLOT_BONUS_ID, ALLOT_BOOK_END, ALLOT_BOOK_LIMIT_TYPE, ALLOT_ATTR, EXTEND_MONTH, CANCEL_BOOK_ITEM_ID) values ('^<PROMO_ID^>', '^<COND_ID^>', '^<BOOK_ITEM_ID^>', '^<BOOK_TYPE^>', '^<ALLOT_AMOUNT^>', '^<ALLOT_MONTH^>', '^<ALLOT_TYPE^>', '^<ALLOT_SCALE^>', '0', '0', '0', '-24', '0', '0', '0', '^<ALLOT_ATTR^>', '0', '^<CANCEL_BOOK_ITEM_ID^>');"
+		},
+		"SAP_MAP": {
+            "COMMENT": "新增SAP_map表  SAP_ID, SAP_FEE_TYPE, SAP_FEE_VALUE, SAP_OTHER_VALUE,PROMO_ID, COND_ID,SAP_FEE_MONTH, SAP_NAME",
+			"SQL": "insert into base.BS_BOOK_SCHEME_SAP_MAP (SAP_ID, SAP_FEE_TYPE, SAP_FEE_VALUE, SAP_OTHER_VALUE, PROMO_ID, COND_ID, STS, SAP_FEE_MONTH, SAP_NAME) values ('^<SAP_ID^>', '^<SAP_FEE_TYPE^>', '^<ALLOT_AMOUNT^>', '^<ALLOT_MONTH^>', '^<PROMO_ID^>', '^<COND_ID^>', '1', '^<ALLOT_MONTH^>', '^<COND_NAME^>');"
+		},
+		"BI": {
+            "COMMENT": "新增BI统计表  SAP_ID, SAP_TYPE, SAP_TYPE_NAME, REMARK1, REMARK2",
+			"SQL": "insert into base.bs_book_scheme_SAP_type (SAP_ID, SAP_TYPE, SAP_TYPE_NAME, REMARK1, REMARK2, REMARK3, REMARK4) values ('^<SAP_ID^>', ^<SAP_TYPE^>, '^<PROMO_NAME^>', '^<REMARK1^>', '^<REMARK2^>', null, null);"
+		},
+		"SMS_FORM": {
+            "COMMENT": "新增form表 APPLY_TYPE 1-返费  5-生效   6-失效   9-黑名单不返费",
+			"SQL": "insert into base.BS_BOOK_SCHEME_SMS_FORM (PROMO_ID, COND_ID, APPLY_TYPE, SMS_TEMPLET_ID, NEW_SMS_TEMPLET_ID) values ('^<PROMO_ID^>', '^<COND_ID^>', '^<APPLY_TYPE^>', '^<COND_ID^>', '^<NEW_SMS_TEMPLET_ID^>');",
+			"FIELDS": {
+				"NEW_SMS_TEMPLET_ID": "SMS_ID_SEQ"
+			}
+		},
+		"SMS_RULE": {
+            "COMMENT": "短信ID映射表",
+			"SQL": "insert into base.bs_sms_rule (RULE_ID, RULE_CODE, RULE_EXP, RULE_ORDER, BUSINESS_ID, AC_SMS_TEMPLATE_ID, SMS_TEMPLATE_ID, STATE, CREATE_DATE) values (base.bs_sms_rule$seq.nextval, '^<NEW_SMS_TEMPLET_ID^>', '', '1', '^<BUSI_TYPE_CODE^>', '^<NEW_SMS_TEMPLET_ID^>', '^<SMS_TEMPLATE_ID^>', 'U', sysdate);"
+		}
+  },
   "RECEIPT_1116_BLOCK": {
         "RECEIPT_TYPE": {
             "COMMENT": "新增发票配置 receipt_type, receipt_type_name, receipt_class(5-预存（收据）；8－发票（通票，业务发票), receipt_class_name",

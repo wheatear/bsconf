@@ -1,0 +1,44 @@
+{
+  "BOSS需求解决方案-BOSS-KS-2019-05-455-liliping_家庭宽带300M&500M包两年折扣套餐": {
+    "PROMO_COND_BLOCK": [
+      {
+        "PROMO": {
+          "SAP_ID": "SAP822",
+          "PROMO_ID": "201646",
+          "SAP_FEE_TYPE": "1",
+          "PROMO_NAME": "家庭宽带预存",
+          "COND": [
+            {
+              "ALLOT_AMOUNT": "128000",
+              "ALLOT_MONTH": "24",
+              "RET_DAY": "0",
+              "ALLOT": [
+                {
+                  "BOOK_ITEM_ID": "82229",
+                  "BOOK_TYPE": "1",
+                  "ALLOT_AMOUNT": "122659",
+              		"ALLOT_MONTH": "24",
+                  "ALLOT_TYPE": "2",
+                  "ALLOT_SCALE": "|5333|5333|5333|5333|5333|5333|5333|5333|5333|5333|5333|5333|5333|5333|5333|5333|5333|5333|5333|5333|5333|5333|5333|0",
+                  "ALLOT_ATTR": "00000000000000000000",
+                  "CANCEL_BOOK_ITEM_ID": "82229"
+                },
+                {
+                  "BOOK_ITEM_ID": "82229",
+                  "BOOK_TYPE": "2",
+                  "ALLOT_AMOUNT": "5341",
+              		"ALLOT_MONTH": "1",
+                  "ALLOT_TYPE": "1",
+                  "ALLOT_SCALE": "5341",
+                  "ALLOT_ATTR": "00000000000000000000",
+                  "CANCEL_BOOK_ITEM_ID": "0"
+                }
+              ],
+              "SAP_MAP": {}
+            }
+          ]
+        }
+      }
+    ]
+  }
+}

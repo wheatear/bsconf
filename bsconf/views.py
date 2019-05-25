@@ -560,11 +560,18 @@ class SpecialField(object):
 
     def getVal(self):
         # idT1 = PromoIdExist.objects.using('').filter(id__startswith='203').first().id
-        idT1 = int(RawSql(self.sqlDev).fetchVal())
-        idT2 = int(RawSql(self.sqlDev, 'test2').fetchVal())
+        idT1 = 0
+        idT2 = 0
+        idT3 = 0
+        t1 = RawSql(self.sqlDev).fetchVal()
+        if t1:
+            idT1 = int(t1)
+        t2 = RawSql(self.sqlDev, 'test2').fetchVal()
+        if t1:
+            idT2 = int(t2)
         # idT3 = RawSql(self.sqlPrd,'prod').fetchVal()
         idT3 = 0
-        print('item name: %s' % self.itemName)
+        logger.debug('item name: %s' % self.itemName)
         idT4 = BsItemId.objects.filter(item_name=self.itemName).aggregate(Max('item_id'))['item_id__max']
         if not idT4:
             idT4 = 0
@@ -595,12 +602,28 @@ class CondId(SpecialField):
     def __init__(self, fieldName, promoId):
         super().__init__(fieldName)
         self.promoId = promoId
+        if self.sqlDev:
+            self.sqlDev = self.sqlDev % self.promoId
+        if self.sqlPrd:
+            self.sqlPrd = self.sqlPrd % self.promoId
+        logger.debug('%s : %s', self.fieldName, self.sqlDev)
 
     def getVal(self):
+        idT1 = 0
+        idT2 = 0
+        idT3 = 0
+        t1 = RawSql(self.sqlDev).fetchVal()
+        if t1:
+            idT1 = int(t1)
+        t2 = RawSql(self.sqlDev, 'test2').fetchVal()
+        if t1:
+            idT2 = int(t2)
+        # idT3 = RawSql(self.sqlPrd,'prod').fetchVal()
+        idT3 = 0
         idT4 = BsItemId.objects.filter(item_name=self.fieldName, item_id__startswith=self.promoId).aggregate(Max('item_id'))['item_id__max']
         if not idT4:
             idT4 = int('%s00' % self.promoId)
-        self.curVal = idT4
+        self.curVal = max(idT1, idT2, idT3, idT4)
 
 
 class SmsId(SpecialField):

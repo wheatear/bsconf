@@ -27,7 +27,7 @@ class RawSql(object):
 dFieldSql = {}
 dFieldSql['PROMO_ID'] = ("select max(promo_id) from base.BS_BOOK_SCHEME_PROMO where promo_id like '203%'",
                          "select max(promo_id) from base.BS_BOOK_SCHEME_PROMO@scdb_to_srvzw1 where promo_id like '203%'")
-dFieldSql['COND_ID'] = ("select max(COND_ID) from base.BS_BOOK_SCHEME_COND where PROMO_ID = ''",
+dFieldSql['COND_ID'] = ("select max(COND_ID) from base.BS_BOOK_SCHEME_COND where PROMO_ID = '%s'",
                          None)
 dFieldSql['NEW_SMS_TEMPLET_ID'] = ("select max(NEW_SMS_TEMPLET_ID) from base.BS_BOOK_SCHEME_SMS_FORM",
                                    "select max(NEW_SMS_TEMPLET_ID) from base.BS_BOOK_SCHEME_SMS_FORM@scdb_to_srvzw1")

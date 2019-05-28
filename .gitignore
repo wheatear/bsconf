@@ -130,11 +130,9 @@ Python.gitignore
 *.pinyin
 log/
 .idea/
-out/
-in/*
-in/*/*
-data/in/
-data/out/
+
+/data/in/
+/data/out/
 admin/
 
 MP_verify_EddIaEBDpA3ond3X.txt

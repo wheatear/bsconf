@@ -23,13 +23,13 @@
                 {
                   "APPLY_TYPE": "1",
                   "SMS_RULE": {
-                    "SMS_TEMPLATE_ID": "交互中心1"
+                    "SMS_TEMPLATE_ID": "4000004300103385"
                   }
                 },
                 {
                   "APPLY_TYPE": "6",
                   "SMS_RULE": {
-                    "SMS_TEMPLATE_ID": "交互中心2"
+                    "SMS_TEMPLATE_ID": "4000004300103386"
                   }
                 }
               ]

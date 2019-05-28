@@ -131,7 +131,8 @@ Python.gitignore
 log/
 .idea/
 out/
-
+in/*
+in/*/*
 data/in/
 data/out/
 admin/

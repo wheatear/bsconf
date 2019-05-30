@@ -3,23 +3,25 @@
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
-    <link rel="stylesheet" href="/bsconf/static/css/jquery.jsonview.css" />
+    <link rel="stylesheet" href="/static/bsconf/css/jquery.jsonview.css" />
+{#    <script src="/static/bsconf/js/jquery-3.3.1.min.js"></script>#}
+    <script src="/static/bsconf/js/jquery.min.js"></script>
+    <script type="text/javascript" src="/static/bsconf/js/jquery.jsonview.js"></script>
 
-    <link rel="stylesheet" href="/bsconf/static/css/bsconfiger.css?v=1.0.40" />
+    <link rel="stylesheet" href="/static/bsconf/css/index.css?v=1.0.2" />
 
-    <script src="/bsconf/static/js/jquery-3.3.1.min.js"></script>
-    <script type="text/javascript" src="/bsconf/static/js/jquery.jsonview.js"></script>
-    <script type="text/javascript" src="/bsconf/static/js/bsconfiger.js?v=1.0.67"></script>
+    <script type="text/javascript" src="/static/bsconf/js/bsqEditer.js?v=1.0.5"></script>
 </head>
 <body>
 <div class="topdiv">
 
     <div class="makeSql">
         <span class="file">
-            <input type="file" class="head" id="jsonFile" />
+            <input type="file" class="head filein" id="jsonFile" />
         </span>
 
         {#    <a href="" id="sqlFile">下载</a>#}
+        <input type="button" class="head" id="openJson" value="打开json"/>
         <input type="button" class="head" id="uploadMmakeSql" value="生成SQL"/>
         <input type="button" class="head" id="saveJson" value="保存json"/>
     </div>
@@ -36,10 +38,10 @@
         </span>
     </div>
     <div class="editer">
-        <div id="jsonEd">
+        <div id="json">
 
         </div>
-        <div id="sqlEd">
+        <div id="sql">
 
         </div>
     </div>

@@ -30,6 +30,9 @@
     border: 1px ;
     margin-left: 3px;
 }
+.filein{
+    width: 500px;
+}
 .condition{
     display: inline-block;
     width:200px;

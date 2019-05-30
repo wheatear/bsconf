@@ -22,7 +22,7 @@
     };
 
     JSONFormatter.prototype.decorateWithSpan = function(value, className) {
-      return "<span class=\"" + className + "\">" + (this.htmlEncode(value)) + "</span>";
+      return "<span class=\"" + className + "\" contenteditable='true'>" + (this.htmlEncode(value)) + "</span><span class='editbtn'>删除</span>";
     };
 
     JSONFormatter.prototype.valueToHTML = function(value, level) {
@@ -56,7 +56,7 @@
             value = (value + '').replace(newLinePattern, '$1' + '<br />');
           }
         }
-        return "<span class=\"string" + multilineClass + "\">\"" + value + "\"</span>";
+        return "<span class=\"string" + multilineClass + "\" contenteditable='true'>\"" + value + "\"</span><span class='editbtn'>删除</span>";
       }
     };
 
@@ -84,7 +84,7 @@
       }
       if (hasContents) {
         collapsible = level === 0 ? '' : ' collapsible';
-        return "[<ul class=\"array level" + level + collapsible + "\">" + output + "</ul>]";
+        return "[<span class='editbtn'>添加</span><span class='editbtn'>删除</span><ul class=\"array level" + level + collapsible + "\">" + output + "</ul>]";
       } else {
         return '[ ]';
       }
@@ -113,7 +113,7 @@
       }
       if (hasContents) {
         collapsible = level === 0 ? '' : ' collapsible';
-        return "{<ul class=\"obj level" + level + collapsible + "\">" + output + "</ul>}";
+        return "{<span class='editbtn'>删除</span><ul class=\"obj level" + level + collapsible + "\">" + output + "</ul>}";
       } else {
         return '{ }';
       }

@@ -5,8 +5,6 @@
   white-space: pre-wrap; }
   .jsonview .prop {
     font-weight: bold; }
-  .jsonview .editbtn {
-    cursor: pointer; }
   .jsonview .null {
     color: red; }
   .jsonview .bool {

@@ -2,14 +2,19 @@
 .jsonview {
   font-family: monospace;
   font-size: 1.1em;
-  white-space: pre-wrap; }
+  white-space: pre-wrap;}
   .jsonview .prop {
     font-weight: bold; }
   .jsonview .btn{
-    margin-left: 5em; }
+    position: fixed;
+    left: 0;}
   .jsonview .editbtn{
     border: 0;
-  cursor: pointer}
+    cursor: pointer;
+    background-color: #ffffff;
+    color:blue}
+  .jsonview input{
+    border: 0;}
   .jsonview .null {
     color: red; }
   .jsonview .bool {
@@ -24,7 +29,7 @@
       vertical-align: text-top; }
   .jsonview .collapser {
     position: absolute;
-    left: -1em;
+    left: -0.25em;
     cursor: pointer; }
   .jsonview .collapsible {
     transition: height 1.2s;
@@ -49,7 +54,9 @@
     position: relative; }
   .jsonview ul {
     list-style: none;
-    margin: 0 0 0 2em;
-    padding: 0; }
+    margin: 0 0 0 0;
+    padding: 0 0 0 2em; }
+  .jsonview ul:hover{
+    border-left: dotted 1px; }
   .jsonview h1 {
     font-size: 1.2em; }

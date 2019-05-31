@@ -76,15 +76,23 @@
         value = array[index];
         hasContents = true;
         output += '<li>' + this.valueToHTML(value, level + 1);
-        if (numProps > 1) {
-          output += ',';
+        // if (numProps > 1) {
+        //   output += ',';
+        // }
+        var valueType = Object.prototype.toString.call(value).match(/\s(.+)]/)[1].toLowerCase();
+        switch (valueType){
+            case 'array':
+              break;
+            case 'object':
+              break;
+            default:
+              output += '<span class=\'btn\'><button type=\'button\' class=\'editbtn\'>d</button></span></li>';
         }
-        output += '<span class=\'btn\'><button type=\'button\' class=\'editbtn\'>删除</button></span></li>';
         numProps--;
       }
       if (hasContents) {
         collapsible = level === 0 ? '' : ' collapsible';
-        return "[<span class='btn'><button type='button' class='editbtn'>添加</button><button type='button' class='editbtn'>删除</button></span><ul class=\"array level" + level + collapsible + "\">" + output + "</ul>]";
+        return "<span class='btn'><button type='button' class='editbtn'>a</button><button type='button' class='editbtn'>d</button></span><ul class=\"array level" + level + collapsible + "\">" + output + "</ul>";
       } else {
         return '[ ]';
       }
@@ -104,16 +112,24 @@
       for (prop in object) {
         value = object[prop];
         hasContents = true;
-        output += "<li><span class=\"prop\"><span class=\"q\">\"</span>" + (this.jsString(prop)) + "<span class=\"q\">\"</span></span>: " + (this.valueToHTML(value, level + 1));
-        if (numProps > 1) {
-          output += ',';
+        output += "<li><span class=\"prop\"><span class=\"q\">\"</span>" + (this.jsString(" " + prop)) + "<span class=\"q\">\"</span></span>: " + (this.valueToHTML(value, level + 1));
+        // if (numProps > 1) {
+        //   output += ',';
+        // }
+        var valueType = Object.prototype.toString.call(value).match(/\s(.+)]/)[1].toLowerCase();
+        switch (valueType){
+            case 'array':
+              break;
+            case 'object':
+              break;
+            default:
+              output += '<span class=\'btn\'><button type=\'button\' class=\'editbtn\'>d</button></span></li>';
         }
-        output += '<span class=\'btn\'><button type=\'button\' class=\'editbtn\'>删除</button></span></li>';
         numProps--;
       }
       if (hasContents) {
         collapsible = level === 0 ? '' : ' collapsible';
-        return "{<span class='btn'><button type='button' class='editbtn'>删除</button></span><ul class=\"obj level" + level + collapsible + "\">" + output + "</ul>}";
+        return "<span class='btn'><button type='button' class='editbtn'>d</button></span><ul class=\"obj level" + level + collapsible + "\">" + output + "</ul>";
       } else {
         return '{ }';
       }
@@ -235,10 +251,10 @@
         $this.html(outputDoc);
         $this.delegate('button', 'click', function(ev){
             switch($(this).text()){
-                case '删除':
+                case 'd':
                     ev.target.parentNode.parentNode.remove();
                     break;
-                case '添加':
+                case 'a':
                     pn = ev.target.parentNode.parentNode.getElementsByClassName('collapsible')[0];
                     cn = pn.getElementsByTagName('li')[0];
                     $cn = $(cn);

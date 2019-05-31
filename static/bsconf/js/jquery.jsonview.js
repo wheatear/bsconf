@@ -22,7 +22,7 @@
     };
 
     JSONFormatter.prototype.decorateWithSpan = function(value, className) {
-      return "<span class=\"" + className + "\" contenteditable='true'>" + (this.htmlEncode(value)) + "</span><span class='editbtn'>删除</span>";
+      return "<span class=\"" + className + "\"><input type='text' value=\"" + (this.htmlEncode(value)) + "\" /></span>";
     };
 
     JSONFormatter.prototype.valueToHTML = function(value, level) {
@@ -56,7 +56,7 @@
             value = (value + '').replace(newLinePattern, '$1' + '<br />');
           }
         }
-        return "<span class=\"string" + multilineClass + "\" contenteditable='true'>\"" + value + "\"</span><span class='editbtn'>删除</span>";
+        return "<span class=\"string" + multilineClass + "\"><input type='text' value=\"" + value + "\" /></span>";
       }
     };
 
@@ -79,12 +79,12 @@
         if (numProps > 1) {
           output += ',';
         }
-        output += '</li>';
+        output += '<span class=\'btn\'><button type=\'button\' class=\'editbtn\'>删除</button></span></li>';
         numProps--;
       }
       if (hasContents) {
         collapsible = level === 0 ? '' : ' collapsible';
-        return "[<span class='editbtn'>添加</span><span class='editbtn'>删除</span><ul class=\"array level" + level + collapsible + "\">" + output + "</ul>]";
+        return "[<span class='btn'><button type='button' class='editbtn'>添加</button><button type='button' class='editbtn'>删除</button></span><ul class=\"array level" + level + collapsible + "\">" + output + "</ul>]";
       } else {
         return '[ ]';
       }
@@ -108,12 +108,12 @@
         if (numProps > 1) {
           output += ',';
         }
-        output += '</li>';
+        output += '<span class=\'btn\'><button type=\'button\' class=\'editbtn\'>删除</button></span></li>';
         numProps--;
       }
       if (hasContents) {
         collapsible = level === 0 ? '' : ' collapsible';
-        return "{<span class='editbtn'>删除</span><ul class=\"obj level" + level + collapsible + "\">" + output + "</ul>}";
+        return "{<span class='btn'><button type='button' class='editbtn'>删除</button></span><ul class=\"obj level" + level + collapsible + "\">" + output + "</ul>}";
       } else {
         return '{ }';
       }
@@ -233,6 +233,19 @@
         var $this, item, items, _i, _len, _results;
         $this = $(this);
         $this.html(outputDoc);
+        $this.delegate('button', 'click', function(ev){
+            switch($(this).text()){
+                case '删除':
+                    ev.target.parentNode.parentNode.remove();
+                    break;
+                case '添加':
+                    pn = ev.target.parentNode.parentNode.getElementsByClassName('collapsible')[0];
+                    cn = pn.getElementsByTagName('li')[0];
+                    $cn = $(cn);
+                    $(pn).append($cn.clone(true,true));
+                    break;
+            }
+        });
         items = $this[0].getElementsByClassName('collapsible');
         _results = [];
         for (_i = 0, _len = items.length; _i < _len; _i++) {

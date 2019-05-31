@@ -5,6 +5,11 @@
   white-space: pre-wrap; }
   .jsonview .prop {
     font-weight: bold; }
+  .jsonview .btn{
+    margin-left: 5em; }
+  .jsonview .editbtn{
+    border: 0;
+  cursor: pointer}
   .jsonview .null {
     color: red; }
   .jsonview .bool {

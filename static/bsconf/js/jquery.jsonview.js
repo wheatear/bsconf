@@ -112,7 +112,7 @@
       for (prop in object) {
         value = object[prop];
         hasContents = true;
-        output += "<li><span class=\"prop\"><span class=\"q\">\"</span>" + (this.jsString(" " + prop)) + "<span class=\"q\">\"</span></span>: " + (this.valueToHTML(value, level + 1));
+        output += "<li><span class=\"prop\"> " + (this.jsString(prop)) + "</span>: " + (this.valueToHTML(value, level + 1));
         // if (numProps > 1) {
         //   output += ',';
         // }
@@ -131,7 +131,7 @@
         collapsible = level === 0 ? '' : ' collapsible';
         return "<span class='btn'><button type='button' class='editbtn'>d</button></span><ul class=\"obj level" + level + collapsible + "\">" + output + "</ul>";
       } else {
-        return '{ }';
+        return '<span class=\'btn\'><button type=\'button\' class=\'editbtn\'>d</button></span>{ }';
       }
     };
 
@@ -196,6 +196,68 @@
     }
   };
   $ = jQuery;
+  JSONParser = {
+    parseNumber: function (el) {
+      return el.children('input')[0].value
+    },
+    parseString: function(el) {
+      return el.children('input')[0].value
+    },
+    parseObj: function (el) {
+      var obj = {};
+      el.children('li').each(function(){
+        var prName = $(this).children('.prop').text().substr(1);
+        obj[prName] = JSONParser.parseVal($(this));
+      });
+      return obj;
+    },
+    parseArr: function (el) {
+      var arr = [];
+      el.children('li').each(function(){
+        arr.push(JSONParser.parseVal($(this)))
+      });
+      return arr;
+    },
+    parseVal: function(el){
+      var propVal;
+      if (el.children().hasClass('obj')){
+        propVal = JSONParser.parseObj(el.children('.obj'))
+      } else if(el.children().hasClass('array')){
+        propVal = JSONParser.parseArr(el.children('.array'))
+      } else if(el.children().hasClass('string')){
+        propVal = JSONParser.parseString(el.children('.string'))
+      } else if(el.children().hasClass('num')){
+        propVal = JSONParser.parseNumber(el.children('.num'))
+      } else if(el.text().indexOf('{ }')>0){
+        console.log(el.text());
+        propVal = {}
+      }
+      // if(el.innerHTML.indexof('{ }')>0)
+      return propVal;
+    },
+    parseJsonView: function(el){
+      var json = {};
+      var $this = $(this);
+      el.find(".jsonview").children('ul.obj.level0').each(function(){
+        $(this).children('li').each(function(){
+          var prName = $(this).children('.prop').text().substr(1);
+          var propVal = JSONParser.parseVal($(this));
+          json[prName] = propVal
+          // $.extend(json,{prName: propVal})
+        })
+      });
+      return json;
+    }
+  };
+  $.fn.JSONParse = function() {
+    var jsonData, $this;
+    $this = $(this);
+    jsonData = JSONParser.parseJsonView($this);
+    console.log(jsonData);
+    // alert(JSON.stringify(jsonData));
+    return jsonData;
+
+  };
   JSONView = {
     collapse: function(el) {
       if (el.innerHTML === '-') {

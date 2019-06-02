@@ -311,6 +311,9 @@
         var $this, item, items, _i, _len, _results;
         $this = $(this);
         $this.html(outputDoc);
+        $this.delegate('ul','hover', function(){
+          $(this).css('borderLeft','dotted 1px')
+        });
         $this.delegate('button', 'click', function(ev){
             switch($(this).text()){
                 case 'd':

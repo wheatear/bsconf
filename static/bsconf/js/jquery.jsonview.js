@@ -149,11 +149,11 @@
       collapser = document.createElement('div');
       collapser.className = 'collapser';
       collapser.innerHTML = collapsed ? '+' : '-';
-      collapser.addEventListener('click', (function(_this) {
-        return function(event) {
-          return _this.toggle(event.target);
-        };
-      })(this));
+      // collapser.addEventListener('click', (function(_this) {
+      //   return function(event) {
+      //     return _this.toggle(event.target);
+      //   };
+      // })(this));
       item.insertBefore(collapser, item.firstChild);
       if (collapsed) {
         return this.collapse(collapser);
@@ -337,6 +337,15 @@
             _results.push(void 0);
           }
         }
+        $this.delegate('div', 'click', function(ev){
+          switch($(this).text()){
+            case '-':
+              Collapser.collapse(ev.target);
+              break;
+            case '+':
+                Collapser.expand(ev.target);
+          }
+        });
         return _results;
       });
     }

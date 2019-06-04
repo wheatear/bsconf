@@ -1,19 +1,19 @@
 {
-  "BOSSéœ€æ±‚è§£å†³æ–¹æ¡ˆ-BOSS-KS-2019-05-352-xx_zhangjuan_éƒ¨åˆ†å¯é€‰åŒ…æ›´å": {
+  "BOSSÐèÇó½â¾ö·½°¸-BOSS-KS-2019-05-352-xx_zhangjuan_²¿·Ö¿ÉÑ¡°ü¸üÃû": {
     "INTER_REMIND_MOD_BLOCK": [
       {
         "REMIND_HEAD": {
-          "REMARK": "csc-wh\\04-è§£å†³æ–¹æ¡ˆ\\2019å¹´\\2019-05\\BOSSéœ€æ±‚è§£å†³æ–¹æ¡ˆ-BOSS-KS-2019-05-352-xx_zhangjuan_éƒ¨åˆ†å¯é€‰åŒ…æ›´å.doc",
+          "REMARK": "csc-wh\\04-½â¾ö·½°¸\\2019Äê\\2019-05\\BOSSÐèÇó½â¾ö·½°¸-BOSS-KS-2019-05-352-xx_zhangjuan_²¿·Ö¿ÉÑ¡°ü¸üÃû.doc",
           "REMIND_SMS": [
             {
               "PROD_ID": "53001005",
-              "PROD_NAME": "5å…ƒæ•°æ®æµé‡å¯é€‰åŒ…"
+              "PROD_NAME": "5ÔªÊý¾ÝÁ÷Á¿¿ÉÑ¡°ü"
             }
           ],
           "REMIND_LARGE": [
             {
               "PROD_ID": "53001861",
-              "PROD_NAME": "50å…ƒæ•°æ®æµé‡å¯é€‰åŒ…"
+              "PROD_NAME": "50ÔªÊý¾ÝÁ÷Á¿¿ÉÑ¡°ü"
             }
           ]
         }

@@ -22,10 +22,12 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('^$', views.index),
     path('', views.index),
+    path('newreq/', views.configer),
     path('configer', views.configer),
     path('uploadMakeSql', views.uploadMakeSql),
     path('saveJson', views.saveJson),
-    path('makeBsSql/', views.makeBsSql),
+    path('makeSql/', views.makeBsSql),
     path('qryRequirement/', views.qryRequirement),
     path('openJson', views.openJson),
+    path('getDataTpl/', views.getDataTpl),
 ]

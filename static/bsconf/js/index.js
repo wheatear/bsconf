@@ -28,7 +28,7 @@ $(function () {
     }
 
     function qryReqm(){
-        dReq = {
+        var dReq = {
             "type":$('#reqType').val(),
             "month":$('#month').val(),
             "author":$('#author').val()

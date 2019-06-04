@@ -261,10 +261,21 @@
       "FIELDS": {
         "COMMON_RES_FREE_TYPE": "COMMON_RES_FREE_TYPE"
       }
-    },
+    }
+  },
+  "ALARM_PROD_MOD_BLOCK": {
+    "FREEBIE_ITEM": "None",
     "PACKAGE_ALARM_PROD_MOD": {
       "COMMENT": "修改余量提醒产品名称",
       "SQL": "UPDATE ZG.PACKAGE_ALARM_PROD SET PROD_NAME='^<PROD_NAME^>' WHERE PROD_ID = '^<PROD_ID^>';"
+    },
+    "ALARM_ITEM_CONVERT_MOD":{
+      "COMMENT": "修改套餐余量提醒免费资源科目转换表免费资源科目名称",
+      "SQL": "UPDATE ZG.PACKAGE_ALARM_ITEM_CONVERT SET ITEM_NAME = '^<ITEM_NAME^>' WHERE ITEM_CODE = '^<ITEM_CODE^>';"
+    },
+    "GPRS_FREEBIE_HFF_MOD": {
+      "COMMENT": "修改免费资源科目名称",
+      "SQL": "UPDATE ZG.GPRS_FREEBIE_HFF SET REMARK = '^<ITEM_NAME^>' WHERE FREEBIE_ID = '^<ITEM_CODE^>';"
     }
   },
   "INTER_REMIND_MOD_BLOCK": {

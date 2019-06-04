@@ -32,4 +32,69 @@ $(function () {
         });
     });
 
+    $("#selectBlock").click(function(){
+        if ( ! $("#reqDoc").val()){
+            alert("请输入解决方案名称");
+            return;
+        }
+        $selectPop = $("#blockSelecter");
+        $selectPop.show()
+    });
+
+    $("#shutoff").click(function(){
+        var $selectPop = $("#blockSelecter");
+        $selectPop.hide();
+        var aBlock = [];
+        $.each($('input:checkbox:checked'),function(){
+            aBlock.push($(this).val())
+        });
+        var dBlockName = {"blockName": aBlock};
+        // alert("block name: " + aBlock);
+        $.ajax({
+            url: "/getDataTpl/",
+            type: "POST",
+            data: dBlockName
+        }).done(function (data) {
+                var reqName = $("#reqDoc").val();
+                var jsonTpl = {};
+                jsonTpl[reqName] = data;
+                $("#json").JSONView(jsonTpl);
+        }).fail(function(){
+            alert("取数据模板失败")
+        })
+    });
+
+    $("#makeSql").click(function(){
+        var reqJson = $('#json').JSONParse();
+        var dReq = {
+            "type":$('#reqType').val(),
+            "month":$('#month').val(),
+            "author":$('#author').val(),
+            "reqName": $("#reqDoc").val(),
+            "reqJson": JSON.stringify(reqJson)
+        };
+        // dReq["reqJson"] = reqJson;
+        // $.extend(true,dReq,reqJson);
+        // alert(JSON.stringify(dReq));
+        $.ajax({
+            url: "/makeSql/",
+            type: "POST",
+            data: dReq
+        }).done(function (data) {
+            var sqlFile = data.sqlFile;
+            var path = data.downPath;
+            var errCode = data.errCode;
+            var errDesc = data.errDesc;
+            $("#downloadSql").attr({"href": '/' + path + '/' + sqlFile});
+            alert("sql file: " + sqlFile + "\nresult: " + errCode + " ( " + errDesc +" )");
+            if (parseInt(errCode) < 7) {
+                $("#downloadSql").hide()
+            } else {
+                $("#downloadSql").show()
+            }
+
+        }).fail(function(){
+            alert("取数据模板失败")
+        })
+    })
 });

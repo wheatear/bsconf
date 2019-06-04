@@ -8,6 +8,7 @@ from boss import settings
 import os,logging
 import json
 import copy
+import glob
 from bsconf.models import *
 from django.db.models import Max
 
@@ -41,7 +42,37 @@ def getMonthes():
     return aMonth
 
 def configer(request):
-    return render(request, 'bsconf/bsqEditer.html')
+    aMonth = getMonthes()
+    dJsonTpl = loadJsonTpl()
+    context = {'aMonth': aMonth,
+               'aBlockName': dJsonTpl.keys()}
+    return render(request, 'bsconf/bsqEditer.html', context)
+
+def getDataTpl(request):
+    if request.method == "POST":    # 请求方法为POST时，进行处理
+        logger.debug(request.POST)
+        aBlockName =request.POST.getlist("blockName[]", [])
+        logger.debug("request block tpl: %s", aBlockName)
+        dJsonTpl = loadJsonTpl()
+        dDataTpl = {}
+        for block in aBlockName:
+            if block in dJsonTpl:
+                dDataTpl[block] = dJsonTpl[block]
+        logger.debug("resp: %s", dDataTpl)
+        return JsonResponse(dDataTpl)
+
+def loadJsonTpl():
+    dJsonTpl = {}
+    tplFile = os.path.join(settings.TPL_DIR, 'tpldata*.json')
+    for file in glob.glob(tplFile):
+        logger.debug('load file %s', file)
+        with open(file) as jf:
+            jsonBlock = json.load(jf)
+        logger.debug(jsonBlock)
+        for req in jsonBlock:
+            dJsonTpl.update(jsonBlock[req])
+    logger.info(dJsonTpl)
+    return dJsonTpl
 
 def uploadMakeSql(request):
     logger.info('upload json')
@@ -135,6 +166,44 @@ def _makeSql(bsf):
 
 def makeBsSql(request):
     logger.info('request: %s %s from', request.method, request.path)
+    if request.method == "POST":    # 请求方法为POST时，进行处理
+        logger.debug(request.POST)
+        jsonStr = request.POST.get("reqJson", None)
+        reqJson = json.loads(jsonStr)
+        reqName = request.POST.get("reqName", None)
+        month = request.POST.get("month", None)
+        if not month:
+            month = time.strftime('%Y%m', time.localtime())
+        reqType = request.POST.get("type",'ZG')
+        author = request.POST.get("author", '王新田')
+        logger.debug("json: %s", json.dumps(reqJson))
+        reqName = reqName.replace('BOSS需求解决方案-', '')
+        reqName = reqName.replace('需求解决方案-', '')
+        jsonName = '%s-%s-%s.json' % (reqType, reqName, author)
+        bsf = BsConfiger(jsonName, reqType, author, month)
+        bsf.saveReqSts('0')
+
+        jsonDir = os.path.join(settings.IN_DIR, month)
+        if not os.path.exists(jsonDir):
+            os.makedirs(jsonDir)
+        with open(os.path.join(jsonDir, jsonName), 'w') as jf:
+            jf.write(jsonStr)
+        # destination.close()
+        bsf.saveReqSts('1')
+
+        logger.info('upload %s ok.', bsf.inFile)
+        logger.info('make sql for %s', bsf.inFile)
+        sqlFile = _makeSql(bsf)
+        downPath = 'static/bsconf/out/%s' % bsf.month
+        result = {
+            "sqlFile": bsf.outFile,
+            "downPath": downPath,
+            "errCode": bsf.bsReq.state,
+            "errDesc": bsf.getReqErrDesc()
+        }
+        logger.info('make sql %s %s result: errCode: %s; errDesc: %s', downPath, sqlFile, bsf.chkSts, bsf.chkDesc)
+        return JsonResponse(result)
+
     if request.method == "GET":    # 请求方法为POST时，进行处理
         jsonName = request.GET['jsonName']
         bsf = BsConfiger(jsonName)

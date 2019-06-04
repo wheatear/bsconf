@@ -1,11 +1,19 @@
 {
-  "BOSSéœ€æ±‚è§£å†³æ–¹æ¡ˆ-BOSS-KS-2019-05-173-wangting1-AMå¿«é€Ÿé…ç½®-å¿«å“éœ€æ±‚-ç‘žå¹¸å’–å•¡ä»£é‡‘åˆ¸å¼€å‘éœ€æ±‚": {
-      "ALARM_PROD_BLOCK": [
+  "BOSSÐèÇó½â¾ö·½°¸-BOSS-KS-2019-05-173-wangting1-AM¿ìËÙÅäÖÃ-¿ìÏìÐèÇó-ÈðÐÒ¿§·È´ú½ðÈ¯¿ª·¢ÐèÇó": {
+      "ALARM_PROD_MOD_BLOCK": [
         {
           "PACKAGE_ALARM_PROD_MOD": {
             "PROD_ID": "50002343",
-            "PROD_NAME": "æ‰¿è¯º128å…ƒç•…äº«æ”¾å¿ƒç”¨å¥—é¤å­˜è´¹é€è´¹2019-èµ é€è¯­éŸ³"
-          }
+            "PROD_NAME": "³ÐÅµ128Ôª³©Ïí·ÅÐÄÓÃÌ×²Í´æ·ÑËÍ·Ñ2019-ÔùËÍÓïÒô"
+          },
+          "FREEBIE_ITEM": [
+            {
+              "ITEM_CODE": "66661174",
+              "ITEM_NAME": "ÓïÑÔ·öÆ¶¶¨ÏòÁ÷Á¿",
+              "ALARM_ITEM_CONVERT_MOD": {},
+              "GPRS_FREEBIE_HFF_MOD": {}
+            }
+          ]
         }
       ]
    }

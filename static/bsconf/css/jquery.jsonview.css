@@ -4,8 +4,8 @@
   font-family: monospace;
   font-size: 1.1em;
   white-space: pre-wrap;}
-  .jsonview .prop {
-    font-weight: bold; }
+  /*.jsonview .prop {*/
+    /*font-weight: bold; }*/
   .jsonview .btn{
     position: absolute;
     left: -1.6em;}
@@ -16,6 +16,7 @@
     color:blue;
     padding: 1px 1px;}
   .jsonview input{
+    font-weight: bold;
     border: 0;}
   .jsonview .null {
     color: red; }

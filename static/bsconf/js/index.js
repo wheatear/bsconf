@@ -130,6 +130,10 @@ $(function () {
         fillTable(newReq,$reqTab)
     });
 
+    $reqTab.delegate('td', 'dblclick', function(ev){
+        alert("double click" + $(this).attr("json"))
+    });
+
     function sortReq(a,b){
         if (a[aRequirement.sortId] < b[aRequirement.sortId]) {return -1}
         else if (a[aRequirement.sortId] > b[aRequirement.sortId]) {return 1}

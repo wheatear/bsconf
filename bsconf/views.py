@@ -210,6 +210,31 @@ def makeBsSql(request):
         bsf.start()
         return JsonResponse( {"rep": "ok"})
 
+def qryJsonFile(request):
+    if request.method == "POST":    # 请求方法为POST时，进行处理
+        logger.debug(request.POST)
+        reqName = request.POST.get("reqName", None)
+        month = request.POST.get("month", None)
+        if not month:
+            month = time.strftime('%Y%m', time.localtime())
+        reqType = request.POST.get("type",'ZG')
+        author = request.POST.get("author", '王新田')
+
+        reqName = reqName.replace('BOSS需求解决方案-', '')
+        reqName = reqName.replace('需求解决方案-', '')
+        jsonName = '%s-%s-%s.json' % (reqType, reqName, author)
+        logger.debug("query request: %s")
+        jsonDir = os.path.join(settings.IN_DIR, month)
+        jsonFile = os.path.join(jsonDir, jsonName)
+        if os.path.exists(jsonFile):
+            with open(jsonFile) as fData:  # ,encoding='utf-8'
+                jsonCont = json.load(fData)
+            dResp = {"jsonFile": jsonFile,
+                     "jsonData": jsonCont}
+            return JsonResponse(dResp)
+        else:
+            return JsonResponse({"jsonFile": None})
+
 def qryRequirement(request):
     logger.info('query requirement')
     jsonMonth = None

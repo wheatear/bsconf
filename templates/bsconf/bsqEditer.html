@@ -10,7 +10,7 @@
 
     <link rel="stylesheet" href="/static/bsconf/css/index.css?v=1.0.4" />
     <link rel="stylesheet" href="/static/bsconf/css/bsqEditer.css?v=1.0.3" />
-    <script type="text/javascript" src="/static/bsconf/js/bsqEditer.js?v=1.0.19"></script>
+    <script type="text/javascript" src="/static/bsconf/js/bsqEditer.js?v=1.0.39"></script>
 </head>
 <body>
 <div class="topdiv searcher">
@@ -33,13 +33,17 @@
     <span class="condition">
             <label>作者</label><input type="text" class="head" id="author" value="王新田" />
         </span>
+</span>
+    <span class="condition">
+            <label>状态</label><input type="text" class="head" id="status" value="" />
+        </span>
     <span>
-            <input type="button" class="head" id="query" value="确定"/>
+            <input type="button" class="head" id="query" value="新建"/>
         </span>
 </div>
 
 <div class="topdiv">
-    <span><label>解决方案</label><input type="text" id="reqDoc"></span>
+    <span><label>解决方案</label><input type="text" id="reqName"></span>
     <span><input type="button" class="head" id="selectBlock" value="选择模板"/></span>
     <input type="button" class="head" id="saveJson" value="保存json"/>
     <span><input type="button" class="head" id="makeSql" value="生成配置"/></span>
@@ -71,7 +75,7 @@
 		<div class="pop">
 			<h3>配置业务功能</h3>
             {% for block in aBlockName %}
-            <div><input type="checkbox" name="reqblock" value="{{ block }}"/>{{ block }}</div>
+            <div><input type="checkbox" name="reqblock" id="{{ block }}" value="{{ block }}"/>{{ block }}</div>
             {% endfor %}
 			<div><a href="#" id="shutoff">确定</a></div>
 		</div>

@@ -28,6 +28,6 @@ urlpatterns = [
     path('saveJson', views.saveJson),
     path('makeSql/', views.makeBsSql),
     path('qryRequirement/', views.qryRequirement),
-    path('openJson', views.openJson),
+    path('openReqConf/', views.openReqConf),
     path('getDataTpl/', views.getDataTpl),
 ]

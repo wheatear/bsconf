@@ -128,21 +128,21 @@ def _uploadJson(request):
         bsf.saveReqSts('1')
         return bsf
 
-def openJson(request):
-    logger.info('upload json')
+def openReqConf(request):
+    logger.info('open req conf')
     if request.method == "POST":    # 请求方法为POST时，进行处理
-        jsonFile =request.FILES.get("jsonFile", None)    # 获取上传的文件，如果没有文件，则默认为None
-        if not jsonFile:
-            return HttpResponse("no files for upload!")
-        jsonName = jsonFile.name
+        reqName = request.POST.get("reqName", None)
+        reqType = request.POST.get("type", 'ZG')
+        author = request.POST.get("author", '王新田')
         month = request.POST.get("month", None)
+
         if not month:
             month = time.strftime('%Y%m', time.localtime())
-        reqType = request.POST.get("type",'ZG')
-        author = request.POST.get("author", '王新田')
-
-        if not jsonName.startswith(reqType):
-            jsonName = '%s-%s' % (reqType, jsonName)
+        reqJson = reqName.replace('BOSS需求解决方案-', '')
+        reqJson = reqJson.replace('需求解决方案-', '')
+        jsonName = '%s-%s-%s.json' % (reqType, reqJson, author)
+        # if not reqName.startswith(reqType):
+        #     jsonName = '%s-%s-%s.json' % (reqType, reqJson, author)
 
         # destination = open(os.path.join(settings.IN_DIR, month, jsonName),'wb+')    # 打开特定的文件进行二进制的写操作
         jsonDir = os.path.join(settings.IN_DIR, month)
@@ -150,13 +150,11 @@ def openJson(request):
         logger.debug('open json: %s', jFile)
         if not os.path.exists(jsonDir):
             os.makedirs(jsonDir)
-        with open(jFile,'wb+') as destination:
-            for chunk in jsonFile.chunks():      # 分块写入文件
-                destination.write(chunk)
         # destination.close()
-        jsonCont = {}
-        with open(jFile) as fData:  # ,encoding='utf-8'
-            jsonCont = json.load(fData)
+        jsonCont = {reqName: {}}
+        if os.path.exists(jFile):
+            with open(jFile) as fData:  # ,encoding='utf-8'
+                jsonCont = json.load(fData)
         return JsonResponse(jsonCont)
 
 def _makeSql(bsf):

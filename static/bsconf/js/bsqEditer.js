@@ -1,39 +1,69 @@
+jsonData = {};
 $(function () {
     // $("#json").JSONView(json);
+    // jsonData = {};
 
-    $("#openJson").click(function () {
-        var formData = new FormData();
-        formData.append("jsonFile", document.getElementById("jsonFile").files[0]);
-        // var dReq = {
-        //     "type":$('#reqType').val()
-        // };
-        // formData.append("type", $('#reqType').val());
-        // formData.append("author", $('#author').val());
+    $('#reqType').val(localStorage.reqType);
+    $('#author').val(localStorage.author);
+    $('#month').val(localStorage.month);
+    $('#reqName').val(localStorage.reqName);
+    var reqName = localStorage.reqName;
+    jsonData[reqName] = {};
+
+    // alert("open json of "+ reqName);
+    openReqConf();
+
+
+    function openReqConf () {
+        var dReq = {
+            "type":$('#reqType').val(),
+            "month":$('#month').val(),
+            "author":$('#author').val(),
+            "reqName": $("#reqName").val()
+        };
         $.ajax({
-            url: "openJson",
+            url: "/openReqConf/",
             type: "POST",
-            data: formData,
-             // *必须false才会自动加上正确的Content-Type
-            contentType: false,
-             // * 必须false才会避开jQuery对 formdata 的默认处理
-             // * XMLHttpRequest会对 formdata 进行正确的处理
-            processData: false,
-            success: function (data) {
-                alert('open json file:');
-                alert(data);
-                $("#json").JSONView(data);
+            data: dReq
+        }).done(function (data) {
+                // alert('open json file:');
+                console.log(data);
+                jsonData = data;
+                // $.extend(true,jsonData,data);
+                $("#json").JSONView(jsonData);
+                refreshCheck(jsonData);
                 // $('#downloadSql').href(path + "/" + sqlFile);
                 // qryReqm();
-            },
-            error: function () {
-                alert("生成SQL文件失败！");
-                // $("#imgWait").hide();
-            }
+        }).fail(function(){
+            alert("打开需求配置失败");
+            refreshCheck({});
         });
+    }
+
+    function refreshCheck(jsonData){
+        // alert("refresh check");
+        $("[name='reqblock']").removeAttr("checked");
+        // $.each($('input:checkbox:checked'),function(){
+        //     $(this).prop("checked","false")
+        // });
+        var reqName = $("#reqName").val();
+        console.log(jsonData);
+        $.each(jsonData[reqName], function(k,v){
+            // alert("block "+ k);
+            var chk = "#blockSelecter #" + k;
+            $(chk).prop("checked","true")
+            // $('input:checkbox:'+k).prop("checked","true")
+        })
+    }
+
+    $("#query").click(function(){
+        var reqName = localStorage.reqName;
+        jsonData[reqName] = {};
+        openReqConf();
     });
 
     $("#selectBlock").click(function(){
-        if ( ! $("#reqDoc").val()){
+        if ( ! $("#reqName").val()){
             alert("请输入解决方案名称");
             return;
         }
@@ -55,23 +85,24 @@ $(function () {
             type: "POST",
             data: dBlockName
         }).done(function (data) {
-                var reqName = $("#reqDoc").val();
-                var jsonTpl = {};
-                jsonTpl[reqName] = data;
-                $("#json").JSONView(jsonTpl);
+                var reqName = $("#reqName").val();
+                oldData = jsonData[reqName];
+                $.extend(true, data, oldData);
+                jsonData[reqName] = data;
+                $("#json").JSONView(jsonData);
         }).fail(function(){
             alert("取数据模板失败")
         })
     });
 
     $("#makeSql").click(function(){
-        var reqJson = $('#json').JSONParse();
+        jsonData = $('#json').JSONParse();
         var dReq = {
             "type":$('#reqType').val(),
             "month":$('#month').val(),
             "author":$('#author').val(),
-            "reqName": $("#reqDoc").val(),
-            "reqJson": JSON.stringify(reqJson)
+            "reqName": $("#reqName").val(),
+            "reqJson": JSON.stringify(jsonData)
         };
         // dReq["reqJson"] = reqJson;
         // $.extend(true,dReq,reqJson);
@@ -92,9 +123,9 @@ $(function () {
             } else {
                 $("#downloadSql").show()
             }
-
         }).fail(function(){
-            alert("取数据模板失败")
+            $("#downloadSql").attr({"href": ''});
+            alert("生成配置SQL失败")
         })
     })
 });

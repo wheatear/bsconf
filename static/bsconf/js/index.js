@@ -66,6 +66,7 @@ $(function () {
         // };
         formData.append("type", $('#reqType').val());
         formData.append("author", $('#author').val());
+        formData.append("month", $('#month').val());
         $.ajax({
             url: "uploadMakeSql",
             type: "POST",
@@ -102,6 +103,7 @@ $(function () {
     // $reqList = $('#con');
     $('#reqType').change(function(ev){
         localStorage.reqType = $(this).val();
+        alert(localStorage.reqType)
     });
 
     $('#author').change(function(ev){
@@ -122,16 +124,27 @@ $(function () {
         // alert($(this).attr('id'));
         aRequirement.sortId = $(this).attr('id');
         var newReq = aRequirement.bsReq.sort(sortReq);
-        // alert(aRequirement.sortId);
-        // $.each(newReq,function(i,v){
-        //     alert(v['json_file'])
-        // });
-
-        fillTable(newReq,$reqTab)
+        aRequirement = newReq;
+        fillTable(aRequirement,$reqTab)
     });
 
-    $reqTab.delegate('td', 'dblclick', function(ev){
-        alert("double click" + $(this).attr("json"))
+    $reqTab.delegate('tr', 'dblclick', function(ev){
+        // alert("double click: " + $(this).children("#type").text());
+        var reqName = $(this).children("#json").text();
+        var reqType = $(this).children("#type").text();
+        var month = $('#month').val();
+        var author = $('#author').val();
+
+        reqName = reqName.replace(reqType+"-","");
+        reqName = reqName.replace(".json","");
+        reqName = reqName.replace("-"+author,"");
+        reqName = "BOSS需求解决方案-" + reqName;
+        localStorage.reqName = reqName;
+        localStorage.reqType = reqType;
+        localStorage.month = month;
+        localStorage.author = author;
+        window.open("/newreq/");
+
     });
 
     function sortReq(a,b){

@@ -21,6 +21,10 @@ $(function () {
             "author":$('#author').val(),
             "reqName": $("#reqName").val()
         };
+        if (dReq["reqName"] === ""){
+            $("#json").html("");
+            return
+        }
         $.ajax({
             url: "/openReqConf/",
             type: "POST",
@@ -35,7 +39,7 @@ $(function () {
                 // $('#downloadSql').href(path + "/" + sqlFile);
                 // qryReqm();
         }).fail(function(){
-            alert("打开需求配置失败");
+            // alert("打开需求配置失败");
             refreshCheck({});
         });
     }
@@ -47,6 +51,7 @@ $(function () {
         //     $(this).prop("checked","false")
         // });
         var reqName = $("#reqName").val();
+        console.log(reqName);
         console.log(jsonData);
         $.each(jsonData[reqName], function(k,v){
             // alert("block "+ k);
@@ -57,16 +62,21 @@ $(function () {
     }
 
     $("#query").click(function(){
-        var reqName = localStorage.reqName;
-        jsonData[reqName] = {};
-        openReqConf();
+        $("#reqName").val("");
+        localStorage.reqName = "";
+        jsonData = {};
+        $("#json").html("");
+        $("[name='reqblock']").removeAttr("checked");
     });
 
     $("#selectBlock").click(function(){
-        if ( ! $("#reqName").val()){
+        var reqName = $("#reqName").val();
+        if ( ! reqName){
             alert("请输入解决方案名称");
             return;
         }
+        localStorage.reqName = reqName;
+        openReqConf();
         $selectPop = $("#blockSelecter");
         $selectPop.show()
     });
@@ -78,6 +88,9 @@ $(function () {
         $.each($('input:checkbox:checked'),function(){
             aBlock.push($(this).val())
         });
+        if (aBlock.length === 0){
+            return
+        }
         var dBlockName = {"blockName": aBlock};
         // alert("block name: " + aBlock);
         $.ajax({

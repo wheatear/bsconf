@@ -57,6 +57,15 @@ $(function () {
         qryReqm();
     });
 
+    $("#newreq").click(function(){
+        localStorage.reqName = "";
+        localStorage.reqType = $('#reqType').val();
+        localStorage.month = $('#month').val();
+        localStorage.author = $('#author').val();
+        // alert(localStorage.reqType);
+        window.open("/newreq/");
+    });
+
     $("#uploadMmakeSql").click(function () {
         // $("#imgWait").show();
         var formData = new FormData();
@@ -103,7 +112,7 @@ $(function () {
     // $reqList = $('#con');
     $('#reqType').change(function(ev){
         localStorage.reqType = $(this).val();
-        alert(localStorage.reqType)
+        // alert(localStorage.reqType)
     });
 
     $('#author').change(function(ev){

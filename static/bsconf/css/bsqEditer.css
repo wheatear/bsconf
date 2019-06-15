@@ -5,6 +5,15 @@
 /*#saveJson{*/
     /*display: inline-block;*/
 /*}*/
+
+#json{
+    display: inline-block;
+}
+
+#sql{
+    display: none;
+}
+
 #saveSql{
     display: none;
 }

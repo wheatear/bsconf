@@ -141,6 +141,7 @@ def openReqConf(request):
         reqJson = reqName.replace('BOSS需求解决方案-', '')
         reqJson = reqJson.replace('需求解决方案-', '')
         jsonName = '%s-%s-%s.json' % (reqType, reqJson, author)
+        sqlName = '%s-%s-%s.sql' % (reqType, reqJson, author)
         # if not reqName.startswith(reqType):
         #     jsonName = '%s-%s-%s.json' % (reqType, reqJson, author)
 

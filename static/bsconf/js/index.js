@@ -1,3 +1,5 @@
+var aRequirement;
+
 $(function () {
     var dReq = {
         "type":"ZG"
@@ -133,8 +135,8 @@ $(function () {
         // alert($(this).attr('id'));
         aRequirement.sortId = $(this).attr('id');
         var newReq = aRequirement.bsReq.sort(sortReq);
-        aRequirement = newReq;
-        fillTable(aRequirement,$reqTab)
+        aRequirement.bsReq = newReq;
+        fillTable(newReq,$reqTab)
     });
 
     $reqTab.delegate('tr', 'dblclick', function(ev){

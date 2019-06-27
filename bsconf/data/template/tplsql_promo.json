@@ -36,6 +36,10 @@
 		"SMS_RULE": {
             "COMMENT": "短信ID映射表",
 			"SQL": "insert into base.bs_sms_rule (RULE_ID, RULE_CODE, RULE_EXP, RULE_ORDER, BUSINESS_ID, AC_SMS_TEMPLATE_ID, SMS_TEMPLATE_ID, STATE, CREATE_DATE) values (base.bs_sms_rule$seq.nextval, '^<NEW_SMS_TEMPLET_ID^>', '', '1', '^<BUSI_TYPE_CODE^>', '^<NEW_SMS_TEMPLET_ID^>', '^<SMS_TEMPLATE_ID^>', 'U', sysdate);"
+		},
+		"ACCT_DEL_EXCLUDE_CFG": {
+            "COMMENT": "新增不能欠销配置 RULE_TYPE=2营销案，RULE_TYPE=1产品",
+			"SQL": "INSERT INTO ZG.ACCT_DEL_EXCLUDE_CFG (REGION_CODE, RULE_TYPE, RULE_ID, RULE_NAME, EFF_DATE, EXP_DATE, REMARK) VALUES (100, 2, '^<PROMO_ID^>', '^<PROMO_NAME^>', to_date('01-01-2010', 'dd-mm-yyyy'), to_date('01-01-2030', 'dd-mm-yyyy'), null);"
 		}
   },
   "PROMO_COMMON_BLOCK": {
@@ -261,6 +265,10 @@
       "FIELDS": {
         "COMMON_RES_FREE_TYPE": "COMMON_RES_FREE_TYPE"
       }
+    },
+    "PROD_TRANS_FREEBIE_CONFIG":{
+      "COMMENT": "流量转增和滚存，flag:第一个标示是1代表能转增，0不能转增。第二个标识是1代表滚存，0代表不能滚存(不转赠就不用配这张表)",
+      "SQL": "INSERT INTO ZG.PROD_TRANS_FREEBIE_CONFIG (PROD_ID, FREEBIE_ID_A, FREEBIE_ID_B, FREEBIE_TYPE, PROD_TRANS_PRIORITY, FLAG, RECORD_TYPE) VALUES ('^<PROD_ID^>', '^<ITEM_CODE^>', '66661120', '1', '^<PROD_TRANS_PRIORITY^>', '10000000', '1');"
     }
   },
   "ALARM_PROD_MOD_BLOCK": {

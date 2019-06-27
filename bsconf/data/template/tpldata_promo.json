@@ -19,6 +19,7 @@
                 }
               ],
               "SAP_MAP": {},
+              "ACCT_DEL_EXCLUDE_CFG": {},
               "SMS_FORM": [
                 {
                   "APPLY_TYPE": "1",
@@ -68,6 +69,7 @@
                 }
               ],
               "SAP_MAP": {},
+              "ACCT_DEL_EXCLUDE_CFG": {},
               "SMS_FORM": [
                 {
                   "APPLY_TYPE": "1",

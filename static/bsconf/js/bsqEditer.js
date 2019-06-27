@@ -1,4 +1,4 @@
-jsonData = {};
+var jsonData = {};
 $(function () {
     // $("#json").JSONView(json);
     // jsonData = {};
@@ -140,5 +140,25 @@ $(function () {
             $("#downloadSql").attr({"href": ''});
             alert("生成配置SQL失败")
         })
-    })
+    });
+
+    $("#saveJson").click(function(){
+        jsonData = $('#json').JSONParse();
+        var dReq = {
+            "type":$('#reqType').val(),
+            "month":$('#month').val(),
+            "author":$('#author').val(),
+            "reqName": $("#reqName").val(),
+            "reqJson": JSON.stringify(jsonData)
+        };
+        $.ajax({
+            url: "/saveJson",
+            type: "POST",
+            data: dReq
+        }).done(function (data) {
+            alert("save json ok")
+        }).fail(function(){
+            alert("save json failer")
+        })
+    });
 });

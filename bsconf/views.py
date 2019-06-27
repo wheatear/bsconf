@@ -96,34 +96,33 @@ def uploadMakeSql(request):
 
 def saveJson(request):
     logger.info('upload json')
-    jsonName = _uploadJson(request)
-    logger.info('upload %s ok.', jsonName)
+    bsf = _uploadJson(request)
+    logger.info('upload %s ok.', bsf.inFile)
     return JsonResponse({"rep": 'ok'})
 
 def _uploadJson(request):
     if request.method == "POST":    # 请求方法为POST时，进行处理
-        jsonFile =request.FILES.get("jsonFile", None)    # 获取上传的文件，如果没有文件，则默认为None
-        if not jsonFile:
-            return HttpResponse("no files for upload!")
-        jsonName = jsonFile.name
+        logger.debug(request.POST)
+        jsonStr = request.POST.get("reqJson", None)
+        reqJson = json.loads(jsonStr)
+        reqName = request.POST.get("reqName", None)
         month = request.POST.get("month", None)
         if not month:
             month = time.strftime('%Y%m', time.localtime())
-        reqType = request.POST.get("type",'ZG')
+        reqType = request.POST.get("type", 'ZG')
         author = request.POST.get("author", '王新田')
-
-        if not jsonName.startswith(reqType):
-            jsonName = '%s-%s' % (reqType, jsonName)
+        logger.debug("json: %s", json.dumps(reqJson))
+        reqName = reqName.replace('BOSS需求解决方案-', '')
+        reqName = reqName.replace('需求解决方案-', '')
+        jsonName = '%s-%s-%s.json' % (reqType, reqName, author)
         bsf = BsConfiger(jsonName, reqType, author, month)
         bsf.saveReqSts('0')
 
-        # destination = open(os.path.join(settings.IN_DIR, month, jsonName),'wb+')    # 打开特定的文件进行二进制的写操作
         jsonDir = os.path.join(settings.IN_DIR, month)
         if not os.path.exists(jsonDir):
             os.makedirs(jsonDir)
-        with open(os.path.join(jsonDir, jsonName),'wb+') as destination:
-            for chunk in jsonFile.chunks():      # 分块写入文件
-                destination.write(chunk)
+        with open(os.path.join(jsonDir, jsonName), 'w') as jf:
+            jf.write(jsonStr)
         # destination.close()
         bsf.saveReqSts('1')
         return bsf
@@ -166,29 +165,7 @@ def _makeSql(bsf):
 def makeBsSql(request):
     logger.info('request: %s %s from', request.method, request.path)
     if request.method == "POST":    # 请求方法为POST时，进行处理
-        logger.debug(request.POST)
-        jsonStr = request.POST.get("reqJson", None)
-        reqJson = json.loads(jsonStr)
-        reqName = request.POST.get("reqName", None)
-        month = request.POST.get("month", None)
-        if not month:
-            month = time.strftime('%Y%m', time.localtime())
-        reqType = request.POST.get("type",'ZG')
-        author = request.POST.get("author", '王新田')
-        logger.debug("json: %s", json.dumps(reqJson))
-        reqName = reqName.replace('BOSS需求解决方案-', '')
-        reqName = reqName.replace('需求解决方案-', '')
-        jsonName = '%s-%s-%s.json' % (reqType, reqName, author)
-        bsf = BsConfiger(jsonName, reqType, author, month)
-        bsf.saveReqSts('0')
-
-        jsonDir = os.path.join(settings.IN_DIR, month)
-        if not os.path.exists(jsonDir):
-            os.makedirs(jsonDir)
-        with open(os.path.join(jsonDir, jsonName), 'w') as jf:
-            jf.write(jsonStr)
-        # destination.close()
-        bsf.saveReqSts('1')
+        bsf = _uploadJson(request)
 
         logger.info('upload %s ok.', bsf.inFile)
         logger.info('make sql for %s', bsf.inFile)

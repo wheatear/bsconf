@@ -79,6 +79,10 @@
 		"SMS_RULE": {
             "COMMENT": "短信ID映射表",
 			"SQL": "insert into base.bs_sms_rule (RULE_ID, RULE_CODE, RULE_EXP, RULE_ORDER, BUSINESS_ID, AC_SMS_TEMPLATE_ID, SMS_TEMPLATE_ID, STATE, CREATE_DATE) values (base.bs_sms_rule$seq.nextval, '^<NEW_SMS_TEMPLET_ID^>', '', '1', '^<BUSI_TYPE_CODE^>', '^<NEW_SMS_TEMPLET_ID^>', '^<SMS_TEMPLATE_ID^>', 'U', sysdate);"
+		},
+		"ACCT_DEL_EXCLUDE_CFG": {
+            "COMMENT": "新增不能欠销配置 RULE_TYPE=2营销案，RULE_TYPE=1产品",
+			"SQL": "INSERT INTO ZG.ACCT_DEL_EXCLUDE_CFG (REGION_CODE, RULE_TYPE, RULE_ID, RULE_NAME, EFF_DATE, EXP_DATE, REMARK) VALUES (100, 2, '^<PROMO_ID^>', '^<PROMO_NAME^>', to_date('01-01-2010', 'dd-mm-yyyy'), to_date('01-01-2030', 'dd-mm-yyyy'), null);"
 		}
   },
   "PROMO_COND_BLOCK": {
@@ -131,7 +135,7 @@
         },
         "ITEM_MAP": {
             "COMMENT": "配置CRM费用项编码映射",
-            "SQL": "insert into base.bs_busi_item_map (busi_item_code, busi_item_type, fee_item_id, fee_item_name, sts, receipt_type, receipt_item) values ('^<BUSI_ITEM_CODE^>', '3', '^<BUSI_ITEM_CODE^>', '业务违约金', '1', '^<RECEIPT_TYPE^>', '1116');"
+            "SQL": "insert into base.bs_busi_item_map (busi_item_code, busi_item_type, fee_item_id, fee_item_name, sts, receipt_type, receipt_item) values ('^<BUSI_ITEM_CODE^>', '3', '^<BUSI_ITEM_CODE^>', '^<FEE_ITEM_NAME^>', '1', '^<RECEIPT_TYPE^>', '1116');"
         },
         "MIS_BS_DEF_BILL_ITEM_MIS": {
             "COMMENT": "配置统计，用10开头的  10  MIS配置类",
@@ -167,7 +171,7 @@
         },
         "ITEM_MAP": {
             "COMMENT": "配置CRM费用项编码映射 busi_item_code,fee_item_id,fee_item_name, receipt_type, receipt_item",
-            "SQL": "insert into base.bs_busi_item_map (busi_item_code, busi_item_type, fee_item_id, fee_item_name, sts, receipt_type, receipt_item) values ('^<BUSI_ITEM_CODE^>', '3', '^<BUSI_ITEM_CODE^>', '^<RECEIPT_ITEM_NAME^>', '1', '^<RECEIPT_TYPE^>', '^<RECEIPT_ITEM^>');"
+            "SQL": "insert into base.bs_busi_item_map (busi_item_code, busi_item_type, fee_item_id, fee_item_name, sts, receipt_type, receipt_item) values ('^<BUSI_ITEM_CODE^>', '3', '^<BUSI_ITEM_CODE^>', '^<FEE_ITEM_NAME^>', '1', '^<RECEIPT_TYPE^>', '^<RECEIPT_ITEM^>');"
         },
         "HALL_BS_DEF_BILL_ITEM_MIS": {
             "COMMENT": "厅台统计，财务统计定义，只要有mis码如A226，配置成10A226  厅台码（01 卡类收入 02 话费收入 09 其它收入  03  调整类MIS  ） ",

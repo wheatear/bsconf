@@ -1,0 +1,12 @@
+{
+  "BOSS需求解决方案-BOSS-JT-2019-06-267-zhanghongxia-集团400及8007及95105业务支撑实施方案": {
+    "BBOSS_PRODUCTCHARGE_BLOCK": [
+      {
+        "AM_BBOSS_PRODUCTCHARGE_CFG": {
+          "PRODUCT_NAME": "95105业务",
+          "PRODUCT_CHARGECODE": "1506:6293"
+        }
+      }
+    ]
+  }
+}

@@ -74,6 +74,21 @@
             ]
           }
         }
+      ],
+      "RECEIPT_TYPE_NAME_MOD_BLOCK": [
+        {
+          "RECEIPT_TYPE_MOD": {
+          	"RECEIPT_TYPE": "1082",
+            "RECEIPT_TYPE_NAME": "指定购机直降方案",
+            "RECEIPT_ITEM_NAME_MOD": [
+              {
+                "RECEIPT_ITEM": "1476",
+                "RECEIPT_ITEM_NAME": "指定购机直降方案业务违约金",
+            		"FEE_ITEM_NAME_MOD": {}
+              }
+            ]
+          }
+        }
       ]
    }
 }

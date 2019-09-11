@@ -4,6 +4,7 @@ from django.http import FileResponse
 
 import time, re
 import datetime
+import html
 from boss import settings
 import os,logging
 import json
@@ -105,7 +106,7 @@ def _uploadJson(request):
         logger.debug(request.POST)
         jsonStr = request.POST.get("reqJson", None)
         reqJson = json.loads(jsonStr)
-        reqName = request.POST.get("reqName", None)
+        reqName = html.escape(request.POST.get("reqName", None))
         month = request.POST.get("month", None)
         if not month:
             month = time.strftime('%Y%m', time.localtime())
@@ -130,7 +131,7 @@ def _uploadJson(request):
 def openReqConf(request):
     logger.info('open req conf')
     if request.method == "POST":    # 请求方法为POST时，进行处理
-        reqName = request.POST.get("reqName", None)
+        reqName = html.escape(request.POST.get("reqName", None))
         reqType = request.POST.get("type", 'ZG')
         author = request.POST.get("author", '王新田')
         month = request.POST.get("month", None)
@@ -224,6 +225,7 @@ def qryRequirement(request):
     bsReq = BsconfRequirement.objects.filter(conf_type=jsonType, req_month=jsonMonth, author=jsonAuthor).values()
     aReq = []
     for r in bsReq:
+        r.req_name = html.escape(html.unescape(r.req_name))
         aReq.append(r)
     return JsonResponse({'bsReq': aReq})
 

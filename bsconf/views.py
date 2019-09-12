@@ -225,7 +225,7 @@ def qryRequirement(request):
     bsReq = BsconfRequirement.objects.filter(conf_type=jsonType, req_month=jsonMonth, author=jsonAuthor).values()
     aReq = []
     for r in bsReq:
-        r.req_name = html.escape(html.unescape(r.req_name))
+        # r.req_name = html.escape(html.unescape(r.req_name))
         aReq.append(r)
     return JsonResponse({'bsReq': aReq})
 

@@ -331,6 +331,10 @@
     "REMIND_SMS": {
       "COMMENT": "新增生失效短信",
       "SQL": "INSERT INTO INTER.REMIND_SMS_SPROM_CONFIG (REMIND_TYPE, PROD_ID, PROD_NAME, OP_TIME, REMARK) VALUES (1, ^<PROD_ID^>, '^<PROD_NAME^>', sysdate, '^<REMARK^>');"
+    },
+    "REMIND_LARGE": {
+      "COMMENT": "新增大额月租产品",
+      "SQL": "insert into INTER.REMIND_LARGE_RENT_PROD (PROD_ID, PROD_NAME, RENT_FEE, CREATE_TIME, REMARK) values ('^<PROD_ID^>', '^<PROD_NAME^>', '^<RENT_FEE^>', sysdate, '^<REMARK^>');"
     }
   },
   "BALANCE_TYPE_BLOCK": {

@@ -1,0 +1,14 @@
+{
+  "BOSS-KS-2019-08-006-wangting-AM快响需求-喜猫儿产品修改产品名称": {
+      "FEE_ITEM_MOD_BLOCK": [
+        {
+          "FEE_ITEM": {
+            "FEE_ITEM_ID": "88002504",
+            "ITEM_NAME": "AM瑞幸21元代金券",
+            "ACC_DEF_FEE_ITEM_EX_MOD": {},
+            "BS_ACCT_ITEM_TYPE_MOD": {}
+          }
+        }
+      ]
+   }
+}

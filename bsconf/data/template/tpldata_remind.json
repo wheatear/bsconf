@@ -9,6 +9,13 @@
               "PROD_ID": "50002352",
               "PROD_NAME": "5G测试套餐"
             }
+          ],
+          "REMIND_LARGE": [
+            {
+              "PROD_ID": "53001861",
+              "PROD_NAME": "50元数据流量可选包",
+              "RENT_FEE": "5000"
+            }
           ]
         }
       }

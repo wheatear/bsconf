@@ -79,6 +79,10 @@
 		"SMS_RULE": {
             "COMMENT": "短信ID映射表",
 			"SQL": "insert into base.bs_sms_rule (RULE_ID, RULE_CODE, RULE_EXP, RULE_ORDER, BUSINESS_ID, AC_SMS_TEMPLATE_ID, SMS_TEMPLATE_ID, STATE, CREATE_DATE) values (base.bs_sms_rule$seq.nextval, '^<NEW_SMS_TEMPLET_ID^>', '', '1', '^<BUSI_TYPE_CODE^>', '^<NEW_SMS_TEMPLET_ID^>', '^<SMS_TEMPLATE_ID^>', 'U', sysdate);"
+		},
+		"ACCT_DEL_EXCLUDE_CFG": {
+            "COMMENT": "新增不能欠销配置 RULE_TYPE=2营销案，RULE_TYPE=1产品",
+			"SQL": "INSERT INTO ZG.ACCT_DEL_EXCLUDE_CFG (REGION_CODE, RULE_TYPE, RULE_ID, RULE_NAME, EFF_DATE, EXP_DATE, REMARK) VALUES (100, 2, '^<PROMO_ID^>', '^<PROMO_NAME^>', to_date('01-01-2010', 'dd-mm-yyyy'), to_date('01-01-2030', 'dd-mm-yyyy'), null);"
 		}
   },
   "PROMO_COND_BLOCK": {
@@ -131,7 +135,7 @@
         },
         "ITEM_MAP": {
             "COMMENT": "配置CRM费用项编码映射",
-            "SQL": "insert into base.bs_busi_item_map (busi_item_code, busi_item_type, fee_item_id, fee_item_name, sts, receipt_type, receipt_item) values ('^<BUSI_ITEM_CODE^>', '3', '^<BUSI_ITEM_CODE^>', '业务违约金', '1', '^<RECEIPT_TYPE^>', '1116');"
+            "SQL": "insert into base.bs_busi_item_map (busi_item_code, busi_item_type, fee_item_id, fee_item_name, sts, receipt_type, receipt_item) values ('^<BUSI_ITEM_CODE^>', '3', '^<BUSI_ITEM_CODE^>', '^<FEE_ITEM_NAME^>', '1', '^<RECEIPT_TYPE^>', '1116');"
         },
         "MIS_BS_DEF_BILL_ITEM_MIS": {
             "COMMENT": "配置统计，用10开头的  10  MIS配置类",
@@ -167,7 +171,7 @@
         },
         "ITEM_MAP": {
             "COMMENT": "配置CRM费用项编码映射 busi_item_code,fee_item_id,fee_item_name, receipt_type, receipt_item",
-            "SQL": "insert into base.bs_busi_item_map (busi_item_code, busi_item_type, fee_item_id, fee_item_name, sts, receipt_type, receipt_item) values ('^<BUSI_ITEM_CODE^>', '3', '^<BUSI_ITEM_CODE^>', '^<RECEIPT_ITEM_NAME^>', '1', '^<RECEIPT_TYPE^>', '^<RECEIPT_ITEM^>');"
+            "SQL": "insert into base.bs_busi_item_map (busi_item_code, busi_item_type, fee_item_id, fee_item_name, sts, receipt_type, receipt_item) values ('^<BUSI_ITEM_CODE^>', '3', '^<BUSI_ITEM_CODE^>', '^<FEE_ITEM_NAME^>', '1', '^<RECEIPT_TYPE^>', '^<RECEIPT_ITEM^>');"
         },
         "HALL_BS_DEF_BILL_ITEM_MIS": {
             "COMMENT": "厅台统计，财务统计定义，只要有mis码如A226，配置成10A226  厅台码（01 卡类收入 02 话费收入 09 其它收入  03  调整类MIS  ） ",
@@ -196,6 +200,20 @@
             "COMMENT": "财务mis码和发票类型发票科目映射表",
             "SQL": "insert into inter.acc_bill_item_audit_grp (AUDIT_GROUP_NO, BUSI_TYPE, BILL_ITEM_ID, STA_TYPE) values ('^<AUDIT_GROUP_NO^>', '^<RECEIPT_TYPE^>', '^<RECEIPT_ITEM^>', null);"
         }
+  },
+  "RECEIPT_TYPE_NAME_MOD_BLOCK": {
+    "RECEIPT_TYPE_MOD": {
+      "COMMENT": "修改发票名称",
+      "SQL": "UPDATE BASE.BS_BUSI_RECEIPT_TYPE SET RECEIPT_TYPE_NAME='^<RECEIPT_TYPE_NAME^>' WHERE RECEIPT_TYPE='^<RECEIPT_TYPE^>';"
+    },
+    "RECEIPT_ITEM_NAME_MOD": {
+      "COMMENT": "修改发票科目名称",
+      "SQL": "UPDATE BASE.BS_BUSI_RECEIPT_ITEM SET RECEIPT_ITEM_NAME='^<RECEIPT_ITEM_NAME^>' WHERE  RECEIPT_ITEM ='^<RECEIPT_ITEM^>';"
+    },
+    "FEE_ITEM_NAME_MOD": {
+      "COMMENT": "修改FEE_ITEM_NAME",
+      "SQL": "UPDATE BASE.BS_BUSI_ITEM_MAP SET FEE_ITEM_NAME='^<RECEIPT_ITEM_NAME^>' WHERE RECEIPT_ITEM='^<RECEIPT_ITEM^>';"
+    }
   },
   "FEE_ITEM_BLOCK": {
 		"FEE_ITEM": "None",
@@ -242,6 +260,17 @@
 		"BS_ACCT_ITEM_TYPE_BALANCE_TYPE": {
             "COMMENT": "增加配置：副二82950、副三82951账户不可以冲销上述费用项  sts:1(默认可冲销) 2代表这这几个科目不可冲销，其他的都可冲销",
 			"SQL": "INSERT INTO BASE.BS_ACCT_ITEM_TYPE_BALANCE_TYPE (BALANCE_TYPE_ID, ACCT_ITEM_TYPE_ID, BALANCE_MAX_VALUE, RELA_PRIORITY, OVERFLOW_RULE, STS) VALUES ('^<BALANCE_TYPE_ID^>', '^<FEE_ITEM_ID^>', '5000000000', '1', '0', '2');"
+		}
+  },
+  "FEE_ITEM_MOD_BLOCK": {
+		"FEE_ITEM": "None",
+		"ACC_DEF_FEE_ITEM_EX_MOD": {
+            "COMMENT": "费用项科目市场类型表",
+			"SQL": "UPDATE ZG.ACC_DEF_FEE_ITEM_EX T  SET T.ITEM_NAME = '^<ITEM_NAME^>' WHERE T.FEE_ITEM_ID = '^<FEE_ITEM_ID^>';"
+		},
+		"BS_ACCT_ITEM_TYPE_MOD": {
+            "COMMENT": "科目销账优先级",
+			"SQL": "UPDATE BASE.BS_ACCT_ITEM_TYPE T  SET T.ACCT_ITEM_TYPE_NAME = '^<ITEM_NAME^>' WHERE T.ACCT_ITEM_TYPE_ID = '^<FEE_ITEM_ID^>';"
 		}
   },
   "ALARM_PROD_BLOCK": {
@@ -302,6 +331,10 @@
     "REMIND_SMS": {
       "COMMENT": "新增生失效短信",
       "SQL": "INSERT INTO INTER.REMIND_SMS_SPROM_CONFIG (REMIND_TYPE, PROD_ID, PROD_NAME, OP_TIME, REMARK) VALUES (1, ^<PROD_ID^>, '^<PROD_NAME^>', sysdate, '^<REMARK^>');"
+    },
+    "REMIND_LARGE": {
+      "COMMENT": "新增大额月租产品",
+      "SQL": "insert into INTER.REMIND_LARGE_RENT_PROD (PROD_ID, PROD_NAME, RENT_FEE, CREATE_TIME, REMARK) values ('^<PROD_ID^>', '^<PROD_NAME^>', '^<RENT_FEE^>', sysdate, '^<REMARK^>');"
     }
   },
   "BALANCE_TYPE_BLOCK": {
@@ -312,6 +345,24 @@
     "BS_ACCT_ITEM_TYPE_BALANCE_TYPE": {
       "COMMENT": "配置账本冲销关系表 sts:1(默认可冲销) 2代表这这几个科目不可冲销，其他的都可冲销  max_value:5000000000(默认)",
       "SQL": "INSERT INTO BASE.BS_ACCT_ITEM_TYPE_BALANCE_TYPE (BALANCE_TYPE_ID, ACCT_ITEM_TYPE_ID, BALANCE_MAX_VALUE, RELA_PRIORITY, OVERFLOW_RULE, STS) VALUES ('^<BALANCE_TYPE_ID^>', '^<ACCT_ITEM_TYPE_ID^>', '5000000000', '1', '1', '^<STS^>');"
+    }
+  },
+  "BBOSS_PRODUCTCHARGE_BLOCK": {
+    "AM_BBOSS_PRODUCTCHARGE_CFG": {
+      "COMMENT": "新增集团账单入库配置",
+      "SQL": "INSERT INTO AC.AM_BBOSS_PRODUCTCHARGE_CFG (PRODUCT_NAME, PRODUCT_CHARGECODE) values ('^<PRODUCT_NAME^>', '^<PRODUCT_CHARGECODE^>');"
+    }
+  },
+  "BUSI_TYPE_BLOCK": {
+    "BUSI_TYPE": {
+      "COMMENT": "新增busi_type",
+      "SQL": "INSERT INTO AC.AM_BBOSS_PRODUCTCHARGE_CFG (PRODUCT_NAME, PRODUCT_CHARGECODE) values ('^<PRODUCT_NAME^>', '^<PRODUCT_CHARGECODE^>');"
+    }
+  },
+  "BS_PROD_INFO_BLOCK": {
+    "BS_PROD_INFO": {
+      "COMMENT": "新增BS_PROD_INFO",
+      "SQL": "INSERT INTO BASE.BS_PROD_INFO (PROD_ID, PROD_NAME, BASE_VALUE, FREEBIE_TYPE, FREEBIE_ID, FREEBIE_COUNT, FREEBIE_UNIT, BUSI_PRICE, RESERVE1, RESERVE2, RESERVE3, RESERVE4) VALUES ('^<PROD_ID^>', '^<PROD_NAME^>', '^<BASE_VALUE^>', '^<FREEBIE_TYPE^>', '^<FREEBIE_ID^>', '^<FREEBIE_COUNT^>', '^<FREEBIE_UNIT^>', null, null, null, null, null);"
     }
   }
 }

@@ -1,0 +1,17 @@
+{
+  "BOSS需求解决方案-BOSS-JT-2019-06-128-zhangming-集团移动商城2.8.0规范接口开发": {
+    "BS_PROD_INFO_BLOCK": [
+      {
+        "BS_PROD_INFO": {
+          "PROD_ID": "50002379",
+          "PROD_NAME": "经济版",
+          "BASE_VALUE": "588",
+          "FREEBIE_TYPE": "0",
+          "FREEBIE_ID": "66660000",
+          "FREEBIE_COUNT": "3000",
+          "FREEBIE_UNIT": "01"
+        }
+      }
+    ]
+  }
+}

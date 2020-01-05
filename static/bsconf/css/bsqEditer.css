@@ -2,12 +2,15 @@
 #reqName{
     width: 500px;
 }
-/*#saveJson{*/
+#saveJson{
+    display: inline-block;
+}
+
+/*#json{*/
     /*display: inline-block;*/
 /*}*/
-
-#json{
-    display: inline-block;
+#json li{
+    width: 700px;
 }
 
 #sql{

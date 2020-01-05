@@ -63,6 +63,7 @@
                   "BOOK_ITEM_ID": "82951",
                   "BOOK_TYPE": "1",
                   "ALLOT_TYPE": "1",
+                  "ALLOT_MONTH": "1",
                   "ALLOT_SCALE": "5000",
                   "ALLOT_ATTR": "00000000120000000010",
                   "CANCEL_BOOK_ITEM_ID": "80501"

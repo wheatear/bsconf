@@ -8,7 +8,7 @@ Database operation module. This module is independent with web module.
 '''
 
 import time, logging
-import oradb
+import bsconf.oradb as oradb
 
 
 class Field(object):
@@ -107,15 +107,22 @@ class VersionField(Field):
         super(VersionField, self).__init__(name=name, default=0, ddl='bigint')
 
 
+class ForeignKey(Field):
+
+    def __init__(self, name=None, parent=None):
+        super(ForeignKey, self).__init__(name=name)
+        self.parent = parent
+
+
 _triggers = frozenset(['pre_insert', 'pre_update', 'pre_delete'])
 
 
 def _gen_sql(table_name, mappings):
     pk = {}
     sql = ['-- generating SQL for %s:' % table_name, 'create table %s (' % table_name]
-    for k, v in sorted(mappings.items(), lambda x, y: cmp(x[1]._order, y[1]._order)):
+    for k, v in sorted(mappings.items(), key=lambda x: x[1]._order):
         if not hasattr(v, 'ddl'):
-            raise StandardError('no ddl in field "%s".' % v.name)
+            raise Exception('no ddl in field "%s".' % v.name)
         ddl = v.ddl
         nullable = v.nullable
         if v.primary_key:
@@ -253,7 +260,7 @@ class Model(dict):
     def get_dbfield_name(cls):
         a_fields = []
         # pks = []
-        for k, v in sorted(cls.__mappings__.items(), lambda x, y: cmp(x[1]._order, y[1]._order)):
+        for k, v in sorted(cls.__mappings__.items(), key=lambda x: x[1]._order):
             a_fields.append(v.name)
             # if v.primary_key:
             #     pks.append('%s=:%s' % (v.name, k))
@@ -262,7 +269,7 @@ class Model(dict):
     @classmethod
     def get_dbpk_name(cls):
         a_pks = []
-        for k, v in sorted(cls.__primary_key__.items(), lambda x, y: cmp(x[1]._order, y[1]._order)):
+        for k, v in sorted(cls.__primary_key__.items(), key=lambda x: x[1]._order):
             a_pks.append(v.name)
         return a_pks
 
@@ -289,7 +296,7 @@ class Model(dict):
         '''
         a_fields = cls.get_dbfield_name()
         a_pks = []
-        for k, v in sorted(cls.__primary_key__.items(), lambda x, y: cmp(x[1]._order, y[1]._order)):
+        for k, v in sorted(cls.__primary_key__.items(), key=lambda x: x[1]._order):
             a_pks.append('%s=:%s' % (v.name, k))
         sql = 'select %s from %s where %s' % (','.join(a_fields), cls.__table__, ' and '.join(a_pks))
         # sql = 'select * from %s where' % cls.__table__
@@ -377,7 +384,7 @@ class Model(dict):
         # pk = self.__primary_key__.name
         a_pk_name = []
         d_pk_value = {}
-        for k, v in sorted(self.__primary_key__.items(), lambda x, y: cmp(x[1]._order, y[1]._order)):
+        for k, v in sorted(self.__primary_key__.items(), key=lambda x: x[1]._order):
             a_pk_name.append('%s=:%s' % (v.name, v.name))
             d_pk_value[v.name] = getattr(self, k)
         sql = 'delete from %s where %s' % (self.__table__, ' and '.join(a_pk_name))
@@ -399,7 +406,7 @@ class Model(dict):
         self.pre_update and self.pre_update()
         L = []
         P = []
-        for k, v in sorted(self.__mappings__.items(), lambda x, y: cmp(x[1]._order, y[1]._order)):
+        for k, v in sorted(self.__mappings__.items(), key=lambda x: x[1]._order):
             if v.updatable:
                 if not hasattr(self, k):
                     setattr(self, k, v.default)
@@ -424,7 +431,7 @@ class Model(dict):
         a_fields = []
         d_params = {}
         a_params = []
-        for k, v in sorted(self.__mappings__.items(), lambda x, y: cmp(x[1]._order, y[1]._order)):
+        for k, v in sorted(self.__mappings__.items(), key=lambda x: x[1]._order):
             if v.insertable:
                 if not hasattr(self, k):
                     setattr(self, k, v.default)
@@ -441,7 +448,7 @@ class Model(dict):
     def get_delete_sql(self):
         self.pre_delete and self.pre_delete()
         a_pk = []
-        for k, v in sorted(self.__primary_key__.items(), lambda x, y: cmp(x[1]._order, y[1]._order)):
+        for k, v in sorted(self.__primary_key__.items(), key=lambda x: x[1]._order):
             val = getattr(self, k)
             if v.dump_format:
                 dump_value = v.dump_format % val

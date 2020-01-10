@@ -8,7 +8,8 @@ Database operation module. This module is independent with web module.
 '''
 
 import time, logging
-import bsconf.oradb as oradb
+# import bsconf.oradb as oradb
+import oradb as oradb
 
 
 class Field(object):
@@ -191,7 +192,7 @@ class ModelMetaclass(type):
                 attrs[trigger] = None
         return type.__new__(cls, name, bases, attrs)
 
-class Model(dict):
+class Model(dict, metaclass=ModelMetaclass):
     '''
     Base class for ORM.
 
@@ -238,7 +239,7 @@ class Model(dict):
       primary key(`id`)
     );
     '''
-    __metaclass__ = ModelMetaclass
+    # __metaclass__ = ModelMetaclass
     db = None
 
     def __init__(self, **kw):
@@ -255,6 +256,16 @@ class Model(dict):
 
     def __setattr__(self, key, value):
         self[key] = value
+
+    @classmethod
+    def create(cls, **kw):
+        '''
+        Get by primary key.
+        '''
+        dic = {}
+        for k, v in cls.__mappings__.items():
+            dic[k] = kw.get(v.name, None)
+        return cls(**dic) if dic else None
 
     @classmethod
     def get_dbfield_name(cls):

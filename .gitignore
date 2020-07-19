@@ -130,6 +130,7 @@ Python.gitignore
 *.pinyin
 log/
 .idea/
+Envs/
 
 bsconf/data/in/
 bsconf/data/out/

@@ -106,16 +106,19 @@ def _uploadJson(request):
         logger.debug(request.POST)
         jsonStr = request.POST.get("reqJson", None)
         reqJson = json.loads(jsonStr)
-        reqName = html.escape(request.POST.get("reqName", None))
+        reqFileName = html.escape(request.POST.get("reqName", None))
         month = request.POST.get("month", None)
         if not month:
             month = time.strftime('%Y%m', time.localtime())
         reqType = request.POST.get("type", 'ZG')
         author = request.POST.get("author", '王新田')
         logger.debug("json: %s", json.dumps(reqJson))
-        reqName = reqName.replace('BOSS需求解决方案-', '')
-        reqName = reqName.replace('需求解决方案-', '')
-        jsonName = '%s-%s-%s.json' % (reqType, reqName, author)
+
+        # reqName = reqFileName.replace('BOSS需求解决方案-', '')
+        # reqName = reqFileName.replace('需求解决方案-', '')
+        # jsonName = '%s-%s-%s.json' % (reqType, reqName, author)
+
+        jsonName = getJsonName(reqFileName, reqType, author)
         bsf = BsConfiger(jsonName, reqType, author, month)
         bsf.saveReqSts('0')
 
@@ -128,6 +131,53 @@ def _uploadJson(request):
         bsf.saveReqSts('1')
         return bsf
 
+def getJsonName(reqFileName, reqType, author):
+    dmpId, bmccId, reqName = parseReqName(reqFileName)
+    jsonName = '%s-%s-%s-%s-%s.json' % (reqType, dmpId, bmccId, reqName, author)
+    return jsonName
+
+def getSqlName(reqFileName, reqType, author):
+    dmpId, bmccId, reqName = parseReqName(reqFileName)
+    sqlName = '%s-%s-%s-%s-%s.sql' % (reqType, dmpId, bmccId, reqName, author)
+    return sqlName
+
+def parseReqName(reqFileName):
+    # BOSS-KF-2020-03-442-xx_zhangjuan-CRM_BJ_REQ_20200623_0052
+    reqPat1 = '(BOSS-[A-Za-z]+?-\d+?-\d+?-\d+?-\w+?)[-_,](CRM_[A-Za-z]+?_[A-Za-z]+?_\d+?_\d+?)[-_,](.+)'
+    reqPat2 = '(CRM_[A-Za-z]+?_[A-Za-z]+?_\d+?_\d+?)[-_,](BOSS-[A-Za-z]+?-\d+?-\d+?-\d+?-\w+?)[-_,](.+)'
+    dmpIdPat = '(CRM_[A-Za-z]+?_[A-Za-z]+?_\d+?_\d+?)[-_,](.+)'
+    bmccIdPat = '(BOSS-[A-Za-z]+?-\d+?-\d+?-\d+?-\w+?)[-_,](.+)'
+    dmpId = ''
+    bmccId = ''
+    reqName = ''
+
+    m = re.search(reqPat1, reqFileName)
+    if m:
+        dmpId = m.group(2)
+        bmccId = m.group(1)
+        reqName = m.group(3)
+        return [dmpId, bmccId, reqName]
+
+    m = re.search(reqPat2, reqFileName)
+    if m:
+        dmpId = m.group(1)
+        bmccId = m.group(2)
+        reqName = m.group(3)
+        return [dmpId, bmccId, reqName]
+
+    m = re.search(dmpIdPat, reqFileName)
+    if m:
+        dmpId = m.group(1)
+        reqName = m.group(2)
+        return [dmpId, bmccId, reqName]
+
+    m = re.search(bmccIdPat, reqFileName)
+    if m:
+        bmccId = m.group(1)
+        reqName = m.group(2)
+        return [dmpId, bmccId, reqName]
+
+
 def openReqConf(request):
     logger.info('open req conf')
     if request.method == "POST":    # 请求方法为POST时，进行处理
@@ -138,10 +188,12 @@ def openReqConf(request):
 
         if not month:
             month = time.strftime('%Y%m', time.localtime())
-        reqJson = reqName.replace('BOSS需求解决方案-', '')
-        reqJson = reqJson.replace('需求解决方案-', '')
-        jsonName = '%s-%s-%s.json' % (reqType, reqJson, author)
-        sqlName = '%s-%s-%s.sql' % (reqType, reqJson, author)
+        # reqJson = reqName.replace('BOSS需求解决方案-', '')
+        # reqJson = reqJson.replace('需求解决方案-', '')
+        # jsonName = '%s-%s-%s.json' % (reqType, reqJson, author)
+        # sqlName = '%s-%s-%s.sql' % (reqType, reqJson, author)
+        jsonName = getJsonName(reqName, reqType, author)
+        sqlName = getSqlName(reqName, reqType, author)
         # if not reqName.startswith(reqType):
         #     jsonName = '%s-%s-%s.json' % (reqType, reqJson, author)
 
@@ -197,9 +249,11 @@ def qryJsonFile(request):
         reqType = request.POST.get("type",'ZG')
         author = request.POST.get("author", '王新田')
 
-        reqName = reqName.replace('BOSS需求解决方案-', '')
-        reqName = reqName.replace('需求解决方案-', '')
-        jsonName = '%s-%s-%s.json' % (reqType, reqName, author)
+        # reqName = reqName.replace('BOSS需求解决方案-', '')
+        # reqName = reqName.replace('需求解决方案-', '')
+        # jsonName = '%s-%s-%s.json' % (reqType, reqName, author)
+        jsonName = getJsonName(reqName, reqType, author)
+
         logger.debug("query request: %s")
         jsonDir = os.path.join(settings.IN_DIR, month)
         jsonFile = os.path.join(jsonDir, jsonName)
@@ -367,7 +421,9 @@ class ReqParser(object):
         docBase = os.path.splitext(os.path.basename(self.reqName))[0]
         docBase = docBase.replace('BOSS需求解决方案-','')
         self.reqName = docBase.replace('需求解决方案-', '')
-        self.outName = '%s-%s-%s.sql' % (self.configer.type, self.reqName, self.configer.author)
+
+        # self.outName = '%s-%s-%s.sql' % (self.configer.type, self.reqName, self.configer.author)
+        self.outName = getSqlName(self.reqName, self.configer.type, self.configer.author)
 
     def openOut(self):
         if self.fOut:
